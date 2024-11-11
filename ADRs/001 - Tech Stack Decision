@@ -1,0 +1,49 @@
+---
+status:
+date: 
+decision-makers: 
+consulted: 
+informed: 
+---
+
+# Choice Of Tech Stack Decision
+
+## Context and Problem Statement
+
+* In order to deliver the proof on concept, the team needs to decide on the technological stack that will be utilised and that is most suitable in the context of the Advanced Library System.
+
+
+
+## Decision Drivers
+
+* Sam
+* Joe
+* Sohaib
+
+## Considered Options
+
+* Front end: React Native, Angular JS, XML
+* Backend: PHP, NodeJS, ASP.
+
+## Decision Outcome
+
+Chosen option: "", because
+
+### Consequences
+
+* Good, because
+* Bad, because
+
+### Confirmation
+
+
+
+## Pros and Cons of the Options
+
+### <!-- title of option -->
+
+* Good, because
+* Neutral, because
+* Bad, because
+
+## More Information
