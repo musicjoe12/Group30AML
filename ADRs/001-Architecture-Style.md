@@ -1,7 +1,7 @@
 ---
 status: Accepted
 date: 10/10/2024
-decision-makers: Sam, Joe, Sohaib
+decision-makers: All
 consulted: All
 informed: All
 ---
