@@ -44,12 +44,12 @@ function Navbar() {
         >
           <Anchor.Link
             key="home"
-            href="/"
+            href="/homepage"
             title="Home"
             className="navbar-link" 
             onClick={(e) => {
               e.preventDefault();
-              window.location.href = '/';
+              window.location.href = '/homepage';
             }}
           />
           <Anchor.Link
