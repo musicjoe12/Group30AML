@@ -1,0 +1,22 @@
+.navbar-link {
+    color: white !important; 
+    font-size: 24px !important; 
+    margin-right: 20px; 
+    font-style:oblique;
+  }
+  
+  .navbar-header {
+    background-color: #124E78;
+    padding: 0 40px;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+  }
+  
+  .navbar-container {
+    font-size: 16px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+  }
