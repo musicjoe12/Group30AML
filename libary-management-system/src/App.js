@@ -1,12 +1,20 @@
 import './App.css';
+import Navbar from './Components/Navbar';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import BrowseMedia from './Pages/BrowseMedia';
+import ManageMedia from './Pages/ManageMedia';
+import ManageInventory from './Pages/ManageInventory';
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        
-      </header>
-    </div>
+    <Router>
+      <Navbar /> {}
+      <Routes>
+        <Route path="/browse-media" element={<BrowseMedia />} />
+        <Route path="/manage-media" element={<ManageMedia />} />
+        <Route path="/manage-inventory" element={<ManageInventory />} />
+      </Routes>
+    </Router>
   );
 }
 
