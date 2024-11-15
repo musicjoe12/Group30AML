@@ -1,8 +1,13 @@
-.navbar-link {
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap');
+
+.navbar-container .ant-anchor-link-title {
     color: white !important; 
-    font-size: 24px !important; 
-    margin-right: 20px; 
+    font-size: 20px !important; 
+    margin-right: 30px; 
     font-style:oblique;
+    font-family: 'Roboto', sans-serif;
+    padding: 0 12px;
+
   }
   
   .navbar-header {
@@ -11,6 +16,7 @@
     display: flex;
     justify-content: flex-end;
     align-items: center;
+    font-family: 'Roboto', sans-serif;
   }
   
   .navbar-container {
@@ -19,4 +25,5 @@
     justify-content: center;
     align-items: center;
     width: 100%;
+    font-family: 'Roboto', sans-serif;
   }
