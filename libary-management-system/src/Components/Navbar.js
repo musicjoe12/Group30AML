@@ -30,11 +30,11 @@ function Navbar() {
         <span
           style={{
             color: 'white',
-            fontSize: '24px',
+            fontSize: '40px',
             fontWeight: 'bold',
           }}
         >
-          Library Books
+          Advanced Media Library
         </span>
       </div>
 
