@@ -10,33 +10,33 @@ const { Header } = Layout;
 function Navbar() {
   return (
     <Layout>
-      <Header className="navbar-header">
-      <div
-        style={{
-          display: 'flex',
-          alignItems: 'center', 
-          justifyContent: 'flex-start',
-          width: '100%',
-        }}
-      >
-        <img
-          src={logo}
-          alt="Logo"
+      <Header className="navbar-header fixed-header">
+        <div
           style={{
-            height: '70px',
-            marginRight: '20px', 
-          }}
-        />
-        <span
-          style={{
-            color: 'white',
-            fontSize: '40px',
-            fontWeight: 'bold',
+            display: 'flex',
+            alignItems: 'center', 
+            justifyContent: 'flex-start',
+            width: '100%',
           }}
         >
-          Advanced Media Library
-        </span>
-      </div>
+          <img
+            src={logo}
+            alt="Logo"
+            style={{
+              height: '70px',
+              marginRight: '20px', 
+            }}
+          />
+          <span
+            style={{
+              color: 'white',
+              fontSize: '40px',
+              fontWeight: 'bold',
+            }}
+          >
+            Advanced Media Library
+          </span>
+        </div>
 
         <Anchor
           direction="horizontal"

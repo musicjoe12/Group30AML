@@ -27,3 +27,9 @@
     width: 100%;
     font-family: 'Roboto', sans-serif;
   }
+  .fixed-header {
+    position: fixed;
+    top: 0;
+    width: 100%;
+    z-index: 1000;
+  }
