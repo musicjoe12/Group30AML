@@ -1,53 +1,23 @@
 import React from 'react';
+import { useState, useEffect } from 'react';
+
+import axios from 'axios';
+
+//design
 import { Box, Grid, Typography, Card, CardMedia, CardContent } from '@mui/material';
 import { MAX_VERTICAL_CONTENT_RADIUS } from 'antd/es/style/placementArrow';
 
 
 function BrowseMedia() {
  //return <h1>Browse Media Page</h1>;
+  const [books, setBooks] = useState([]);
 
-
- const mediaItems = [
-  {
-    title: "To Kill a Mockingbird",
-    image: "https://covers.openlibrary.org/b/id/14817209-L.jpg"
-  },
-  {
-    title: "1984",
-    image: "https://covers.openlibrary.org/b/id/7222246-L.jpg",
-  },
-  {
-    title: "48 Laws of Power",
-    image: "https://covers.openlibrary.org/b/id/14821253-L.jpg",
-  },
-  {
-    title: "Design Patterns",
-    image: "https://ia801507.us.archive.org/view_archive.php?archive=/14/items/olcovers38/olcovers38-L.zip&file=388950-L.jpg",
-  },
-  {
-    title: "12 Rules for Life",
-    image: "https://ia600505.us.archive.org/view_archive.php?archive=/35/items/l_covers_0014/l_covers_0014_33.zip&file=0014338970-L.jpg",
-  },
-  {
-    title: "Rich Dad, Poor Dad",
-    image: "https://covers.openlibrary.org/b/id/14809769-M.jpg",
-  },
-  {
-    title: "Romeo and Juliet",
-    image: "https://ia800505.us.archive.org/view_archive.php?archive=/35/items/l_covers_0014/l_covers_0014_65.zip&file=0014657730-L.jpg",
-  },
-  {
-    title: "Art of War",
-    image: "https://ia800100.us.archive.org/view_archive.php?archive=/5/items/l_covers_0012/l_covers_0012_63.zip&file=0012635040-L.jpg",
-  },
-
- ];
-
-
-
-
-
-
+  useEffect(() => {
+    axios.get('http://localhost:8080/api/books')
+    .then(books => setBooks(books.data))
+    .catch(err => console.log(err));
+  },[]);
+  
  return (
   <Box sx={{ backgroundColor: 'ADD8E6', py: 4, minHeight: '100vh'}}>
     {/* Search Results Title */}
@@ -59,7 +29,7 @@ function BrowseMedia() {
     {/* Media Card Grid */}
 
     <Grid container spacing={3} justifyContent="center" sx={{ mt: 4}}>
-      {mediaItems.map((item, index) => (
+      {books.map((item, index) => (
         <Grid item xs={6} sm={4} md={3} key={index}>
           <Card sx={{ 
             maxWidth: 220, //width of cards

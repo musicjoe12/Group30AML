@@ -6,15 +6,10 @@ const BookModel = require('../models/books');
 
 
 // Get all books
-router.get('/books', async (req, res) => {
-  try {
-    const books = await BookModel.find({});
-    console.log(books);
-    res.json(books);
-} catch (error) {
-    res.status(500).json({ error: 'Internal server error' });
-    console.log(error);
-}
+router.get('/books', async (req, res) => { 
+  BookModel.find()
+  .then(books => res.json(books))
+  .catch(err => console.log(err));
 });
 
 // Add more routes as needed
