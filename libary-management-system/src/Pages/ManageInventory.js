@@ -2,7 +2,8 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 
 import { DownOutlined } from '@ant-design/icons';
-import { Dropdown, Space, Table, Button } from 'antd';
+import { Table, Button, Modal, Form, Input, Select, Space } from 'antd';
+
 
 // Table Columns
 
@@ -95,29 +96,87 @@ import { Dropdown, Space, Table, Button } from 'antd';
   // const handleMenuClick = ({ key }) => {
   //   setSelectedBranch(key);
   // };
+  const [isModalVisible, setIsModalVisible] = useState(false);
+  const [form] = Form.useForm();
+  const { Option } = Select; // Import Option from Select
+
+  const addBook = (values) => {
+    const newBook = {
+      _id: `${Date.now()}`, 
+      ...values,
+    };
+    setBooks([...books, newBook]); 
+    setIsModalVisible(false); 
+    form.resetFields(); 
+  };
 
   return (
     <div style={{ padding: '20px', marginTop: '70px' }}>
-      {/* Dropdown Menu */}
-      {/* <Dropdown
-        menu={{
-          bookData: books,
-          onClick: handleMenuClick,
-        }}
-      >
-        <a onClick={(e) => e.preventDefault()}>
-          <Space>
-            Select Branch
-            <DownOutlined />
-          </Space>
-        </a>
-      </Dropdown> */}
-
-
       {/* Table */}
       <div style={{ marginTop: '20px' }}>
-        <Table columns={columns} dataSource={books} />
+        <Table columns={columns} dataSource={books} rowKey="_id" />
       </div>
+
+      {/* Add Button */}
+      <div style={{ textAlign: 'center', marginTop: '20px' }}>
+        <Button type="primary" onClick={() => setIsModalVisible(true)}>
+          Add New Book
+        </Button>
+      </div>
+
+      {/* Modal */}
+      <Modal
+        title="Add New Book"
+        visible={isModalVisible}
+        onCancel={() => setIsModalVisible(false)}
+        footer={[
+          <Button key="cancel" onClick={() => setIsModalVisible(false)}>
+            Cancel
+          </Button>,
+          <Button key="submit" type="primary" onClick={() => form.submit()}>
+            Submit
+          </Button>,
+        ]}
+      >
+        <Form form={form} layout="vertical" onFinish={addBook}>
+          <Form.Item
+            name="title"
+            label="Title"
+            rules={[{ required: true, message: 'Please enter the title' }]}
+          >
+            <Input />
+          </Form.Item>
+          <Form.Item
+            name="author"
+            label="Author"
+            rules={[{ required: true, message: 'Please enter the author' }]}
+          >
+            <Input />
+          </Form.Item>
+          <Form.Item
+            name="genre"
+            label="Genre"
+            rules={[{ required: true, message: 'Please select the genre' }]}
+          >
+            <Select>
+              <Option value="Fiction">Fiction</Option>
+              <Option value="Non-fiction">Non-fiction</Option>
+              <Option value="Sci-fi">Sci-fi</Option>
+              <Option value="Biography">Biography</Option>
+            </Select>
+          </Form.Item>
+          <Form.Item
+            name="availability"
+            label="Availability"
+            rules={[{ required: true, message: 'Please select availability' }]}
+          >
+            <Select>
+              <Option value={true}>Available</Option>
+              <Option value={false}>Reserved</Option>
+            </Select>
+          </Form.Item>
+        </Form>
+      </Modal>
     </div>
   );
 };
