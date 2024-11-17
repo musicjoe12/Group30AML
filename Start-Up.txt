@@ -1,0 +1,23 @@
+Start-Up 
+
+Prerequisites
+- Node.js 
+- npm 
+
+Steps to Run the Server
+
+- cd server
+- npm i 
+- npm run dev
+
+
+Steps to Run the React Application
+
+- cd libary-management-system
+- npm i 
+- npm start
+
+Additional Notes
+
+- Ensure that both the server and the React application are not configured to run on the same port.
+- Ensure all dependencies are correctly installed.
