@@ -81,7 +81,6 @@ const branchData = {
   ],
 };
 
-// Dropdown Items for Branches
 const items = [
   {
     key: 'branch1',
@@ -96,7 +95,6 @@ const items = [
 const ManageInventory = () => {
   const [selectedBranch, setSelectedBranch] = useState('branch1'); // Default branch
 
-  // Handle menu selection
   const handleMenuClick = ({ key }) => {
     setSelectedBranch(key);
   };
