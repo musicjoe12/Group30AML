@@ -1,13 +1,23 @@
 import React from 'react';
-import { Anchor, Layout } from 'antd';
+import { Anchor, Layout, Input } from 'antd';
 import '../CSS/navbar.css';
 
 //Assets
 import logo from '../Assets/logo.png';
 
 const { Header } = Layout;
+const { Search } = Input;
 
 function Navbar() {
+
+  {/*Function to handle search */}
+
+  const handleSearch = (value) => {
+    console.log("Search Input:", value);
+
+    //search logic to be added here
+  };
+
   return (
     <Layout>
       <Header className="navbar-header fixed-header">
@@ -16,7 +26,7 @@ function Navbar() {
             display: 'flex',
             alignItems: 'center', 
             justifyContent: 'flex-start',
-            width: '100%',
+            width: '70%',
           }}
         >
           <img
@@ -30,12 +40,27 @@ function Navbar() {
           <span
             style={{
               color: 'white',
-              fontSize: '40px',
+              fontSize: '30px',
               fontWeight: 'bold',
             }}
           >
             Advanced Media Library
           </span>
+
+          {/* Search Bar */}
+        <Search
+        placeholder="Search Media"
+        allowClear
+        enterButton
+        onSearch={handleSearch}
+        style={{
+          width: '30%',
+         // marginRight: '20px',
+          marginLeft: '150px',
+        }}
+        />
+
+
         </div>
 
         <Anchor
