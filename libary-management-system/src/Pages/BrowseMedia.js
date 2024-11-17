@@ -1,5 +1,6 @@
 import React from 'react';
 import { useState, useEffect } from 'react';
+import '../CSS/navbar.css';
 
 import axios from 'axios';
 
@@ -22,7 +23,7 @@ function BrowseMedia() {
   <Box sx={{ backgroundColor: 'ADD8E6', py: 4, minHeight: '100vh'}}>
     {/* Search Results Title */}
 
-    <Typography variant="h4" align="center" gutterBottom sx={{ fontWeight: 'bold',mt: 4, mb: 4}}>
+    <Typography variant="h4" align="center" gutterBottom className= "typography-heading" sx={{ fontWeight: 'bold',mt: 4, mb: 4}}>
       Browse Our Media 
     </Typography>
 

@@ -56,7 +56,7 @@ function Navbar() {
         style={{
           width: '30%',
          // marginRight: '20px',
-          marginLeft: '150px',
+          marginLeft: '50px',
         }}
         />
 

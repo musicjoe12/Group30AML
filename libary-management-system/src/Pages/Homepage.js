@@ -58,7 +58,7 @@ const Homepage = () => {
   return (
     <div style={{display: 'flex', flexDirection: 'column' }}>
       <div style={blueBoxStyle}>
-        <h1>Welcome to AML - Your Gateway to the UK's Largest Library Network</h1>
+        <h1 className="heading">Welcome to AML - Your Gateway to the UK's Largest Library Network</h1>
         <p>Discover a world of knowledge with the Advanced Media Library (AML), offering books, journals, multimedia, and more across England's largest library network. Whether you're in Sheffield, Manchester, or a smaller town, AML provides seamless access to resources through our in-branch services, web-mobile app, and 24/7 online systems.</p>
         <Button type="primary" onClick={handleGetStarted}>Get Started!</Button>
       </div>
