@@ -57,20 +57,8 @@ import { Table, Button, Modal, Form, Input, Select, Space } from 'antd';
     }
 
     const createBook = async (values) => {
-      console.log('Form values:', values);
-      setNewBook(values);
-
-      const bookData = {
-        title: values.title,
-        author: values.author,
-        description: values.description,
-        genre: values.genre,
-        publicationYear: values.publicationYear,
-        image: values.image,
-        availability: values.availability,
-      };
-
-      axios.post('http://localhost:8080/api/add-book', bookData)
+      console.log('Received values:', values);
+      await axios.post('http://localhost:8080/api/add-book', values)
       .then(response => {
         console.log('Book added successfully:', response.data);
         setIsModalVisible(false);
@@ -80,7 +68,7 @@ import { Table, Button, Modal, Form, Input, Select, Space } from 'antd';
         console.error('There was an error adding the book:', error);
       });
     };
-    
+
     const columns = [
       {
         title: 'Title',
@@ -186,11 +174,11 @@ import { Table, Button, Modal, Form, Input, Select, Space } from 'antd';
             </Select>
           </Form.Item>
           <Form.Item
-            name="publicationYear"
+            name="publication_year"
             label="Publication-Year"
             rules={[{ required: true, message: 'Please enter the year' }]}
           >
-            <Input />
+            <Input type="number" />
           </Form.Item>
           <Form.Item
             name="image"
