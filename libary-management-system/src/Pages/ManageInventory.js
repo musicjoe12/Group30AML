@@ -45,6 +45,8 @@ import { Table, Button, Modal, Form, Input, Select, Space } from 'antd';
     //update phone number
     const updateBook = async (id) =>{
       await axios.post('http://localhost:8080/api/update-book/',{id, newBook})
+      setIsEditModalVisible(false);
+      setEditingBook(null);
     }
     
     //delete phone number
@@ -103,14 +105,24 @@ import { Table, Button, Modal, Form, Input, Select, Space } from 'antd';
             <Button type="primary" danger onClick={() => {deleteBook(record._id)}}>
               Delete
             </Button>
-            <Button type="primary" onClick={() => console.log(`Edit: ${record.title}`)}>
-              Edit
-            </Button>
+            <Button type="primary" onClick={() => {
+              setEditingBook(record); 
+              editForm.setFieldsValue(record); 
+              setIsEditModalVisible(true); 
+            }}
+          >
+            Edit
+          </Button>
           </Space>
         ),
       },
     ];
-    
+    const [isEditModalVisible, setIsEditModalVisible] = useState(false);
+    const [editForm] = Form.useForm();
+    const [editingBook, setEditingBook] = useState(null);
+
+
+
   return (
     <div style={{ padding: '20px', marginTop: '70px' }}>
       {/* Table */}
@@ -199,6 +211,90 @@ import { Table, Button, Modal, Form, Input, Select, Space } from 'antd';
           </Form.Item>
         </Form>
       </Modal>
+      {/* Edit Book Modal */}
+      <Modal
+  title="Edit Book"
+  visible={isEditModalVisible}
+  onCancel={() => setIsEditModalVisible(false)}
+  footer={[
+    <Button key="cancel" onClick={() => setIsEditModalVisible(false)}>
+      Cancel
+    </Button>,
+    <Button key="submit" type="primary" onClick={() => editForm.submit()}>
+      Save Changes
+    </Button>,
+  ]}
+>
+  <Form
+    form={editForm}
+    layout="vertical"
+    onFinish={(values) => updateBook(editingBook._id, values)}
+  >
+    <Form.Item
+      name="title"
+      label="Title"
+      rules={[{ required: true, message: 'Please enter the title' }]}
+    >
+      <Input />
+    </Form.Item>
+
+    <Form.Item
+      name="author"
+      label="Author"
+      rules={[{ required: true, message: 'Please enter the author' }]}
+    >
+      <Input />
+    </Form.Item>
+
+    <Form.Item
+      name="description"
+      label="Description"
+      rules={[{ required: true, message: 'Please enter the description' }]}
+    >
+      <Input />
+    </Form.Item>
+
+    <Form.Item
+      name="genre"
+      label="Genre"
+      rules={[{ required: true, message: 'Please select the genre' }]}
+    >
+      <Select>
+        <Option value="Fiction">Fiction</Option>
+        <Option value="Non-fiction">Non-fiction</Option>
+        <Option value="Sci-fi">Sci-fi</Option>
+        <Option value="Biography">Biography</Option>
+      </Select>
+    </Form.Item>
+
+    <Form.Item
+      name="publication_year"
+      label="Publication Year"
+      rules={[{ required: true, message: 'Please enter the publication year' }]}
+    >
+      <Input type="number" />
+    </Form.Item>
+
+    <Form.Item
+      name="image"
+      label="Image Link"
+      rules={[{ required: true, message: 'Please enter the image link' }]}
+    >
+      <Input />
+    </Form.Item>
+
+    <Form.Item
+      name="availability"
+      label="Availability"
+      rules={[{ required: true, message: 'Please select availability' }]}
+    >
+      <Select>
+        <Option value={true}>Available</Option>
+        <Option value={false}>Reserved</Option>
+      </Select>
+    </Form.Item>
+  </Form>
+</Modal>
     </div>
   );
 };
