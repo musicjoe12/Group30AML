@@ -38,16 +38,32 @@ import { Table, Button, Modal, Form, Input, Select, Space } from 'antd';
     
     //update phone number
     const updateBook = async (id) =>{
-       await axios.post('http://localhost:8080/api/update-book/',{id, newBook})
+      await axios.post('http://localhost:8080/api/update-book/',{id, newBook})
     }
     
     //delete phone number
     const deleteBook = async (id) => {
-       await axios.delete(`http://localhost:8080/api/delete-book/${id}`)
+      await axios.delete(`http://localhost:8080/api/delete-book/${id}`)
       .then(() => {
         setBooks(books.filter((book) => book._id !== id))
       })
       .catch(err => console.log(err));
+    }
+
+    const createBook = async (book) => { 
+
+      if(!book.title || !book.author || !book.genre || !book.availability || !book.description || !book.publicationYear || !book.image) {
+        return alert('Please fill in all fields');
+      }
+      else{
+        await axios.post('http://localhost:8080/api/add-book', book)
+        .then(() => {
+          setBooks([books, book])
+        })
+        .catch(err => console.log(err));
+        setIsModalVisible(false); 
+        form.resetFields(); 
+      }
     }
     
     const columns = [
@@ -138,7 +154,7 @@ import { Table, Button, Modal, Form, Input, Select, Space } from 'antd';
           </Button>,
         ]}
       >
-        <Form form={form} layout="vertical" onFinish={addBook}>
+        <Form form={form} layout="vertical" onFinish={createBook}>
           <Form.Item
             name="title"
             label="Title"
@@ -151,7 +167,14 @@ import { Table, Button, Modal, Form, Input, Select, Space } from 'antd';
             label="Author"
             rules={[{ required: true, message: 'Please enter the author' }]}
           >
-            <Input />
+            <Input />  
+          </Form.Item>
+          <Form.Item
+            name = "description"
+            label = "Description"
+            rules = {[{ required: true, message: 'Please enter the description'}]}
+          >
+            <Input/>
           </Form.Item>
           <Form.Item
             name="genre"
@@ -164,6 +187,20 @@ import { Table, Button, Modal, Form, Input, Select, Space } from 'antd';
               <Option value="Sci-fi">Sci-fi</Option>
               <Option value="Biography">Biography</Option>
             </Select>
+          </Form.Item>
+          <Form.Item
+            name="publication-year"
+            label="Publication-Year"
+            rules={[{ required: true, message: 'Please enter the year' }]}
+          >
+            <Input />
+          </Form.Item>
+          <Form.Item
+            name="image"
+            label="Image-Link"
+            rules={[{ required: true, message: 'Please enter the Image-Link' }]}
+          >
+            <Input />
           </Form.Item>
           <Form.Item
             name="availability"
@@ -180,5 +217,6 @@ import { Table, Button, Modal, Form, Input, Select, Space } from 'antd';
     </div>
   );
 };
+
 
 export default ManageInventory;
