@@ -25,8 +25,14 @@ import { Table, Button, Modal, Form, Input, Select, Space } from 'antd';
     
     // Fetch data from API
     const [books, setBooks] = useState([]);
-    //for updating/deleting phone number
+    //for updating/deleting book number
     const [newBook, setNewBook] = useState(0)
+    //setting model visable or not for adding new book number
+    const [isModalVisible, setIsModalVisible] = useState(false);
+    //form for adding new book number
+    const [form] = Form.useForm();
+    //import Option from Select
+    const { Option } = Select; 
     
     
     useEffect(() => {
@@ -50,21 +56,30 @@ import { Table, Button, Modal, Form, Input, Select, Space } from 'antd';
       .catch(err => console.log(err));
     }
 
-    const createBook = async (book) => { 
+    const createBook = async (values) => {
+      console.log('Form values:', values);
+      setNewBook(values);
 
-      if(!book.title || !book.author || !book.genre || !book.availability || !book.description || !book.publicationYear || !book.image) {
-        return alert('Please fill in all fields');
-      }
-      else{
-        await axios.post('http://localhost:8080/api/add-book', book)
-        .then(() => {
-          setBooks([books, book])
-        })
-        .catch(err => console.log(err));
-        setIsModalVisible(false); 
-        form.resetFields(); 
-      }
-    }
+      const bookData = {
+        title: values.title,
+        author: values.author,
+        description: values.description,
+        genre: values.genre,
+        publicationYear: values.publicationYear,
+        image: values.image,
+        availability: values.availability,
+      };
+
+      axios.post('http://localhost:8080/api/add-book', bookData)
+      .then(response => {
+        console.log('Book added successfully:', response.data);
+        setIsModalVisible(false);
+        form.resetFields();
+      })
+      .catch(error => {
+        console.error('There was an error adding the book:', error);
+      });
+    };
     
     const columns = [
       {
@@ -108,24 +123,6 @@ import { Table, Button, Modal, Form, Input, Select, Space } from 'antd';
       },
     ];
     
-  
-  // const handleMenuClick = ({ key }) => {
-  //   setSelectedBranch(key);
-  // };
-  const [isModalVisible, setIsModalVisible] = useState(false);
-  const [form] = Form.useForm();
-  const { Option } = Select; // Import Option from Select
-
-  const addBook = (values) => {
-    const newBook = {
-      _id: `${Date.now()}`, 
-      ...values,
-    };
-    setBooks([...books, newBook]); 
-    setIsModalVisible(false); 
-    form.resetFields(); 
-  };
-
   return (
     <div style={{ padding: '20px', marginTop: '70px' }}>
       {/* Table */}
@@ -189,7 +186,7 @@ import { Table, Button, Modal, Form, Input, Select, Space } from 'antd';
             </Select>
           </Form.Item>
           <Form.Item
-            name="publication-year"
+            name="publicationYear"
             label="Publication-Year"
             rules={[{ required: true, message: 'Please enter the year' }]}
           >

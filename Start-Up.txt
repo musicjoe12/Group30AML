@@ -10,12 +10,16 @@ Steps to Run the Server
 - npm i 
 - npm run dev
 
+- ctrl c in terminal to stop server
+
 
 Steps to Run the React Application
 
 - cd libary-management-system
 - npm i 
 - npm start
+
+- ctrl c in terminal to stop react app
 
 Additional Notes
 
