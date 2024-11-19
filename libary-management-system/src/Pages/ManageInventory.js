@@ -33,6 +33,9 @@ import { Table, Button, Modal, Form, Input, Select, Space } from 'antd';
     const [form] = Form.useForm();
     //import Option from Select
     const { Option } = Select; 
+    const [isEditModalVisible, setIsEditModalVisible] = useState(false);
+    const [editForm] = Form.useForm();
+    const [editingBook, setEditingBook] = useState(0);
     
     
     useEffect(() => {
@@ -43,10 +46,15 @@ import { Table, Button, Modal, Form, Input, Select, Space } from 'antd';
     },[]); 
     
     //update phone number
-    const updateBook = async (id) =>{
-      await axios.post('http://localhost:8080/api/update-book/',{id, newBook})
-      setIsEditModalVisible(false);
-      setEditingBook(null);
+    const updateBook = async (id, values) =>{
+      console.log('Book updated successfully:', values);
+      await axios.patch(`http://localhost:8080/api/update-book/${id}`, values)
+      .then(() => {
+        setBooks(books.filter((book) => book._id !== id))
+        setIsEditModalVisible(false);
+        setEditingBook(null);
+      })
+      .catch(err => console.log(err));
     }
     
     //delete phone number
@@ -117,9 +125,6 @@ import { Table, Button, Modal, Form, Input, Select, Space } from 'antd';
         ),
       },
     ];
-    const [isEditModalVisible, setIsEditModalVisible] = useState(false);
-    const [editForm] = Form.useForm();
-    const [editingBook, setEditingBook] = useState(null);
 
 
 
