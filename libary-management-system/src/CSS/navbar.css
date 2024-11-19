@@ -20,6 +20,26 @@
     padding: 0 12px;
 
   }
+
+  .navbar-link {
+    color: white !important;
+    font-size: 18px;
+    margin-bottom: 10px;
+    text-decoration: none;
+  }
+
+  .navbar-link:hover {
+    color: red !important;
+    cursor: pointer;
+  }
+
+  .ant-drawer .navbar-link {
+    color: white !important;
+  }
+
+  .ant-drawer .navbar-link:hover {
+    color: red !important;
+  }
   
   /* Navbar Header */
   .navbar-header {
@@ -55,6 +75,58 @@
     top: 0;
     width: 100%;
     z-index: 1000;
+  }
+
+  .navbar-link {
+    color: white !important;
+    font-size: 18px;
+    margin-bottom: 10px;
+    text-decoration: none;
+  }
+
+  .navbar-link:hover {
+    color: red !important;
+    cursor: pointer;
+  }
+
+  .ant-drawer .navbar-link {
+    color: white !important;
+  }
+
+  .ant-drawer .navbar-link:hover {
+    color: red !important;
+    cursor: pointer;
+  }
+
+  .drawer-link {
+    color: white !important;
+    font-size: 18px;
+    margin-bottom: 15px;
+    text-decoration: none;
+    display: block;
+  }
+
+  .drawer-link:hover {
+    color: red !important;
+    cursor: pointer;
+  }
+
+  .drawer-toggle {
+    margin-top: 20px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .drawer-toggle span {
+    color: white;
+    font-size: 16px;
+  }
+
+  .slider-description {
+    font-size: 16px;
+    color: white;
+    font-style: italic;
   }
 
   /* Media Queries for Smaller Screens */

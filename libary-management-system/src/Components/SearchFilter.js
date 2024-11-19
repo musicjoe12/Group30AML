@@ -146,18 +146,20 @@ const SearchFilter = ({ books, onFilterUpdate, genres }) => {
 
       {/* Drawer Component */}
       <Drawer
-        title="Filters"
+        title={<span style={{color: 'white' }}>Filters</span>}
         placement="left"
         closable={true}
         onClose={closeDrawer}
         visible={drawerVisible}
+        bodyStyle={{ backgroundColor: '#124E78', color: 'white' }}
+        drawerStyle={{ backgroundColor: '#124E78' }}
         width={350}
         style={{ padding: '0px' }}
       >
         <Space style={{ marginBottom: '10px' }} wrap direction="vertical">
           {/* Title and Book count */}
-          <Title level={4} style={{ marginBottom: 10 }}>Filter Books</Title>
-          <Text type="secondary" style={{ marginBottom: '20px', fontSize: '14px' }}>
+          <Title level={4} style={{ marginBottom: 10, color:'white', }}>Filter Books</Title>
+          <Text type="secondary" style={{ marginBottom: '20px', fontSize: '18px', color:'white' }}>
             {filteredBooksCount} books found
           </Text>
           <Divider style={{ margin: '10px 0' }} />
