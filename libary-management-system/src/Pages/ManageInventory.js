@@ -25,7 +25,7 @@ import { Table, Button, Modal, Form, Input, Select, Space } from 'antd';
     
     // Fetch data from API
     const [books, setBooks] = useState([]);
-    //for updating/deleting book number
+    //for updating/deleting book 
     const [newBook, setNewBook] = useState(0)
     //setting model visable or not for adding new book number
     const [isModalVisible, setIsModalVisible] = useState(false);
@@ -33,8 +33,11 @@ import { Table, Button, Modal, Form, Input, Select, Space } from 'antd';
     const [form] = Form.useForm();
     //import Option from Select
     const { Option } = Select; 
+    // Edit Modal visable
     const [isEditModalVisible, setIsEditModalVisible] = useState(false);
+    // Edit Form
     const [editForm] = Form.useForm();
+    // Edit Book
     const [editingBook, setEditingBook] = useState(0);
     
     
