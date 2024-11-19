@@ -3,6 +3,7 @@ import axios from 'axios';
 
 import { DownOutlined } from '@ant-design/icons';
 import { Table, Button, Modal, Form, Input, Select, Space } from 'antd';
+import SearchFilter from '../Components/SearchFilter'; // Import SearchFilter
 
 
 // Table Columns
@@ -39,15 +40,26 @@ import { Table, Button, Modal, Form, Input, Select, Space } from 'antd';
     const [editForm] = Form.useForm();
     // Edit Book
     const [editingBook, setEditingBook] = useState(0);
+    // For filtered data
+    const [filteredBooks, setFilteredBooks] = useState([]); 
+    // genres
+    const [genres, setGenres] = useState(['Fiction', 'Non-fiction', 'Sci-fi', 'Biography']); 
     
     
     useEffect(() => {
-        axios.get('http://localhost:8080/api/books')
-        .then(books => setBooks(books.data))
-        .catch(err => console.log(err));
-      
-    },[]); 
-    
+      // Fetch books from the API
+      axios.get('http://localhost:8080/api/books')
+        .then((response) => {
+          setBooks(response.data);
+          setFilteredBooks(response.data);
+  
+          // Extract genres
+          const uniqueGenres = [...new Set(response.data.map((book) => book.genre))];
+          setGenres(uniqueGenres);
+        })
+        .catch((err) => console.log(err));
+    }, []);
+
     //update phone number
     const updateBook = async (id, values) =>{
       console.log('Book updated successfully:', values);
@@ -100,6 +112,11 @@ import { Table, Button, Modal, Form, Input, Select, Space } from 'antd';
         key: 'genre',
       },
       {
+        title: 'Publication Year',
+        dataIndex: 'publication_year',
+        key: 'publication_year',
+      },
+      {
         title: 'Availability',
         key: 'availability',
         dataIndex: 'availability',
@@ -128,14 +145,19 @@ import { Table, Button, Modal, Form, Input, Select, Space } from 'antd';
         ),
       },
     ];
-
-
+    
 
   return (
     <div style={{ padding: '20px', marginTop: '70px' }}>
+      {/* Search and Filters */}
+      <SearchFilter
+        books={books}
+        onFilterUpdate={setFilteredBooks} // Update filtered books
+        genres={genres}
+      />
       {/* Table */}
       <div style={{ marginTop: '20px' }}>
-        <Table columns={columns} dataSource={books} rowKey="_id" />
+        <Table columns={columns} dataSource={filteredBooks} rowKey="_id" />
       </div>
 
       {/* Add Button */}
@@ -145,7 +167,7 @@ import { Table, Button, Modal, Form, Input, Select, Space } from 'antd';
         </Button>
       </div>
 
-      {/* Modal */}
+      {/* Add Modal */}
       <Modal
         title="Add New Book"
         visible={isModalVisible}
@@ -187,10 +209,9 @@ import { Table, Button, Modal, Form, Input, Select, Space } from 'antd';
             rules={[{ required: true, message: 'Please select the genre' }]}
           >
             <Select>
-              <Option value="Fiction">Fiction</Option>
-              <Option value="Non-fiction">Non-fiction</Option>
-              <Option value="Sci-fi">Sci-fi</Option>
-              <Option value="Biography">Biography</Option>
+              {genres.map((genre) => (
+                <Option key={genre} value={genre}>{genre}</Option>
+              ))}
             </Select>
           </Form.Item>
           <Form.Item
@@ -268,11 +289,10 @@ import { Table, Button, Modal, Form, Input, Select, Space } from 'antd';
       rules={[{ required: true, message: 'Please select the genre' }]}
     >
       <Select>
-        <Option value="Fiction">Fiction</Option>
-        <Option value="Non-fiction">Non-fiction</Option>
-        <Option value="Sci-fi">Sci-fi</Option>
-        <Option value="Biography">Biography</Option>
-      </Select>
+        {genres.map((genre) => (
+        <Option key={genre} value={genre}>{genre}</Option>
+         ))}
+     </Select>
     </Form.Item>
 
     <Form.Item
