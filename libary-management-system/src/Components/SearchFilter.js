@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
-import { Input, Select, Space, DatePicker, Drawer, Button, Typography, Divider } from 'antd';
+import { Input, Tag, Select, Space, DatePicker, Drawer, Button, Typography, Divider } from 'antd';
+import '../CSS/searchFilter.css';
+
 
 // Search filter button code
 
@@ -68,6 +70,16 @@ const SearchFilter = ({ books, onFilterUpdate, genres }) => {
     applyFilters(updatedFilters);
   };
 
+  const handleGenreClick = (genre) => {
+    const updatedGenre = filters.genre === genre ? null : genre; // Toggle genre filter
+    handleFilterChange('genre', updatedGenre);
+  };
+
+  const handleAvailabilityClick = (availability) => {
+    const updatedAvailability = filters.availability === availability ? null : availability; // Toggle availability filter
+    handleFilterChange('availability', updatedAvailability);
+  };
+  
   const applyFilters = (activeFilters) => {
     const { search, genre, availability, publicationYear } = activeFilters;
 
@@ -139,74 +151,94 @@ const SearchFilter = ({ books, onFilterUpdate, genres }) => {
 
   return (
     <>
-      {/* Drawer */}
-      <Button type="primary" onClick={showDrawer} style={{ marginBottom: '20px' }}>
-        Open Filters
-      </Button>
+      <Button type="primary" onClick={showDrawer} className="filter-button">
+    Open Filters
+</Button>
 
-      {/* Drawer Component */}
-      <Drawer
-        title={<span style={{color: 'white' }}>Filters</span>}
-        placement="left"
-        closable={true}
-        onClose={closeDrawer}
-        visible={drawerVisible}
-        bodyStyle={{ backgroundColor: '#124E78', color: 'white' }}
-        drawerStyle={{ backgroundColor: '#124E78' }}
-        width={350}
-        style={{ padding: '0px' }}
-      >
-        <Space style={{ marginBottom: '10px' }} wrap direction="vertical">
-          {/* Title and Book count */}
-          <Title level={4} style={{ marginBottom: 10, color:'white', }}>Filter Books</Title>
-          <Text type="secondary" style={{ marginBottom: '20px', fontSize: '18px', color:'white' }}>
+<Drawer
+    title={<span className="drawer-header">Filters</span>}
+    placement="left"
+    closable={true}
+    onClose={closeDrawer}
+    visible={drawerVisible}
+    bodyStyle={{
+        backgroundColor: '#124E78',
+        display: 'flex',
+        flexDirection: 'column',
+        justifyContent: 'space-between',
+    }}
+    drawerStyle={{ backgroundColor: '#124E78' }}
+    width={350}
+    className="filter-drawer"
+>
+    <Space className="filter-space" wrap direction="vertical">
+        <Title level={4} className="filter-title">Filter Books</Title>
+        <Text type="secondary" className="filter-count">
             {filteredBooksCount} books found
-          </Text>
-          <Divider style={{ margin: '10px 0' }} />
+        </Text>
+        <Divider className="filter-divider" />
 
-          {/* Search by title or author */}
-          <Search
+        {/* Search Input */}
+        <Input
             placeholder="Search by title or author"
-            onSearch={handleSearch}
-            enterButton
-            style={{ width: '100%' }}
-          />
+            className="filter-input"
+            onChange={(e) => handleSearch(e.target.value)}
+        />
 
-          {/* Filter by genre */}
-          <Select
-            style={{ width: '100%' }}
-            placeholder="Filter by genre"
-            onChange={(value) => handleFilterChange('genre', value)}
-            allowClear
-          >
-            {genres.map((genre) => (
-              <Option key={genre} value={genre}>
-                {genre}
-              </Option>
-            ))}
-          </Select>
-
-          {/* Filter by availability */}
-          <Select
-            style={{ width: '100%' }}
-            placeholder="Filter by availability"
-            onChange={(value) => handleFilterChange('availability', value)}
-            allowClear
-          >
-            <Option value={true}>Available</Option>
-            <Option value={false}>Reserved</Option>
-          </Select>
-
-          {/* Filter by publication year range */}
-          <RangePicker
+        {/* Filter by Publication Year */}
+        <RangePicker
             picker="year"
-            style={{ width: '100%' }}
+            className="filter-range-picker"
             onChange={handleYearChange}
             allowClear
-          />
+        />
+    </Space>
+
+        {/* Filter by Genre */}
+        <div className="filter-genre">
+        <Text className="filter-subtitle">Genres</Text>
+        <Space wrap>
+          {genres.map((genre) => (
+            <Tag
+              key={genre}
+              className={`filter-tag ${filters.genre === genre ? 'filter-tag-available' : ''}`}
+              onClick={() => handleGenreClick(genre)}
+            >
+              {genre}
+            </Tag>
+          ))}
         </Space>
-      </Drawer>
-    </>
+      </div>
+
+        {/* Filter by Availability */}
+        <div className="filter-availability">
+        <Text className="filter-subtitle">Availability</Text>
+        <Space wrap>
+          <Tag
+            className={`filter-tag ${filters.availability === true ? 'filter-tag-available' : ''}`}
+            onClick={() => handleAvailabilityClick(true)}
+          >
+            Available
+          </Tag>
+          <Tag
+            className={`filter-tag ${filters.availability === false ? 'filter-tag-reserved' : ''}`}
+            onClick={() => handleAvailabilityClick(false)}
+          >
+            Reserved
+          </Tag>
+        </Space>
+      </div>
+
+    {/* Search Button */}
+    <Button
+        type="primary"
+        className="search-button"
+        onClick={() => applyFilters(filters)}
+    >
+        Search
+    </Button>
+</Drawer>
+</>
   );
 };
 

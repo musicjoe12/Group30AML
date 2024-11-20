@@ -1,0 +1,164 @@
+/* Drawer Styles */
+.filter-drawer {
+    background-color: #124E78;
+    color: white;
+    padding: 0;
+}
+
+.ant-divider {
+    margin: 0; 
+}
+
+.filter-drawer .ant-drawer-body {
+    padding: 10px 20px; 
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start; 
+    height: 100%;
+    gap: 10px; 
+}
+
+/* Title and Count */
+.ant-typography.filter-title {
+    margin: 0;
+    font-size: 22px; 
+    font-weight: bold;
+    color: white !important; 
+}
+
+.ant-typography.filter-count {
+    font-size: 16px; 
+    color: white !important; 
+    margin-bottom: 15px; 
+}
+
+/* Input Fields */
+.filter-input {
+    width: 100%;
+    border-radius: 8px;
+    background-color: #7f9eb4;
+    color: #394857;
+    border: none;
+    height: 50px; 
+    font-size: 18px;
+    padding: 0 15px; 
+
+}
+
+.filter-input .ant-input {
+    background-color: #165A8C;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    
+}
+
+/* Select Dropdowns */
+.filter-select {
+    width: 100%;
+    border-radius: 8px;
+    background-color: #165A8C;
+    color: white;
+}
+
+.ant-select-selector {
+    border-radius: 8px !important;
+    background-color: #7f9eb4 !important;
+    color: white !important;
+    border: none !important;
+}
+
+.ant-select-dropdown {
+    background-color: #165A8C;
+    color: white;
+}
+
+.ant-select-item-option:hover {
+    background-color: #0D4B6C;
+    color: white;
+}
+
+/* Date Picker */
+.filter-range-picker {
+    width: 100%;
+    border-radius: 8px;
+    background-color: #394857;
+    color: #394857;
+    margin-top: 0px;
+    margin-bottom: 10px; 
+    height: 50px; 
+    font-size: 18px; 
+    padding: 0 15px; 
+}
+
+.ant-picker {
+    background-color: #7f9eb4;
+    color: white;
+    border: none !important;
+}
+
+.ant-picker-panel-container {
+    background-color: #b1bec7;
+    color: white;
+}
+
+.ant-picker-cell-inner:hover {
+    background-color: #0D4B6C !important;
+    color: white;
+}
+
+/* Search Button */
+.search-button {
+    width: 100%;
+    height: 50px;
+    font-size: 18px;
+    font-weight: bold;
+    border-radius: 8px;
+    background-color: #1D9BF0;
+    color: white;
+    border: none;
+    transition: background-color 0.3s ease;
+    margin-top: 10px; 
+}
+
+.search-button:hover {
+    background-color: #127BC2;
+}
+
+/* Filter by Genre & Availability Tags */
+.filter-genre, .filter-availability {
+    margin-top: 0px; 
+}
+
+.filter-subtitle {
+    font-size: 16px; 
+    font-weight: bold;
+    color: #F0F5FA;
+    margin-bottom: 20px; 
+}
+
+.filter-tag {
+    font-size: 16px; 
+    padding: 8px 16px; 
+    border-radius: 16px;
+    margin: 5px 10px; 
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.2s ease; 
+    background-color: #7f9eb4;
+}
+
+.filter-tag:hover {
+    background-color: #0D4B6C;
+    transform: scale(1.05); 
+}
+
+/* Available Tag Colors */
+.filter-tag-available {
+    background-color: #2DBF7A; 
+    color: white;
+}
+
+.filter-tag-reserved {
+    background-color: #F44336; 
+    color: white;
+}
