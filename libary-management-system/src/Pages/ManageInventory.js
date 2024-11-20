@@ -149,22 +149,23 @@ import SearchFilter from '../Components/SearchFilter'; // Import SearchFilter
 
   return (
     <div style={{ padding: '20px', marginTop: '70px' }}>
-      {/* Search and Filters */}
-      <SearchFilter
-        books={books}
-        onFilterUpdate={setFilteredBooks} // Update filtered books
-        genres={genres}
-      />
+  {/* Search and Filters */}
+  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+    <SearchFilter
+      books={books}
+      onFilterUpdate={setFilteredBooks} // Update filtered books
+      genres={genres}
+    />
+    {/* Add Button */}
+    <div style={{ marginTop: '0px' }}>
+      <Button type="primary" onClick={() => setIsModalVisible(true)}>
+        Add New Book
+      </Button>
+    </div>
+  </div>
       {/* Table */}
       <div style={{ marginTop: '20px' }}>
         <Table columns={columns} dataSource={filteredBooks} rowKey="_id" />
-      </div>
-
-      {/* Add Button */}
-      <div style={{ textAlign: 'center', marginTop: '20px' }}>
-        <Button type="primary" onClick={() => setIsModalVisible(true)}>
-          Add New Book
-        </Button>
       </div>
 
       {/* Add Modal */}

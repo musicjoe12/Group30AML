@@ -10,7 +10,7 @@
 }
 
 .filter-drawer .ant-drawer-body {
-    padding: 10px 20px; 
+    padding: 20px 20px; 
     display: flex;
     flex-direction: column;
     justify-content: flex-start; 
@@ -51,31 +51,6 @@
     border: none;
     border-radius: 8px;
     
-}
-
-/* Select Dropdowns */
-.filter-select {
-    width: 100%;
-    border-radius: 8px;
-    background-color: #165A8C;
-    color: white;
-}
-
-.ant-select-selector {
-    border-radius: 8px !important;
-    background-color: #7f9eb4 !important;
-    color: white !important;
-    border: none !important;
-}
-
-.ant-select-dropdown {
-    background-color: #165A8C;
-    color: white;
-}
-
-.ant-select-item-option:hover {
-    background-color: #0D4B6C;
-    color: white;
 }
 
 /* Date Picker */
