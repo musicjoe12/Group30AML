@@ -1,10 +1,13 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext, } from 'react';
 import axios from 'axios';
 
 import { DownOutlined } from '@ant-design/icons';
 import { Table, Button, Modal, Form, Input, Select, Space } from 'antd';
 import SearchFilter from '../Components/SearchFilter'; // Import SearchFilter
 
+import { useNavigate } from 'react-router-dom'; // For Redirecting
+import { message } from 'antd'; // Warning message
+//import { clearInterval } from 'timers';
 
 // Table Columns
 
@@ -44,6 +47,23 @@ import SearchFilter from '../Components/SearchFilter'; // Import SearchFilter
     const [filteredBooks, setFilteredBooks] = useState([]); 
     // genres
     const [genres, setGenres] = useState(['Fiction', 'Non-fiction', 'Sci-fi', 'Biography']); 
+
+    const navigate = useNavigate();
+
+    useEffect(() => {
+      const checkBranchManagerMode = () => {
+        const isToggled = localStorage.getItem('sliderState') === 'true';
+        if (!isToggled) {
+          message.warning('Branch Manager Mode Is Disabled. Redirecting...');
+          navigate('/homepage');
+        }
+      };
+
+      checkBranchManagerMode();
+
+      const interval = setInterval(checkBranchManagerMode, 1000);
+      return () => clearInterval(interval);
+    }, [navigate]);
     
     
     useEffect(() => {

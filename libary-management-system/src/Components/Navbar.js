@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Anchor, Layout, Input, Drawer, Button, Menu, Switch } from 'antd';
 import { MenuOutlined } from '@ant-design/icons';
 import '../CSS/navbar.css';
+import CloseIcon from '@mui/icons-material/Close';
 
 //Assets
 import logo from '../Assets/logo.png';
@@ -149,15 +150,23 @@ function Navbar() {
 
         {/* Drawer Component */}
 
-        <Drawer
-        title={<span style={{color: 'white' }}>Menu</span>}
+        <Drawer title={null}
+        closable={false}
         placement='right'
         onClose={closeDrawer}
         visible={isDrawerVisible}
         bodyStyle={{ backgroundColor: '#124E78', color: 'white' }}
         drawerStyle={{ backgroundColor: '#124E78' }}
-
         >
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '10px 20px' }}>
+            <span style={{ color: 'white', fontSize: '18px', fontWeight: 'bold' }}>Menu</span>
+            <Button type='text' icon={<CloseIcon style={{ fontSize: '24px', color: 'red' }} />}
+            onClick={closeDrawer}
+            style={{
+              position: 'relative',
+            }}
+            />
+          </div>
           <Anchor direction='vertical' className='navbar-container'>
             <Anchor.Link
             key="home"
