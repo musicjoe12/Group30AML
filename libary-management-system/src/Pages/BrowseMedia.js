@@ -5,19 +5,35 @@ import '../CSS/navbar.css';
 import axios from 'axios';
 
 //design
-import { Box, Grid, Typography, Card, CardMedia, CardContent } from '@mui/material';
+import { Box, Grid, Typography, Card, CardMedia, CardContent, Drawer, IconButton, } from '@mui/material';
+import CloseIcon from '@mui/icons-material/Close';
+
 import { MAX_VERTICAL_CONTENT_RADIUS } from 'antd/es/style/placementArrow';
+import { Button } from 'antd';
 
 
 function BrowseMedia() {
  //return <h1>Browse Media Page</h1>;
   const [books, setBooks] = useState([]);
 
+  const [selectedBook, setSelectedBook] = useState(null);
+  const [drawerOpen, setDrawerOpen] = useState(false);
+
   useEffect(() => {
     axios.get('http://localhost:8080/api/books')
-    .then(books => setBooks(books.data))
-    .catch(err => console.log(err));
+    .then((response) => setBooks(response.data))
+    .catch((err) => console.log(err));
   },[]);
+
+  const handleCardClick = (book) => {
+    setSelectedBook(book);
+    setDrawerOpen(true);
+  };
+
+  const handleCloseDrawer = () => {
+    setDrawerOpen(false);
+    setSelectedBook(null);
+  };
   
  return (
   <Box sx={{ backgroundColor: 'ADD8E6', py: 4, minHeight: '100vh'}}>
@@ -39,9 +55,10 @@ function BrowseMedia() {
             '&:hover': {
               transform: 'scale(1.05)',
               boxShadow: 3,
-            }
+            },
             
             }}
+            onClick={() => handleCardClick(item)}
             >
             <CardMedia
             component="img"
@@ -59,6 +76,116 @@ function BrowseMedia() {
     </Grid>
       ))}
       </Grid>
+
+      {/* Focused Media Drawer */}
+
+      <Drawer anchor='right' open={drawerOpen} onClose={handleCloseDrawer} PaperProps={{
+        sx: {
+          width: '50%',
+          backgroundColor: '#124E78',
+          color: 'white',
+          padding: '20px',
+        },
+      }}
+      >
+
+        {/* Close Button */}
+        <IconButton onClick={handleCloseDrawer} sx={{ position: 'absolute', top: 10, right: 10, color: 'red',}}>
+          <CloseIcon sx={{ fontSize: '36px' }}/>
+        </IconButton>
+
+        {/* Media Details */}
+
+        {selectedBook && (
+          <Box>
+
+            {/* Media Image */}
+
+            <Box sx={{ textAlign: 'center', mb: 10, mt: 5,
+            }}
+            >
+              <img src={selectedBook.image} alt={selectedBook.title} style={{
+                width: 'auto',
+                maxWidth: '100%',
+                height: 'auto',
+                maxHeight: '250px',
+                objectFit: 'cover',
+                borderRadius: '10px',
+                boxShadow: '0px 10px 25px rgba(0, 0, 0, 0.5)',
+              }}
+              />
+
+            </Box>
+
+            {/* Media Details in Text */}
+
+
+
+            <Typography variant='h5' gutterBottom sx={{ fontWeight: 'bold' }}>
+              {selectedBook.title}
+            </Typography>
+            <Typography variant='body1' gutterBottom>
+              <strong>Author:</strong> {selectedBook.author}
+            </Typography>
+            <Typography variant='body1' gutterBottom>
+              <strong>Genre:</strong> {selectedBook.genre}
+            </Typography>
+            <Typography variant='body1' gutterBottom>
+              <strong>Year Published:</strong> {selectedBook.publication_year}
+            </Typography>
+            <Typography variant='body1' gutterBottom>
+              <strong>Description:</strong> {selectedBook.description}
+            </Typography>
+            <Typography variant='body1' gutterBottom>
+              <strong>In Stock:</strong> {selectedBook.availability ? 'Available' : 'Not Available'}
+            </Typography>
+          </Box>
+        )}
+
+          {/* Buttons at the bottom */}
+
+          <Box sx={{
+            position: 'absolute',
+            bottom: '200px',
+            left: 0,
+            width: '100%',
+            display: 'flex',
+            justifyContent: 'space-evenly',
+            padding: '0 20px',
+          }}
+          >
+            <Button variant='contained' disabled={!selectedBook?.availability}
+            
+            sx={{
+              backgroundColor: selectedBook?.availability ? '#4CAF50' : '#D3D3D3',
+              '&:hover': selectedBook?.availability ? { backgroundColor: '#45A049' } : {},
+              color: 'white',
+              fontSize: '1.2rem',
+              padding: '15px 30px',
+              minWidth: '150px',
+              textTransform: 'none',
+            }}
+            >
+              Reserve
+            </Button>
+            <Button variant='outlined' disabled={selectedBook?.availability} sx={{
+              borderColor: selectedBook?.availability ? '#D3D3D3' : '#FF5722',
+              color: selectedBook?.availability ? '#D3D3D3' : '#FF5722',
+              fontSize: '1.2rem',
+              padding: '15px 30px',
+              minWidth: '150px',
+              textTransform: 'none',
+              '&:hover': selectedBook?.availability ? {} : {
+                backgroundColor: '#FF5722',
+                color: 'white',
+
+              },
+            }}
+            >
+              Notify Me
+            </Button>
+          </Box>
+      </Drawer>
 
   </Box>
  );
