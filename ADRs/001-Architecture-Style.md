@@ -71,6 +71,9 @@ Scaling a monolith typically involves replicating the entire application, which 
 * Debugging: Each service has its own set of logs to go through.
 * Deployment challengers: The product may need coordination among multiple services.
 
+### Comparison
+Monolithic is straightfoward to develop and deploy, making it a good fit for smaller applications or with limited complexity, however as the aplication grows the scalabilty becomes significant challenges, leading to bottlenecks and slower development. However microservice arcitecture excels in scaleability making it more ideal for bigger complex systems with dynamic needs, however, this comes at the cost of communication, testing and management of the service. Many projects initially start out as a monolith and then evolve into a microservice architecture. As new features are added to a monolith, it may start to become cumbersome to have many developers working on a singular codebase. (Harris, C. 2024)
+
 ### Referencing
 * IBM. (2023). What is Three-Tier Architecture | IBM. Www.ibm.com. https://www.ibm.com/topics/three-tier-architecture
 * GeeksForGeeks. (2021, June 10). Advantages and Disadvantages of Three-Tier Architecture in DBMS. GeeksforGeeks. https://www.geeksforgeeks.org/advantages-and-disadvantages-of-three-tier-architecture-in-dbms/
