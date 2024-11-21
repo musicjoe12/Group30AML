@@ -39,6 +39,7 @@ while Node.js and Express facilitate non-blocking event driven architecture, fas
 #### Pros
 * This stack promotes fast development and has a rich ecosystem with extensive community support, making it easier to find resources and troubleshoot.
 * Highly flexible, allowing fast front-end development and scalability with reusable components and back-end efficiency with fast execution.
+* High performance reinforced by Virtual DOM - By virtualizing and keeping DOM in memory, React grants outstandingly fast rendering capacities with all view changes readily reflected in the virtual DOM. (Oleksandr Hutsulyak. 2024, August)
 #### Cons
 * The complexity of react may require additional learning, causing the team time and cost issues.
 * Node is single-threaded, which may not be optimal for CPU-bound tasks if they emerge in future development.
@@ -53,6 +54,7 @@ has been confirmed by the team as the best choice given current resources, timef
 ### React + PHP
 #### Pros
 * PHP is widely supported and combined with React, it allows for reliable back-end development.
+* Fast: PHP uses its memory, minimizing server workload and increasing performance. PHP can be up to 382% faster than Python and 195% faster than Ruby. (Singla, L. 2021, January 12)
 
 #### Neutral 
 * PHP executes requests in isolation to stop errors from spreading, but the processing slows down the system.
@@ -78,3 +80,15 @@ has been confirmed by the team as the best choice given current resources, timef
 #### Cons 
 * Vue’s ecosystem is less extensive than React’s, which can limit access to specialized libraries and tooling.
 * Vue may require additional tooling for optimal performance in large-scale applications.
+* Lack of support for large-scale projects - Vue’s community and development team size is still incomparable with more mature Angular or React. Neither does it enjoy financial support from large enterprises. To be adopted in large-scale projects, the technology should be stable and strongly supported, so that issues can be solved quickly. While Vue doesn’t have that many problems and there is even a demand coming from enterprises like IBM and Adobe, it is mostly used in relatively small projects. (The Pros and Cons of Vue.js. n.d.. AltexSoft.)
+
+### References
+* Oleksandr Hutsulyak. (2024, August). Why Use React for Web Development: 10 Reasons To Apply. Blog | TechMagic . https://www.techmagic.co/blog/why-we-use-react-js-in-the-development
+* Singla, L. (2021, January 12). What is PHP for Web Development and Why Should You Use It? Insights - Web and Mobile Development Services and Solutions. https://www.netsolutions.com/insights/what-is-php/
+* The Pros and Cons of Vue.js. (n.d.). AltexSoft. https://www.altexsoft.com/blog/pros-and-cons-of-vue-js/
+
+‌
+
+‌
+
+‌
