@@ -82,6 +82,11 @@ has been confirmed by the team as the best choice given current resources, timef
 * Vue may require additional tooling for optimal performance in large-scale applications.
 * Lack of support for large-scale projects - Vue’s community and development team size is still incomparable with more mature Angular or React. Neither does it enjoy financial support from large enterprises. To be adopted in large-scale projects, the technology should be stable and strongly supported, so that issues can be solved quickly. While Vue doesn’t have that many problems and there is even a demand coming from enterprises like IBM and Adobe, it is mostly used in relatively small projects. (The Pros and Cons of Vue.js. n.d.. AltexSoft.)
 
+### Comparison
+Both PHP and Vue are powerfull tools for web development but both have different purposes in different areas. PHP is a backend server-side language made to handle server logic, manage databases and generate dynamic HTML. It is more well suited for server side operatitons like content management systems. Vue.js on the other hand is a JavaScriptt framework which allows the teams to develop dynamic, responsive and a interactive user experience on the frontend.
+
+In conclusion, PHP is better for handling server side tasks and database interactions while Vue shines in developing front end interfaces. Choosing between these two options mean we have to consider if our program is going to be more back end or front end.
+
 ### References
 * Oleksandr Hutsulyak. (2024, August). Why Use React for Web Development: 10 Reasons To Apply. Blog | TechMagic . https://www.techmagic.co/blog/why-we-use-react-js-in-the-development
 * Singla, L. (2021, January 12). What is PHP for Web Development and Why Should You Use It? Insights - Web and Mobile Development Services and Solutions. https://www.netsolutions.com/insights/what-is-php/
