@@ -78,7 +78,8 @@ import { message } from 'antd'; // Warning message
           setGenres(uniqueGenres);
         })
         .catch((err) => console.log(err));
-    }, []);
+    }, [books]);
+
 
     //update phone number
     const updateBook = async (id, values) =>{
