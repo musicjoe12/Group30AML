@@ -66,19 +66,21 @@ import { message } from 'antd'; // Warning message
     }, [navigate]);
     
     
-    useEffect(() => {
-      // Fetch books from the API
+    const fetchBooks = () => {
       axios.get('http://localhost:8080/api/books')
         .then((response) => {
           setBooks(response.data);
-          setFilteredBooks(response.data);
-  
-          // Extract genres
+          setFilteredBooks(response.data); // Update filteredBooks
           const uniqueGenres = [...new Set(response.data.map((book) => book.genre))];
           setGenres(uniqueGenres);
         })
         .catch((err) => console.log(err));
-    }, [books]);
+    };
+    
+    useEffect(() => {
+      fetchBooks(); // Fetch books when the component mounts
+    }, []);
+    
 
 
     //update phone number
@@ -89,6 +91,7 @@ import { message } from 'antd'; // Warning message
         setBooks(books.filter((book) => book._id !== id))
         setIsEditModalVisible(false);
         setEditingBook(null);
+        fetchBooks();
       })
       .catch(err => console.log(err));
     }
@@ -97,7 +100,8 @@ import { message } from 'antd'; // Warning message
     const deleteBook = async (id) => {
       await axios.delete(`http://localhost:8080/api/delete-book/${id}`)
       .then(() => {
-        setBooks(books.filter((book) => book._id !== id))
+        //setBooks(books.filter((book) => book._id !== id))
+        fetchBooks();
       })
       .catch(err => console.log(err));
     }
@@ -109,6 +113,7 @@ import { message } from 'antd'; // Warning message
         console.log('Book added successfully:', response.data);
         setIsModalVisible(false);
         form.resetFields();
+        fetchBooks();
       })
       .catch(error => {
         console.error('There was an error adding the book:', error);

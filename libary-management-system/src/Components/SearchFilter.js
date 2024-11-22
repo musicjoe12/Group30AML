@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Input, Tag, Select, Space, DatePicker, Drawer, Button, Typography, Divider } from 'antd';
 import '../CSS/searchFilter.css';
 
@@ -45,6 +45,10 @@ const SearchFilter = ({ books, onFilterUpdate, genres }) => {
   });
 
   const [drawerVisible, setDrawerVisible] = useState(false); // State to manage drawer visibility
+
+  useEffect(() => {
+    applyFilters(filters);
+  }, [books, filters]); 
 
   const handleSearch = (searchValue) => {
     setFilters((prev) => ({ ...prev, search: searchValue }));
