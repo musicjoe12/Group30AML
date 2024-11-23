@@ -13,14 +13,6 @@ const { Search } = Input;
 
 function Navbar() {
 
-  {/*Function to handle search */}
-
-  const handleSearch = (value) => {
-    console.log("Search Input:", value);
-
-    //search logic to be added here
-  };
-
   const [isDrawerVisible, setIsDrawerVisible] = useState(false);
   const [isToggled, setIsToggled] = useState(false);
 
@@ -74,19 +66,6 @@ function Navbar() {
           >
             Advanced Media Library
           </span>
-
-          {/* Search Bar */}
-        <Search
-        placeholder="Search Media"
-        allowClear
-        enterButton
-        onSearch={handleSearch}
-        style={{
-          width: '30%',
-         // marginRight: '20px',
-          marginLeft: '50px',
-        }}
-        />
         </div>
 
         <Anchor
