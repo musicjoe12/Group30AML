@@ -194,7 +194,7 @@ import { message } from 'antd'; // Warning message
   return (
     <div style={{ padding: '20px', marginTop: '70px' }}>
   {/* Search and Filters */}
-  <div style={{ display: 'flex', justifyContent: 'flex-start', alignItems: 'left' }}>
+  <div style={{ display: 'flex', justifyContent: 'flex-end', alignItems: 'right', gap: '20px' }}>
     <SearchFilter
       books={books}
       onFilterUpdate={setFilteredBooks} // Update filtered books
