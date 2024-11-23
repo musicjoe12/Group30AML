@@ -118,6 +118,8 @@ import { message } from 'antd'; // Warning message
       });
     };
 
+    // Handle Transfer Book
+    const handleTransferBook = async() => {};
     
 
     // Handle branch change
@@ -191,21 +193,21 @@ import { message } from 'antd'; // Warning message
 
   return (
     <div style={{ padding: '20px', marginTop: '70px' }}>
+  {/* Search and Filters */}
+  <div style={{ display: 'flex', justifyContent: 'flex-start', alignItems: 'left' }}>
+    <SearchFilter
+      books={books}
+      onFilterUpdate={setFilteredBooks} // Update filtered books
+      genres={genres}
+    />
       {/* Branch Dropdown */}
-      <div style={{ marginBottom: '20px' }}>
+      <div style={{ marginBottom: '0px' }}>
         <Select defaultValue={selectedBranch} onChange={handleBranchChange} style={{ width: 200 }}>
           {branches.map((branch) => (
             <Option key={branch.key} value={branch.key}>{branch.label}</Option>
           ))}
         </Select>
       </div>
-  {/* Search and Filters */}
-  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-    <SearchFilter
-      books={books}
-      onFilterUpdate={setFilteredBooks} // Update filtered books
-      genres={genres}
-    />
     {/* Add Button */}
     <div style={{ marginTop: '0px' }}>
       <Button type="primary" onClick={() => setIsModalVisible(true)}>
@@ -384,9 +386,9 @@ import { message } from 'antd'; // Warning message
           <Button key="cancel" onClick={() => setIsTransferModalVisible(false)}>
             Cancel
           </Button>,
-          // <Button key="submit" type="primary" onClick={() => handleTransferBook(editingBook._id)}>
-          //   Transfer
-          // </Button>,
+          <Button key="submit" type="primary" onClick={() => handleTransferBook()}>
+            Transfer
+          </Button>,
         ]}
       >
         <Form layout="vertical">
