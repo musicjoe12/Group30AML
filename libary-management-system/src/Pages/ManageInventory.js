@@ -41,8 +41,8 @@ import { message } from 'antd'; // Warning message
     const [selectedBranch, setSelectedBranch] = useState('BranchSheffield'); // default branch
     // Branches
     const branches = [
-      { key: 'BranchSheffield', label: 'Branch' },
-      { key: 'BranchManchester', label: 'Branch 2' },
+      { key: 'BranchSheffield', label: 'Sheffield Branch' },
+      { key: 'BranchManchester', label: 'Manchester Branch' },
     ];
 
     // Check if the Branch Manager Mode is enabled
