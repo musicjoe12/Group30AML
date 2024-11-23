@@ -7,6 +7,7 @@ require("dotenv").config();
 const express = require('express');
 const connectDB = require("./db/connection");
 const books = require("./routes/books");
+const branch = require("./routes/branch");
 const cors = require('cors');
 
 
@@ -18,7 +19,7 @@ connectDB();
 
 app.use(cors());
 app.use(express.json());
-app.use('/api', books); //localhost:8080/api/...
+app.use('/api', books, branch); //localhost:8080/api/...
 
 app.listen(PORT, () => {
     console.log(`Server is running on http://localhost:${PORT}`);

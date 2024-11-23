@@ -7,23 +7,7 @@ import SearchFilter from '../Components/SearchFilter'; // Import SearchFilter
 
 import { useNavigate } from 'react-router-dom'; // For Redirecting
 import { message } from 'antd'; // Warning message
-//import { clearInterval } from 'timers';
 
-// Table Columns
-
-// Data for Branches
-
-// const items = [
-//   {
-//     key: 'branch1',
-//     label: 'Branch 1',
-//   },
-//   {
-  //     key: 'branch2',
-  //     label: 'Branch 2',
-  //   },
-  // ];
-  
   const ManageInventory = () => {
     //const [selectedBranch, setSelectedBranch] = useState('branch1'); // Default branch
     
@@ -120,14 +104,24 @@ import { message } from 'antd'; // Warning message
       });
     };
 
-    const [selectedBranch, setSelectedBranch] = useState('branch1'); // Default branch (you can change this)
-    const [branches, setBranches] = useState([
-      { key: 'branch1', label: 'Branch 1' },
-      { key: 'branch2', label: 'Branch 2' },
-    ]);
+    const [selectedBranch, setSelectedBranch] = useState('BranchSheffield'); // Default branch (you can change this)
+    const branches = [
+      { key: 'BranchSheffield', label: 'Branch 1' },
+      { key: 'BranchManchester', label: 'Branch 2' },
+    ];
 
     const handleBranchChange = (value) => {
-      setSelectedBranch(value); // Update selected branch
+      setSelectedBranch(value);
+       // Update selected branch
+      axios.post('http://localhost:8080/api/change-branch', { branch: value })
+      .then(response => {
+        fetchBooks();
+        console.log('Branch updated successfully:', response.data);
+        
+      })
+      .catch(error => {
+        console.error('There was an error updating the branch:', error);
+      });
     };
 
     const columns = [
