@@ -8,6 +8,7 @@ const connectDB = async (branch) => {
     defaultBranch = branch || defaultBranch;
     if (mongoose.connection.readyState !== 0) {
       await mongoose.disconnect();
+      console.log(`MongoDB disconnected`);
     }
     await mongoose.connect(uri + defaultBranch);
     console.log(`MongoDB connected to ${defaultBranch}`);

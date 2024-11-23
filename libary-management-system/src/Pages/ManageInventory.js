@@ -9,8 +9,6 @@ import { useNavigate } from 'react-router-dom'; // For Redirecting
 import { message } from 'antd'; // Warning message
 
   const ManageInventory = () => {
-    //const [selectedBranch, setSelectedBranch] = useState('branch1'); // Default branch
-    
     // Fetch data from API
     const [books, setBooks] = useState([]);
     //for updating/deleting book 
@@ -31,9 +29,17 @@ import { message } from 'antd'; // Warning message
     const [filteredBooks, setFilteredBooks] = useState([]); 
     // genres
     const [genres, setGenres] = useState(['Fiction', 'Non-fiction', 'Sci-fi', 'Biography']); 
-
+    // Redirect to homepage
     const navigate = useNavigate();
+    // Selected branch
+    const [selectedBranch, setSelectedBranch] = useState('BranchSheffield'); // default branch
+    // Branches
+    const branches = [
+      { key: 'BranchSheffield', label: 'Branch' },
+      { key: 'BranchManchester', label: 'Branch 2' },
+    ];
 
+    // Check if the Branch Manager Mode is enabled
     useEffect(() => {
       const checkBranchManagerMode = () => {
         const isToggled = localStorage.getItem('sliderState') === 'true';
@@ -49,7 +55,7 @@ import { message } from 'antd'; // Warning message
       return () => clearInterval(interval);
     }, [navigate]);
     
-    
+    // Fetch books from the API
     const fetchBooks = () => {
       axios.get('http://localhost:8080/api/books')
         .then((response) => {
@@ -61,8 +67,9 @@ import { message } from 'antd'; // Warning message
         .catch((err) => console.log(err));
     };
     
+    // Fetch books when the component mounts
     useEffect(() => {
-      fetchBooks(); // Fetch books when the component mounts
+      fetchBooks(); 
     }, []);
     
 
@@ -90,6 +97,7 @@ import { message } from 'antd'; // Warning message
       .catch(err => console.log(err));
     }
 
+    // Add a new book
     const createBook = async (values) => {
       console.log('Received values:', values);
       await axios.post('http://localhost:8080/api/add-book', values)
@@ -104,26 +112,20 @@ import { message } from 'antd'; // Warning message
       });
     };
 
-    const [selectedBranch, setSelectedBranch] = useState('BranchSheffield'); // Default branch (you can change this)
-    const branches = [
-      { key: 'BranchSheffield', label: 'Branch 1' },
-      { key: 'BranchManchester', label: 'Branch 2' },
-    ];
-
+    // Handle branch change
     const handleBranchChange = (value) => {
       setSelectedBranch(value);
-       // Update selected branch
       axios.post('http://localhost:8080/api/change-branch', { branch: value })
       .then(response => {
         fetchBooks();
         console.log('Branch updated successfully:', response.data);
-        
       })
       .catch(error => {
         console.error('There was an error updating the branch:', error);
       });
     };
 
+    // Table columns
     const columns = [
       {
         title: 'Title',
