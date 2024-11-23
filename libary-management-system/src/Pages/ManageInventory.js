@@ -31,6 +31,11 @@ import { message } from 'antd'; // Warning message
     const [filteredBooks, setFilteredBooks] = useState([]); 
     // genres
     const [genres, setGenres] = useState(['Fiction', 'Non-fiction', 'Sci-fi', 'Biography']); 
+    // State for selected transfer branch
+    const [transferBranch, setTransferBranch] = useState(''); 
+
+    const [isTransferModalVisible, setIsTransferModalVisible] = useState(false)
+
 
     const navigate = useNavigate();
 
@@ -104,6 +109,8 @@ import { message } from 'antd'; // Warning message
       });
     };
 
+    
+
     const [selectedBranch, setSelectedBranch] = useState('BranchSheffield'); // Default branch (you can change this)
     const branches = [
       { key: 'BranchSheffield', label: 'Branch 1' },
@@ -156,10 +163,12 @@ import { message } from 'antd'; // Warning message
         title: 'Action',
         key: 'action',
         render: (_, record) => (
-          <Space size="middle">
-            <Button type="primary" onClick={() => console.log(`Transfer: ${record.title}`)}>
-              Transfer
-            </Button>
+          <Space size="middle"><Button type="primary" onClick={() => {
+            setEditingBook(record);
+            setIsTransferModalVisible(true);
+          }}>
+            Transfer
+          </Button>
             <Button type="primary" danger onClick={() => {deleteBook(record._id)}}>
               Delete
             </Button>
@@ -362,6 +371,31 @@ import { message } from 'antd'; // Warning message
     </Form.Item>
   </Form>
 </Modal>
+
+{/* Transfer Modal */}
+<Modal
+        title="Transfer Book"
+        visible={isTransferModalVisible}
+        onCancel={() => setIsTransferModalVisible(false)}
+        footer={[
+          <Button key="cancel" onClick={() => setIsTransferModalVisible(false)}>
+            Cancel
+          </Button>,
+          // <Button key="submit" type="primary" onClick={() => handleTransferBook(editingBook._id)}>
+          //   Transfer
+          // </Button>,
+        ]}
+      >
+        <Form layout="vertical">
+          <Form.Item label="Select Branch you would like to transfer to" required>
+            <Select onChange={(value) => setTransferBranch(value)}>
+              {branches.map((branch) => (
+                <Select.Option key={branch.key} value={branch.key}>{branch.label}</Select.Option>
+              ))}
+            </Select>
+          </Form.Item>
+        </Form>
+      </Modal>
     </div>
   );
 };
