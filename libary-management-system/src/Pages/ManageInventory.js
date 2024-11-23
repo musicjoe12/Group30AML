@@ -120,6 +120,16 @@ import { message } from 'antd'; // Warning message
       });
     };
 
+    const [selectedBranch, setSelectedBranch] = useState('branch1'); // Default branch (you can change this)
+    const [branches, setBranches] = useState([
+      { key: 'branch1', label: 'Branch 1' },
+      { key: 'branch2', label: 'Branch 2' },
+    ]);
+
+    const handleBranchChange = (value) => {
+      setSelectedBranch(value); // Update selected branch
+    };
+
     const columns = [
       {
         title: 'Title',
@@ -175,6 +185,14 @@ import { message } from 'antd'; // Warning message
 
   return (
     <div style={{ padding: '20px', marginTop: '70px' }}>
+      {/* Branch Dropdown */}
+      <div style={{ marginBottom: '20px' }}>
+        <Select defaultValue={selectedBranch} onChange={handleBranchChange} style={{ width: 200 }}>
+          {branches.map((branch) => (
+            <Option key={branch.key} value={branch.key}>{branch.label}</Option>
+          ))}
+        </Select>
+      </div>
   {/* Search and Filters */}
   <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
     <SearchFilter
