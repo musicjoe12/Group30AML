@@ -34,6 +34,34 @@ function BrowseMedia() {
     setDrawerOpen(false);
     setSelectedBook(null);
   };
+
+  {/* Reserve Book */}
+
+  const handleReserve = (book) => {
+    const reservedBooks = JSON.parse(localStorage.getItem('reservedBooks')) || [];
+
+    if (!reservedBooks.some((reservedBook) => reservedBook.title === book.title)) {
+      reservedBooks.push(book);
+      localStorage.setItem('reservedBooks', JSON.stringify(reservedBooks));
+      alert('"${book.title}" has been reserved');
+    } else {
+      alert('"${book.title}" is already reserved');
+    }
+  };
+
+  {/* Notify Me */ }
+
+  const handleNotifyMe = (book) => {
+    const wishlist = JSON.parse(localStorage.getItem('wishlist')) || [];
+
+    if (!wishlist.some((wishlistBook) => wishlistBook.title === book.title)) {
+      wishlist.push(book);
+      localStorage.setItem('wishlist', JSON.stringify(wishlist));
+      alert('"${book.title}" has been added to your wishlist');
+    } else {
+      alert('"${book.title}" is already in your wishlist');
+    }
+  };
   
  return (
   <Box sx={{ backgroundColor: 'ADD8E6', py: 4, minHeight: '100vh'}}>
@@ -155,6 +183,7 @@ function BrowseMedia() {
           }}
           >
             <Button variant='contained' disabled={!selectedBook?.availability}
+            onClick={() => handleReserve(selectedBook)}
             
             sx={{
               backgroundColor: selectedBook?.availability ? '#4CAF50' : '#D3D3D3',
@@ -168,7 +197,10 @@ function BrowseMedia() {
             >
               Reserve
             </Button>
-            <Button variant='outlined' disabled={selectedBook?.availability} sx={{
+            <Button variant='outlined' disabled={selectedBook?.availability}
+
+            onClick={() => handleNotifyMe(selectedBook)}
+            sx={{
               borderColor: selectedBook?.availability ? '#D3D3D3' : '#FF5722',
               color: selectedBook?.availability ? '#D3D3D3' : '#FF5722',
               fontSize: '1.2rem',
