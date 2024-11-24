@@ -133,7 +133,7 @@ const SearchFilter = ({ books, onFilterUpdate, genres }) => {
           justifyContent: 'space-between',
         }}
         className="filter-modal"
-        width={350}
+        width={600}
       >
         <Space className="filter-space" wrap direction="vertical">
           <Title level={4} className="filter-title">Filter Books</Title>

@@ -26,6 +26,7 @@ function ManageMedia() {
       pt: 16,
       minHeight: '100vh',
       px: 4,
+      marginTop: '40px'
     }}>
       {/* Currently Reserved Section */}
 

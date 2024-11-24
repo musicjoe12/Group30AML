@@ -64,7 +64,7 @@ function BrowseMedia() {
   };
   
  return (
-  <Box sx={{ backgroundColor: 'ADD8E6', py: 4, minHeight: '100vh'}}>
+  <Box sx={{ backgroundColor: 'ADD8E6', py: 4, minHeight: '100vh', marginTop: '120px'}}>
     {/* Search Results Title */}
 
     <Typography variant="h4" align="center" gutterBottom className= "typography-heading" sx={{ fontWeight: 'bold',mt: 4, mb: 4}}>
