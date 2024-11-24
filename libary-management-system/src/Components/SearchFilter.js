@@ -1,35 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { Input, Tag, Select, Space, DatePicker, Drawer, Button, Typography, Divider } from 'antd';
+import { Input, Tag, Select, Space, DatePicker, Modal, Button, Typography, Divider } from 'antd';
 import '../CSS/searchFilter.css';
-
-
-// Search filter button code
-
-// {/* Search and Filters */}
-// <SearchFilter
-// books={books}
-// onFilterUpdate={setFilteredBooks} // Update filtered books
-// genres={genres}
-// />
-
-// New backend to include the search filter
-
-// useEffect(() => {
-//     // Fetch books from the API
-//     axios.get('http://localhost:8080/api/books')
-//       .then((response) => {
-//         setBooks(response.data);
-//         setFilteredBooks(response.data);
-
-//         // Extract genres
-//         const uniqueGenres = [...new Set(response.data.map((book) => book.genre))];
-//         setGenres(uniqueGenres);
-//       })
-//       .catch((err) => console.log(err));
-//   }, []);
-
-
-
 
 const { Search } = Input;
 const { Option } = Select;
@@ -44,7 +15,7 @@ const SearchFilter = ({ books, onFilterUpdate, genres }) => {
     publicationYear: { start: null, end: null },
   });
 
-  const [drawerVisible, setDrawerVisible] = useState(false); // State to manage drawer visibility
+  const [modalVisible, setModalVisible] = useState(false); // State to manage modal visibility
 
   useEffect(() => {
     applyFilters(filters);
@@ -83,7 +54,7 @@ const SearchFilter = ({ books, onFilterUpdate, genres }) => {
     const updatedAvailability = filters.availability === availability ? null : availability; // Toggle availability filter
     handleFilterChange('availability', updatedAvailability);
   };
-  
+
   const applyFilters = (activeFilters) => {
     const { search, genre, availability, publicationYear } = activeFilters;
 
@@ -120,15 +91,6 @@ const SearchFilter = ({ books, onFilterUpdate, genres }) => {
     onFilterUpdate(filteredBooks);
   };
 
-  // Toggle drawer visibility
-  const showDrawer = () => {
-    setDrawerVisible(true);
-  };
-
-  const closeDrawer = () => {
-    setDrawerVisible(false);
-  };
-
   const filteredBooksCount = books.filter((book) => {
     const { search, genre, availability, publicationYear } = filters;
 
@@ -155,94 +117,95 @@ const SearchFilter = ({ books, onFilterUpdate, genres }) => {
 
   return (
     <>
-      <Button type="primary" onClick={showDrawer} className="filter-button">
-    Open Filters
-</Button>
+      <Button type="primary" onClick={() => setModalVisible(true)} className="filter-button">
+        Open Filters
+      </Button>
 
-<Drawer
-    title={<span className="drawer-header">Filters</span>}
-    placement="left"
-    closable={true}
-    onClose={closeDrawer}
-    visible={drawerVisible}
-    bodyStyle={{
-        backgroundColor: '#124E78',
-        display: 'flex',
-        flexDirection: 'column',
-        justifyContent: 'space-between',
-    }}
-    drawerStyle={{ backgroundColor: '#124E78' }}
-    width={350}
-    className="filter-drawer"
->
-    <Space className="filter-space" wrap direction="vertical">
-        <Title level={4} className="filter-title">Filter Books</Title>
-        <Text type="secondary" className="filter-count">
+      <Modal
+        title={<span className="modal-header">Filters</span>}
+        visible={modalVisible}
+        onCancel={() => setModalVisible(false)}
+        footer={null}
+        bodyStyle={{
+          backgroundColor: '#124E78',
+          display: 'flex',
+          flexDirection: 'column',
+          justifyContent: 'space-between',
+        }}
+        className="filter-modal"
+        width={350}
+      >
+        <Space className="filter-space" wrap direction="vertical">
+          <Title level={4} className="filter-title">Filter Books</Title>
+          <Text type="secondary" className="filter-count">
             {filteredBooksCount} books found
-        </Text>
-        <Divider className="filter-divider" />
+          </Text>
+          <Divider className="filter-divider" />
 
-        {/* Search Input */}
-        <Input
+          {/* Search Input */}
+          <Input
             placeholder="Search by title or author"
             className="filter-input"
             onChange={(e) => handleSearch(e.target.value)}
-        />
+          />
 
-        {/* Filter by Publication Year */}
-        <RangePicker
+          {/* Filter by Publication Year */}
+          <RangePicker
             picker="year"
             className="filter-range-picker"
             onChange={handleYearChange}
             allowClear
-        />
-    </Space>
+          />
+        </Space>
 
         {/* Filter by Genre */}
         <div className="filter-genre">
-        <Text className="filter-subtitle">Genres</Text>
-        <Space wrap>
-          {genres.map((genre) => (
-            <Tag
-              key={genre}
-              className={`filter-tag ${filters.genre === genre ? 'filter-tag-available' : ''}`}
-              onClick={() => handleGenreClick(genre)}
-            >
-              {genre}
-            </Tag>
-          ))}
-        </Space>
-      </div>
+          <Text className="filter-subtitle">Genres</Text>
+          <Space wrap>
+            {genres.map((genre) => (
+              <Tag
+                key={genre}
+                className={`filter-tag ${filters.genre === genre ? 'filter-tag-available' : ''}`}
+                onClick={() => handleGenreClick(genre)}
+              >
+                {genre}
+              </Tag>
+            ))}
+          </Space>
+        </div>
 
         {/* Filter by Availability */}
         <div className="filter-availability">
-        <Text className="filter-subtitle">Availability</Text>
-        <Space wrap>
-          <Tag
-            className={`filter-tag ${filters.availability === true ? 'filter-tag-available' : ''}`}
-            onClick={() => handleAvailabilityClick(true)}
-          >
-            Available
-          </Tag>
-          <Tag
-            className={`filter-tag ${filters.availability === false ? 'filter-tag-reserved' : ''}`}
-            onClick={() => handleAvailabilityClick(false)}
-          >
-            Reserved
-          </Tag>
-        </Space>
-      </div>
+          <Text className="filter-subtitle">Availability</Text>
+          <Space wrap>
+            <Tag
+              className={`filter-tag ${filters.availability === true ? 'filter-tag-available' : ''}`}
+              onClick={() => handleAvailabilityClick(true)}
+            >
+              Available
+            </Tag>
+            <Tag
+              className={`filter-tag ${filters.availability === false ? 'filter-tag-reserved' : ''}`}
+              onClick={() => handleAvailabilityClick(false)}
+            >
+              Reserved
+            </Tag>
+          </Space>
+        </div>
 
-    {/* Search Button */}
-    <Button
-        type="primary"
-        className="search-button"
-        onClick={() => applyFilters(filters)}
-    >
-        Search
-    </Button>
-</Drawer>
-</>
+        {/* Search Button */}
+        <Button
+          type="primary"
+          className="search-button"
+          onClick={() => {
+            applyFilters(filters);
+            setModalVisible(false); 
+          }}
+        >
+          Search
+        </Button>
+      </Modal>
+    </>
   );
 };
 

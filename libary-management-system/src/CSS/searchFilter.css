@@ -1,85 +1,83 @@
-/* Drawer Styles */
-.filter-drawer {
-    background-color: #124E78;
-    color: white;
+/* Modal Styles */
+.filter-modal {
+    background-color: white !important;
     padding: 0;
+    border-radius: 8px;
+    overflow: hidden;
 }
 
-.ant-divider {
-    margin: 0; 
-}
-
-.filter-drawer .ant-drawer-body {
-    padding: 20px 20px; 
+.filter-modal .ant-modal-body {
+    padding: 20px;
+    background-color: white !important;
+    color: black;
     display: flex;
     flex-direction: column;
-    justify-content: flex-start; 
-    height: 100%;
-    gap: 10px; 
+    gap: 15px;
 }
 
 /* Title and Count */
 .ant-typography.filter-title {
     margin: 0;
-    font-size: 22px; 
+    font-size: 22px;
     font-weight: bold;
-    color: white !important; 
+    color: black !important;
 }
 
 .ant-typography.filter-count {
-    font-size: 16px; 
-    color: white !important; 
-    margin-bottom: 15px; 
+    font-size: 16px;
+    color: black !important;
+    margin-bottom: 15px;
 }
 
 /* Input Fields */
 .filter-input {
     width: 100%;
     border-radius: 8px;
-    background-color: #7f9eb4;
-    color: #394857;
-    border: none;
-    height: 50px; 
-    font-size: 18px;
-    padding: 0 15px; 
-
+    background-color: #f5f5f5;
+    color: black;
+    border: 1px solid #ccc;
+    height: 50px;
+    font-size: 16px;
+    padding: 0 15px;
 }
 
-.filter-input .ant-input {
-    background-color: #165A8C;
-    color: white;
-    border: none;
-    border-radius: 8px;
-    
+.filter-input::placeholder {
+    color: #888;
 }
 
 /* Date Picker */
 .filter-range-picker {
     width: 100%;
     border-radius: 8px;
-    background-color: #394857;
-    color: #394857;
-    margin-top: 0px;
-    margin-bottom: 10px; 
-    height: 50px; 
-    font-size: 18px; 
-    padding: 0 15px; 
+    background-color: #f5f5f5;
+    color: black;
+    font-size: 16px;
+    height: 50px;
 }
 
 .ant-picker {
-    background-color: #7f9eb4;
-    color: white;
-    border: none !important;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    background-color: #f5f5f5;
+    color: black;
+}
+
+.ant-picker-input > input {
+    color: black;
 }
 
 .ant-picker-panel-container {
-    background-color: #b1bec7;
-    color: white;
+    background-color: white;
+    color: black;
+}
+
+.ant-picker-cell-inner {
+    color: black;
 }
 
 .ant-picker-cell-inner:hover {
-    background-color: #0D4B6C !important;
-    color: white;
+    background-color: #e6f7ff !important;
+    color: black !important;
 }
 
 /* Search Button */
@@ -93,7 +91,7 @@
     color: white;
     border: none;
     transition: background-color 0.3s ease;
-    margin-top: 10px; 
+    margin-top: 10px;
 }
 
 .search-button:hover {
@@ -102,38 +100,45 @@
 
 /* Filter by Genre & Availability Tags */
 .filter-genre, .filter-availability {
-    margin-top: 0px; 
+    margin-top: 10px;
 }
 
 .filter-subtitle {
-    font-size: 16px; 
+    font-size: 16px;
     font-weight: bold;
-    color: #F0F5FA;
-    margin-bottom: 20px; 
+    color: black;
+    margin-bottom: 10px;
 }
 
 .filter-tag {
-    font-size: 16px; 
-    padding: 8px 16px; 
+    font-size: 14px;
+    padding: 8px 16px;
     border-radius: 16px;
-    margin: 5px 10px; 
+    margin: 5px 8px;
     cursor: pointer;
-    transition: background-color 0.3s, transform 0.2s ease; 
-    background-color: #7f9eb4;
+    transition: background-color 0.3s, transform 0.2s ease;
+    background-color: #e0e0e0;
+    color: black;
 }
 
 .filter-tag:hover {
-    background-color: #0D4B6C;
-    transform: scale(1.05); 
+    background-color: #ccc;
+    transform: scale(1.05);
 }
 
 /* Available Tag Colors */
 .filter-tag-available {
-    background-color: #2DBF7A; 
+    background-color: #2DBF7A;
     color: white;
 }
 
 .filter-tag-reserved {
-    background-color: #F44336; 
+    background-color: #F44336;
     color: white;
+}
+
+/* Divider */
+.filter-divider {
+    border-color: #ddd;
+    margin: 10px 0;
 }
