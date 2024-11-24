@@ -1,16 +1,16 @@
 /* General Navbar Styles */
 .navbar-header {
-  background: linear-gradient(90deg, #1565C0, #1E88E5); /* Smooth gradient for top navbar */
+  background: linear-gradient(90deg, #1565C0, #1E88E5); 
   padding: 0 20px;
   display: flex;
   flex-direction: column;
   font-family: 'Roboto', sans-serif;
   color: white;
-  position: fixed; /* Make the navbar fixed at the top */
-  top: 0; /* Stick to the top of the page */
-  width: 100%; /* Ensure it spans the full width of the page */
-  z-index: 1000; /* Make sure it stays on top of other content */
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Shadow effect between navbars */
+  position: fixed; 
+  top: 0; 
+  width: 100%; 
+  z-index: 1000; 
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); 
 }
 .navbar-home-link {
   display: flex;
@@ -80,33 +80,33 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 5px 15px; /* Reduced padding for a smaller navbar */
-  position: fixed; /* Make secondary navbar fixed */
-  top: 60px; /* Position it below the first navbar */
-  width: 100%; /* Ensure it spans the full width of the page */
-  z-index: 999; /* Make sure it's below the top navbar */
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Slight shadow effect */
+  padding: 5px 15px; 
+  position: fixed; 
+  top: 60px; 
+  width: 100%; 
+  z-index: 999; 
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); 
 }
 
 /* Secondary Menu Styles */
 .secondary-menu {
   display: flex;
-  gap: 15px; /* Reduced gap between menu items */
+  gap: 15px; 
   list-style: none;
   margin: 0;
   padding: 0;
   background: transparent !important;
   border: none !important;
-  height: auto; /* Ensure it adjusts to its content naturally */
-  overflow: visible; /* Ensure menu does not collapse */
-  flex-wrap: nowrap; /* Prevent wrapping of menu items */
+  height: auto; 
+  overflow: visible; 
+  flex-wrap: nowrap; 
 }
 
 .secondary-menu .ant-menu-item {
   color: white !important;
-  font-size: 16px; /* Smaller font size */
-  font-weight: normal; /* Reduce font weight for simplicity */
-  padding: 5px 10px; /* Reduced padding for smaller items */
+  font-size: 16px; 
+  font-weight: normal; 
+  padding: 5px 10px; 
   background: transparent !important;
   border: none !important;
 }
