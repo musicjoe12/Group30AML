@@ -80,44 +80,47 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 10px 20px;
+  padding: 5px 15px; /* Reduced padding for a smaller navbar */
   position: fixed; /* Make secondary navbar fixed */
   top: 60px; /* Position it below the first navbar */
   width: 100%; /* Ensure it spans the full width of the page */
   z-index: 999; /* Make sure it's below the top navbar */
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Slight shadow effect */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Slight shadow effect */
 }
 
-/* Override Ant Design Menu Defaults */
+/* Secondary Menu Styles */
 .secondary-menu {
   display: flex;
-  gap: 20px;
-  list-style: none; 
+  gap: 15px; /* Reduced gap between menu items */
+  list-style: none;
   margin: 0;
   padding: 0;
-  background: transparent !important; 
-  border: none !important; 
+  background: transparent !important;
+  border: none !important;
+  height: auto; /* Ensure it adjusts to its content naturally */
+  overflow: visible; /* Ensure menu does not collapse */
+  flex-wrap: nowrap; /* Prevent wrapping of menu items */
 }
 
 .secondary-menu .ant-menu-item {
-  color: white !important; 
-  font-size: 16px;
-  font-weight: bold;
-  padding: 10px 15px; 
-  background: transparent !important; 
-  border: none !important; 
+  color: white !important;
+  font-size: 16px; /* Smaller font size */
+  font-weight: normal; /* Reduce font weight for simplicity */
+  padding: 5px 10px; /* Reduced padding for smaller items */
+  background: transparent !important;
+  border: none !important;
 }
 
 .secondary-menu .ant-menu-item:hover {
-  color: #000000 !important; 
+  color: #000000 !important;
   text-decoration: underline;
   cursor: pointer;
-  background: transparent !important; 
+  background: transparent !important;
 }
 
 .secondary-menu .ant-menu-item-selected {
-  background: transparent !important; 
-  color: #f8f8f8 !important; 
+  background: transparent !important;
+  color: #f8f8f8 !important;
 }
 
 /* Toggle Styles */

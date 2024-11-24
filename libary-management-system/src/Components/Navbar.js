@@ -53,34 +53,35 @@ function Navbar() {
 
       {/* Secondary Navbar */}
       <div className="secondary-navbar">
-        <Menu mode="horizontal" className="secondary-menu">
-          <Menu.Item key="browse-media">
-            <a href="/browse-media">Browse Media</a>
-          </Menu.Item>
-          <Menu.Item key="manage-media">
-            <a href="/manage-media">Manage Media</a>
-          </Menu.Item>
-          {isToggled && (
-            <Menu.Item key="manage-inventory">
-              <a href="/manage-inventory">Manage Inventory</a>
-            </Menu.Item>
-          )}
-        </Menu>
-        {/* Toggle for Branch Manager Mode */}
-        <div className="toggle-container">
-          <Switch
-            checked={isToggled}
-            onChange={handleToggle}
-            checkedChildren="On"
-            unCheckedChildren="Off"
-          />
-          <span className="toggle-description">
-            {isToggled
-              ? 'Branch Manager Mode Enabled'
-              : 'Branch Manager Mode Disabled'}
-          </span>
-        </div>
-      </div>
+  <div style={{ flexGrow: 1 }}>
+    <Menu mode="horizontal" className="secondary-menu">
+      <Menu.Item key="browse-media">
+        <a href="/browse-media">Browse Media</a>
+      </Menu.Item>
+      <Menu.Item key="manage-media">
+        <a href="/manage-media">Manage Media</a>
+      </Menu.Item>
+      {isToggled && (
+        <Menu.Item key="manage-inventory">
+          <a href="/manage-inventory">Manage Inventory</a>
+        </Menu.Item>
+      )}
+    </Menu>
+  </div>
+  <div className="toggle-container">
+    <Switch
+      checked={isToggled}
+      onChange={handleToggle}
+      checkedChildren="On"
+      unCheckedChildren="Off"
+    />
+    <span className="toggle-description">
+      {isToggled
+        ? 'Branch Manager Mode Enabled'
+        : 'Branch Manager Mode Disabled'}
+    </span>
+  </div>
+</div>
     </Layout>
   );
 }
