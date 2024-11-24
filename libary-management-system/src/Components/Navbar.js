@@ -1,214 +1,86 @@
 import React, { useState, useEffect } from 'react';
-import { Anchor, Layout, Input, Drawer, Button, Menu, Switch } from 'antd';
-import { MenuOutlined } from '@ant-design/icons';
-import '../CSS/navbar.css';
-import CloseIcon from '@mui/icons-material/Close';
+import { Layout, Input, Menu, Button, Switch } from 'antd';
+import '../CSS/navbar.css'; // Custom CSS file
 
-//Assets
+// Assets
 import logo from '../Assets/logo.png';
-import AnchorLink from 'antd/es/anchor/AnchorLink';
 
 const { Header } = Layout;
 const { Search } = Input;
 
 function Navbar() {
-
-  const [isDrawerVisible, setIsDrawerVisible] = useState(false);
   const [isToggled, setIsToggled] = useState(false);
 
-  {/* Slider Button Initial State */}
-
+  // Initialize toggle state from localStorage
   useEffect(() => {
     const savedToggleState = localStorage.getItem('sliderState');
     if (savedToggleState !== null) {
       setIsToggled(savedToggleState === 'true');
-    }}, []);
-
-  const showDrawer = () => {
-    setIsDrawerVisible(true);
-  };
-
-  const closeDrawer = () => {
-    setIsDrawerVisible(false);
-  };
+    }
+  }, []);
 
   const handleToggle = (checked) => {
     setIsToggled(checked);
-    localStorage.setItem('sliderState', checked); //save slider state to localStorage
-    console.log('Toggle Status:', checked ? 'On' : 'Off');
+    localStorage.setItem('sliderState', checked); // Save state to localStorage
   };
 
   return (
     <Layout>
-      <Header className="navbar-header fixed-header">
-        <div
-          style={{
-            display: 'flex',
-            alignItems: 'center', 
-            justifyContent: 'flex-start',
-            width: '70%',
-          }}
-        >
-          <img
-            src={logo}
-            alt="Logo"
-            style={{
-              height: '70px',
-              marginRight: '20px', 
-            }}
-          />
-          <span
-            style={{
-              color: 'white',
-              fontSize: '30px',
-              fontWeight: 'bold',
-            }}
-          >
-            Advanced Media Library
-          </span>
+      {/* Top Navbar */}
+      <Header className="navbar-header">
+        <div className="navbar-top">
+          {/* Left: Logo and Title */}
+          <div class="navbar-left">
+          <a href="Homepage" class="navbar-home-link">
+            <img src={logo} alt="AML Logo" class="navbar-logo" />
+            <span class="navbar-title">AML</span>
+          </a>
         </div>
 
-        <Anchor
-          direction="horizontal"
-          className="navbar-container"
-        >
-          <Anchor.Link
-            key="home"
-            href="/homepage"
-            title="Home"
-            className="navbar-link" 
-            onClick={(e) => {
-              e.preventDefault();
-              window.location.href = '/homepage';
-            }}
-          />
-          <Anchor.Link
-            key="browse-media"
-            href="/browse-media"
-            title="Browse Media"
-            className="navbar-link"
-            onClick={(e) => {
-              e.preventDefault();
-              window.location.href = '/browse-media';
-            }}
-          />
-          <Anchor.Link
-            key="manage-media"
-            href="/manage-media"
-            title="Manage Media"
-            className="navbar-link" 
-            onClick={(e) => {
-              e.preventDefault();
-              window.location.href = '/manage-media';
-            }}
-          />
-
-          {/* Render Manage Inventory on toggle state */}
-
-          {isToggled && (
-          <Anchor.Link
-            key="manage-inventory"
-            href="/manage-inventory"
-            title="Manage Inventory"
-            className="navbar-link"
-            onClick={(e) => {
-              e.preventDefault();
-              window.location.href = '/manage-inventory';
-            }}
-          />
-          )}
-        </Anchor>
-        {/* Hamburger Menu Btn */}
-
-        <Button
-        type="text"
-        icon={<MenuOutlined style={{ fontSize: '24px', color: 'white' }} />}
-        onClick={showDrawer}
-        style={{ marginLeft: 'auto '}}
-        />
-
-        {/* Drawer Component */}
-
-        <Drawer title={null}
-        closable={false}
-        placement='right'
-        onClose={closeDrawer}
-        visible={isDrawerVisible}
-        bodyStyle={{ backgroundColor: '#124E78', color: 'white' }}
-        drawerStyle={{ backgroundColor: '#124E78' }}
-        >
-          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '10px 20px' }}>
-            <span style={{ color: 'white', fontSize: '18px', fontWeight: 'bold' }}>Menu</span>
-            <Button type='text' icon={<CloseIcon style={{ fontSize: '24px', color: 'red' }} />}
-            onClick={closeDrawer}
-            style={{
-              position: 'relative',
-            }}
+          {/* Right: Search Bar and Login Button */}
+          <div className="navbar-right">
+            <Search
+              placeholder="Search"
+              className="navbar-search"
+              style={{ width: 250 }}
             />
+            <Button type="primary" className="navbar-login">
+              Login
+            </Button>
           </div>
-          <Anchor direction='vertical' className='navbar-container'>
-            <Anchor.Link
-            key="home"
-            href='/homepage'
-            title="Home"
-            className='drawer-link'
-            onClick={(e) => {
-              e.preventDefault();
-              window.location.href = '/homepage';
-            }}/>
-            <Anchor.Link
-            key="browse-media"
-            href='/browse-media'
-            title="Browse Media"
-            className='drawer-link'
-            onClick={(e) => {
-              e.preventDefault();
-              window.location.href = '/browse-media';
-            }}/>
-            <Anchor.Link
-            key="manage-media"
-            href='/manage-media'
-            title="Manage Media"
-            className='drawer-link'
-            onClick={(e) => {
-              e.preventDefault();
-              window.location.href = '/manage-media';
-            }}/>
+        </div>
+      </Header>
 
-            {/* Render Manage Inventory on toggle state */}
-
-            {isToggled && (
-            <Anchor.Link
-            key="manage-inventory"
-            href='/manage-inventory'
-            title="Manage Inventory"
-            className='drawer-link'
-            onClick={(e) => {
-              e.preventDefault();
-              window.location.href = '/manage-inventory';
-            }}/>
+      {/* Secondary Navbar */}
+      <div className="secondary-navbar">
+        <Menu mode="horizontal" className="secondary-menu">
+          <Menu.Item key="browse-media">
+            <a href="/browse-media">Browse Media</a>
+          </Menu.Item>
+          <Menu.Item key="manage-media">
+            <a href="/manage-media">Manage Media</a>
+          </Menu.Item>
+          {isToggled && (
+            <Menu.Item key="manage-inventory">
+              <a href="/manage-inventory">Manage Inventory</a>
+            </Menu.Item>
           )}
-          </Anchor>
-
-          {/* Toggle Slider */}
-
-          <div style={{ marginTop: '20px', color: 'white', display: 'flex', alignItems: 'center', gap: '10px' }}>
-            <Switch
+        </Menu>
+        {/* Toggle for Branch Manager Mode */}
+        <div className="toggle-container">
+          <Switch
             checked={isToggled}
             onChange={handleToggle}
             checkedChildren="On"
             unCheckedChildren="Off"
-            style={{
-              backgroundColor: isToggled ? '#4CAF50' : '#D9D9D9',
-              boxShadow: '0px 2px 4px rgba(0, 0, 0, 0.2)',
-            }}
-            />
-            <span className='slider-description'>
-              {isToggled ? 'Branch Manager Mode Enabled' : 'Branch Manager Mode Disabled'}
-            </span>
-          </div>
-        </Drawer>
-      </Header>
+          />
+          <span className="toggle-description">
+            {isToggled
+              ? 'Branch Manager Mode Enabled'
+              : 'Branch Manager Mode Disabled'}
+          </span>
+        </div>
+      </div>
     </Layout>
   );
 }

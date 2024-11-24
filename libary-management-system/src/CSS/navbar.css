@@ -1,173 +1,160 @@
-@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap');
-
-
-.heading {
-  padding-top: 35px;
+/* General Navbar Styles */
+.navbar-header {
+  background: linear-gradient(90deg, #1565C0, #1E88E5); /* Smooth gradient for top navbar */
+  padding: 0 20px;
+  display: flex;
+  flex-direction: column;
+  font-family: 'Roboto', sans-serif;
+  color: white;
+  position: fixed; /* Make the navbar fixed at the top */
+  top: 0; /* Stick to the top of the page */
+  width: 100%; /* Ensure it spans the full width of the page */
+  z-index: 1000; /* Make sure it stays on top of other content */
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Shadow effect between navbars */
+}
+.navbar-home-link {
+  display: flex;
+  align-items: center;
+  text-decoration: none; 
+  color: white;
+  margin: 0; 
+  padding: 0; 
 }
 
-.typography-heading {
-  padding-top: 35px;
+.navbar-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 0;
 }
 
+/* Logo and Title */
+.navbar-left {
+  display: flex;
+  align-items: center;
+}
 
-/* Navbar Links */
-.navbar-container .ant-anchor-link-title {
-    color: white !important; 
-    font-size: 20px !important; 
-    margin-right: 30px; 
-    font-style:oblique;
-    font-family: 'Roboto', sans-serif;
-    padding: 0 12px;
+.navbar-logo {
+  width: 50px;
+  margin-right: 10px;
+}
 
+.navbar-title {
+  font-size: 24px;
+  font-weight: bold;
+  color: white;
+}
+.navbar-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center; 
+  padding: 0px 0; 
+}
+
+/* Search Bar and Login Button */
+.navbar-right {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.navbar-search .ant-input {
+  border: 1px solid #0D47A1; 
+  background-color: #E3F2FD; 
+}
+
+.navbar-login {
+  font-size: 16px;
+  background-color: #42A5F5; 
+  border-color: #1E88E5;
+}
+
+.navbar-login:hover {
+  background-color: #1E88E5; 
+  border-color: #1565C0;
+}
+
+/* Secondary Navbar Styles */
+.secondary-navbar {
+  background: linear-gradient(to bottom, rgb(4, 37, 87), rgba(11, 75, 172, 0.7)); /* Faded blue */
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 20px;
+  position: fixed; /* Make secondary navbar fixed */
+  top: 60px; /* Position it below the first navbar */
+  width: 100%; /* Ensure it spans the full width of the page */
+  z-index: 999; /* Make sure it's below the top navbar */
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Slight shadow effect */
+}
+
+/* Override Ant Design Menu Defaults */
+.secondary-menu {
+  display: flex;
+  gap: 20px;
+  list-style: none; 
+  margin: 0;
+  padding: 0;
+  background: transparent !important; 
+  border: none !important; 
+}
+
+.secondary-menu .ant-menu-item {
+  color: white !important; 
+  font-size: 16px;
+  font-weight: bold;
+  padding: 10px 15px; 
+  background: transparent !important; 
+  border: none !important; 
+}
+
+.secondary-menu .ant-menu-item:hover {
+  color: #000000 !important; 
+  text-decoration: underline;
+  cursor: pointer;
+  background: transparent !important; 
+}
+
+.secondary-menu .ant-menu-item-selected {
+  background: transparent !important; 
+  color: #f8f8f8 !important; 
+}
+
+/* Toggle Styles */
+.toggle-container {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: white;
+}
+
+.toggle-description {
+  font-size: 14px;
+  font-style: italic;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .navbar-top {
+    flex-direction: column;
+    align-items: flex-start;
   }
 
-  .navbar-link {
-    color: white !important;
-    font-size: 18px;
-    margin-bottom: 10px;
-    text-decoration: none;
-  }
-
-  .navbar-link:hover {
-    color: red !important;
-    cursor: pointer;
-  }
-
-  .ant-drawer .navbar-link {
-    color: white !important;
-  }
-
-  .ant-drawer .navbar-link:hover {
-    color: red !important;
-  }
-  
-  /* Navbar Header */
-  .navbar-header {
-    background-color: #124E78;
-    padding: 0 20px;
-    display: flex;
+  .navbar-right {
+    width: 100%;
     justify-content: space-between;
-    align-items: center;
-    font-family: 'Roboto', sans-serif;
-  }
-  
-  /* Navbar Container */
-  .navbar-container {
-    font-size: 16px;
-    display: flex;
-    justify-content: flex-end; /* Align links to the right */
-    align-items: center;
-    flex-wrap: wrap; /* wrapping on smaller screens */
-    width: auto;
-    font-family: 'Roboto', sans-serif;
   }
 
-  /* Search Bar */
-  .ant-input-search {
-    width: 100%;
-    max-width: 300px;
-    margin: 0 20px;
+  .navbar-login {
+    margin-left: auto;
   }
 
-  /* Fixed Header */
-  .fixed-header {
-    position: fixed;
-    top: 0;
-    width: 100%;
-    z-index: 1000;
-  }
-
-  .navbar-link {
-    color: white !important;
-    font-size: 18px;
-    margin-bottom: 10px;
-    text-decoration: none;
-  }
-
-  .navbar-link:hover {
-    color: red !important;
-    cursor: pointer;
-  }
-
-  .ant-drawer .navbar-link {
-    color: white !important;
-  }
-
-  .ant-drawer .navbar-link:hover {
-    color: red !important;
-    cursor: pointer;
-  }
-
-  .drawer-link {
-    color: white !important;
-    font-size: 18px;
-    margin-bottom: 15px;
-    text-decoration: none;
-    display: block;
-  }
-
-  .drawer-link:hover {
-    color: red !important;
-    cursor: pointer;
-  }
-
-  .drawer-toggle {
-    margin-top: 20px;
-    display: flex;
-    align-items: center;
+  .secondary-navbar {
+    flex-direction: column;
     gap: 10px;
   }
 
-  .drawer-toggle span {
-    color: white;
-    font-size: 16px;
+  .secondary-menu {
+    justify-content: flex-start;
   }
-
-  .slider-description {
-    font-size: 16px;
-    color: white;
-    font-style: italic;
-  }
-
-  /* Media Queries for Smaller Screens */
-  @media (max-width: 768px) {
-    .navbar-header {
-      flex-direction: column;
-      align-items: flex-start;
-      padding: 10px;
-    }
-
-    .navbar-container {
-      justify-content: flex-start;
-      width: 100%;
-      margin-top: 10px;
-    }
-
-    .ant-input-search {
-      width: 100%;
-      max-width: none;
-      margin: 10px 0;
-    }
-
-    .navbar-container .ant-anchor-link-title {
-      font-size: 16px !important;
-      margin-right: 10px;
-    }
-  }
-
-  @media (max-width: 480px) {
-    .navbar-header {
-      align-items: center;
-      padding: 10px
-    }
-
-    .navbar-container .ant-anchor-link-title {
-      font-size: 14px !important;
-      margin-right: 5px;
-    }
-
-    .ant-input-search {
-      width: 100%;
-      margin: 10px 0;
-    }
-  }
+}
