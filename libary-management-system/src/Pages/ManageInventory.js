@@ -5,6 +5,8 @@ import { DownOutlined } from '@ant-design/icons';
 import { Table, Button, Modal, Form, Input, Select, Space } from 'antd';
 import SearchFilter from '../Components/SearchFilter'; // Import SearchFilter
 import BranchSelector from '../Components/BranchSelector';
+import Loader from '../Components/Loader'; // Import Loader
+import { TailSpin } from 'react-loader-spinner';
 
 import { useNavigate } from 'react-router-dom'; // For Redirecting
 import { message } from 'antd'; // Warning message
@@ -45,7 +47,9 @@ import { message } from 'antd'; // Warning message
       { key: 'BranchSheffield', label: 'Sheffield Branch' },
       { key: 'BranchManchester', label: 'Manchester Branch' },
     ];
-
+    
+    const [loading, setLoading] = useState(false);
+    
     // Check if the Branch Manager Mode is enabled
     useEffect(() => {
       const checkBranchManagerMode = () => {
@@ -91,8 +95,6 @@ import { message } from 'antd'; // Warning message
         });
     };
     
-
-
     //update phone number
     const updateBook = async (id, values) =>{
       console.log('Book updated successfully:', values);
@@ -158,14 +160,17 @@ import { message } from 'antd'; // Warning message
 
     // Handle branch change
     const handleBranchChange = async (value) => {
+      setLoading(true);
       setSelectedBranch(value);
       await axios.post('http://localhost:8080/api/change-branch', { branch: value })
       .then(response => {
         console.log('Branch updated successfully:', response.data);
         fetchBooks();
+        setLoading(false)
       })
       .catch(error => {
         console.error('There was an error updating the branch:', error);
+        setLoading(false)
       });
     };
 
@@ -241,7 +246,7 @@ import { message } from 'antd'; // Warning message
           setSelectedBranch={setSelectedBranch}
           branches={branches}
           fetchBooks={fetchBooks}
-        />
+        /> 
       </div>
     {/* Add Button */}
     <div style={{ marginTop: '0px' }}>
@@ -252,7 +257,7 @@ import { message } from 'antd'; // Warning message
   </div>
       {/* Table */}
       <div style={{ marginTop: '20px' }}>
-        <Table columns={columns} dataSource={filteredBooks} rowKey="_id" />
+      <Table columns={columns} dataSource={filteredBooks} rowKey="_id" />
       </div>
 
       {/* Add Modal */}
