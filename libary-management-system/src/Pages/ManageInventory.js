@@ -4,6 +4,7 @@ import axios from 'axios';
 import { DownOutlined } from '@ant-design/icons';
 import { Table, Button, Modal, Form, Input, Select, Space } from 'antd';
 import SearchFilter from '../Components/SearchFilter'; // Import SearchFilter
+import BranchSelector from '../Components/BranchSelector';
 
 import { useNavigate } from 'react-router-dom'; // For Redirecting
 import { message } from 'antd'; // Warning message
@@ -235,11 +236,12 @@ import { message } from 'antd'; // Warning message
     />
       {/* Branch Dropdown */}
       <div style={{ marginBottom: '0px' }}>
-        <Select defaultValue={selectedBranch} onChange={handleBranchChange} style={{ width: 200 }}>
-          {branches.map((branch) => (
-            <Option key={branch.key} value={branch.key}>{branch.label}</Option>
-          ))}
-        </Select>
+      <BranchSelector
+          selectedBranch={selectedBranch}
+          setSelectedBranch={setSelectedBranch}
+          branches={branches}
+          fetchBooks={fetchBooks}
+        />
       </div>
     {/* Add Button */}
     <div style={{ marginTop: '0px' }}>
