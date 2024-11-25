@@ -1,6 +1,8 @@
 import React from 'react';
 import { useState, useEffect } from 'react';
 import '../CSS/navbar.css';
+import SearchFilter from '../Components/SearchFilter'; // Import SearchFilter
+
 
 import axios from 'axios';
 
@@ -19,12 +21,26 @@ function BrowseMedia() {
   const [selectedBook, setSelectedBook] = useState(null);
   const [drawerOpen, setDrawerOpen] = useState(false);
 
-  useEffect(() => {
-    axios.get('http://localhost:8080/api/books')
-    .then((response) => setBooks(response.data))
-    .catch((err) => console.log(err));
-  },[]);
+  const [filteredBooks, setFilteredBooks] = useState([]); 
+  const [genres, setGenres] = useState(['Fiction', 'Non-fiction', 'Sci-fi', 'Biography']); 
 
+  
+
+  const fetchBooks = () => {
+    axios.get('http://localhost:8080/api/books')
+      .then((response) => {
+        setBooks(response.data);
+        setFilteredBooks(response.data); // Update filteredBooks
+        const uniqueGenres = [...new Set(response.data.map((book) => book.genre))];
+        setGenres(uniqueGenres);
+      })
+      .catch((err) => console.log(err));
+  };
+
+  useEffect(() => {
+    fetchBooks();
+  }, []);
+  
   const handleCardClick = (book) => {
     setSelectedBook(book);
     setDrawerOpen(true);
@@ -87,15 +103,21 @@ function BrowseMedia() {
  return (
   <Box sx={{ backgroundColor: 'ADD8E6', py: 4, minHeight: '100vh', marginTop: '120px'}}>
     {/* Search Results Title */}
-
+    <div style={{ display: 'flex', justifyContent: 'flex-center', alignItems: 'center', gap: '20px', padding: '10px', align: 'center' }}>
     <Typography variant="h4" align="center" gutterBottom className= "typography-heading" sx={{ fontWeight: 'bold',mt: 4, mb: 4}}>
       Browse Our Media 
     </Typography>
 
+    <SearchFilter
+      books={books}
+      onFilterUpdate={setFilteredBooks} // Update filtered books
+      genres={genres}
+    />
+    </div>
     {/* Media Card Grid */}
 
     <Grid container spacing={3} justifyContent="center" sx={{ mt: 4}}>
-      {books.map((item, index) => (
+      {filteredBooks.map((item, index) => (
         <Grid item xs={6} sm={4} md={3} key={index}>
           <Card sx={{ 
             maxWidth: 220, //width of cards
