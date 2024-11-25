@@ -1,7 +1,6 @@
 const mongoose = require('mongoose');
 
 const bookSchema = new mongoose.Schema({
-    
     title: {
         type: String,
         required: true
@@ -29,8 +28,9 @@ const bookSchema = new mongoose.Schema({
     availability: {
         type: Boolean,
         required: true
-    }    
-});
+    },
+    
+},{ versionKey: false });
 
 const BookModel = mongoose.model('books', bookSchema);
 module.exports = BookModel;

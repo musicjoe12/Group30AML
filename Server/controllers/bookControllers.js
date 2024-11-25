@@ -1,3 +1,4 @@
+const { get } = require('mongoose');
 const BookModel = require('../models/bookModel');
 
 module.exports = {
@@ -7,6 +8,12 @@ module.exports = {
         .then(books => res.json(books))
         .catch(err => console.log(err));
     },
+
+    getBook: async (req, res) => {
+        await BookModel.findById(req.params.id)
+        .then(book => res.json(book))
+        .catch(err => console.log(err));
+    },  
 
     createBook: async (req, res) => {
         const book = new BookModel(req.body)
@@ -58,5 +65,22 @@ module.exports = {
                 message : err
             })
         }
+    },
+
+    transferBook: async (req, res) => {
+        //store branch name in a variable
+        
+        //store book id in a variable
+
+        //grab the book from the current branch and store it in a variable
+
+        //delete the book from the current branch
+        
+        //connect to the new branch
+
+        //create a new book in the new branch
+
+        //connect to the previous branch
     }
+
 }

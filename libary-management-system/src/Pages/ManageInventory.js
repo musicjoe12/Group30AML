@@ -12,7 +12,7 @@ import { message } from 'antd'; // Warning message
     // Fetch data from API
     const [books, setBooks] = useState([]);
     //for updating/deleting book 
-    const [newBook, setNewBook] = useState(0)
+    const [newBook, setNewBook] = useState({});
     //setting model visable or not for adding new book number
     const [isModalVisible, setIsModalVisible] = useState(false);
     //form for adding new book number
@@ -77,6 +77,18 @@ import { message } from 'antd'; // Warning message
     useEffect(() => {
       fetchBooks(); 
     }, []);
+
+    const getBookValues = async (id) => {
+      await axios.get(`http://localhost:8080/api/book/${id}`)
+        .then(response => {
+          const { _id, ...bookData } = response.data; // Destructure to exclude _id
+          console.log('Book fetched successfully:', bookData);
+          setNewBook(bookData);
+        })
+        .catch(error => {
+          console.error('There was an error fetching the book:', error);
+        });
+    };
     
 
 
@@ -85,7 +97,6 @@ import { message } from 'antd'; // Warning message
       console.log('Book updated successfully:', values);
       await axios.patch(`http://localhost:8080/api/update-book/${id}`, values)
       .then(() => {
-        setBooks(books.filter((book) => book._id !== id))
         setIsEditModalVisible(false);
         setEditingBook(null);
         fetchBooks();
@@ -97,7 +108,6 @@ import { message } from 'antd'; // Warning message
     const deleteBook = async (id) => {
       await axios.delete(`http://localhost:8080/api/delete-book/${id}`)
       .then(() => {
-        //setBooks(books.filter((book) => book._id !== id))
         fetchBooks();
       })
       .catch(err => console.log(err));
@@ -119,16 +129,39 @@ import { message } from 'antd'; // Warning message
     };
 
     // Handle Transfer Book
-    const handleTransferBook = async() => {};
+    const handleTransferBook = async(id, branch) => {
+      console.log('info',id, branch);
+      try{
+        const response = await axios.get(`http://localhost:8080/api/book/${id}`);
+        const { _id, ...bookData } = response.data;
+
+        console.log('Changing to branch:', branch);
+        await handleBranchChange(branch.branch);
+        console.log('bookdata:', bookData);
+        
+        await createBook(bookData);
+        
+        await handleBranchChange(selectedBranch);
+        
+        await deleteBook(id);
+        
+        setIsTransferModalVisible(false);
+        fetchBooks();
+      }
+      catch{
+        console.log('error');
+      }
+        
+    };
     
 
     // Handle branch change
-    const handleBranchChange = (value) => {
+    const handleBranchChange = async (value) => {
       setSelectedBranch(value);
-      axios.post('http://localhost:8080/api/change-branch', { branch: value })
+      await axios.post('http://localhost:8080/api/change-branch', { branch: value })
       .then(response => {
-        fetchBooks();
         console.log('Branch updated successfully:', response.data);
+        fetchBooks();
       })
       .catch(error => {
         console.error('There was an error updating the branch:', error);
@@ -386,7 +419,7 @@ import { message } from 'antd'; // Warning message
           <Button key="cancel" onClick={() => setIsTransferModalVisible(false)}>
             Cancel
           </Button>,
-          <Button key="submit" type="primary" onClick={() => handleTransferBook()}>
+          <Button key="submit" type="primary" onClick={(values) => handleTransferBook(editingBook._id, { branch: transferBranch }, )}>
             Transfer
           </Button>,
         ]}
