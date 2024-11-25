@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Box, Grid, Typography, Card, CardMedia, CardContent } from '@mui/material';
+import { Box, Grid, Typography, Card, CardMedia, CardContent, Modal, Button } from '@mui/material';
 import { MAX_VERTICAL_CONTENT_RADIUS } from 'antd/es/style/placementArrow';
 import { json } from 'react-router-dom';
 
@@ -10,6 +10,13 @@ function ManageMedia() {
 
   const [reservedBooks, setReservedBooks] = useState([]);
   const [wishlist, setWishlist] = useState([]);
+  const [modalOpen, setModalOpen] = useState(false);
+  const [selectedBook, setSelectedBook] = useState(null);
+  const [isWishlistModal, setIsWishlistModal] = useState(false);
+
+
+
+  {/* Reserve/Wishlist from local storage */}
 
   useEffect(() => {
     const savedReservedBooks = JSON.parse(localStorage.getItem('reservedBooks')) || [];
@@ -17,6 +24,49 @@ function ManageMedia() {
     setReservedBooks(savedReservedBooks);
     setWishlist(savedWishlist);
   }, []);
+
+  const handleBookClick = (book, isWishlist = false) => {
+    setSelectedBook(book);
+    setIsWishlistModal(isWishlist);
+    setModalOpen(true);
+  };
+
+  const handleCloseModal = () => {
+    setModalOpen(false);
+    setSelectedBook(null);
+  };
+
+  const handleReturnMedia = () => {
+    const updateReservedBooks = reservedBooks.filter((book) => book.title !== selectedBook.title);
+    setReservedBooks(updateReservedBooks);
+    localStorage.setItem('reservedBooks', JSON.stringify(updateReservedBooks));
+    alert(`"${selectedBook.title}" has been returned`);
+    handleCloseModal();
+  };
+
+
+  const handleExtend = () => {
+    alert(`The Reservation for "${selectedBook.title}" has been extended`);
+  };
+
+  const handleRemoveMedia = () => {
+    const updatedWishlist = wishlist.filter((book) => book.title !== selectedBook.title);
+    setWishlist(updatedWishlist);
+    localStorage.setItem('wishlist', JSON.stringify(updatedWishlist));
+    alert(`"${selectedBook.title}" has been removed from your wishlist`);
+    handleCloseModal();
+  };
+
+  const handleReserveFromWishlist = () => {
+    if (selectedBook && selectedBook.availability) {
+      const updateReservedBooks = [...reservedBooks, selectedBook];
+      setReservedBooks(updateReservedBooks);
+      localStorage.setItem('reservedBooks', JSON.stringify(updateReservedBooks));
+
+      handleRemoveMedia();
+      alert(`"${selectedBook.title}" has been reserved`);
+    }
+  };
 
 
   return (
@@ -63,7 +113,10 @@ function ManageMedia() {
                 border: '1px solid #ccc',
                 borderRadius: '8px',
                 backgroundColor: '#fff',
-              }}>
+                cursor: 'pointer',
+              }}
+              onClick={() => handleBookClick(book)}
+              >
                 <img src={book.image}
                 alt={book.title}
                 style={{ width: '50px', height: '75px', borderRadius: '5px' }} />
@@ -122,6 +175,7 @@ function ManageMedia() {
                   borderRadius: '8px',
                   backgroundColor: '#fff',
                 }}
+                onClick={() => handleBookClick(book, true)}
                 >
                   <img
                   src={book.image}
@@ -140,6 +194,105 @@ function ManageMedia() {
             )}
             </Box>
             </Box>
+
+            {/* Book Details Modal */}
+            <Modal
+            open={modalOpen}
+            onClose={handleCloseModal}
+            aria-labelledby="book-modal-title"
+            aria-describedby="book-modal-description"
+            sx={{
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+            }}
+            >
+              <Box sx={{
+                width: 400,
+                backgroundColor: '#fff',
+                padding: '20px',
+                borderRadius: '8px',
+                boxShadow: 24,
+                outline: 'none',
+              }}
+              >
+                {selectedBook && (
+                  <>
+                  <Typography id="book-modal-title" variant='h6' sx={{ fontWeight: 'bold', mb: 2}}>
+                    {selectedBook.title}
+                  </Typography>
+                  <Typography id="book-modal-description" sx={{ mb: 2 }}>
+                    <strong>Author:</strong> {selectedBook.author}
+                  </Typography>
+                  <Typography sx={{ mb: 2 }}>
+                    <strong>Genre:</strong> {selectedBook.genre}
+                  </Typography>
+                  <Typography sx={{ mb: 2 }}>
+                    <strong>Year Published:</strong> {selectedBook.publication_year}
+                  </Typography>
+                  <Typography sx={{ mb: 2 }}>
+                    <strong>Description:</strong> {selectedBook.description}
+                  </Typography>
+
+                  {/* Conditional Content depending on Modal */}
+
+                  {!isWishlistModal ? (
+                    <>
+                    <Typography sx={{ mb: 2}}>
+                    <strong>Date Reserved:</strong> {selectedBook.dateReserved || 'N/A'}
+                  </Typography>
+                  <Typography sx={{ mb: 4}}>
+                    <strong>Return By:</strong> {selectedBook.returnBy || 'N/A'}
+                  </Typography>
+                  <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
+                    <Button
+                    variant='contained'
+                    color='error'
+                    onClick={handleReturnMedia}
+                    sx={{ textTransform: 'none' }}
+                    >
+                      Return Media
+                    </Button>
+                    <Button
+                    variant='contained'
+                    color='primary'
+                    onClick={handleExtend}
+                    sx={{ textTransform: 'none' }}
+                    >
+                      Extend
+                    </Button>
+                  </Box>
+                  </>
+                  ) : (
+                    <Box sx={{ display: 'flex', justifyContent: 'space-between', mt: 4 }}>
+                      <Button
+                      variant='contained'
+                      color='error'
+                      onClick={handleRemoveMedia}
+                      sx={{ textTransform: 'none' }}
+                      >
+                        Remove Media
+                      </Button>
+                      <Button
+                      variant='contained'
+                      disabled={!selectedBook.availability}
+                      onClick={handleReserveFromWishlist}
+                      sx={{
+                        textTransform: 'none',
+                        backgroundColor: selectedBook.availability ? 'primary.main' : '#ccc',
+                        '&:hover': {
+                          backgroundColor: selectedBook.availability ? 'primary.dark' : '#ccc',
+                        },
+                      }}
+                      >
+                        Reserve
+                      </Button>
+                      </Box>
+                  )}
+                  </>
+                )}
+                </Box>
+                </Modal>
             </Box>
             );
           }

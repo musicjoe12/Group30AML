@@ -41,11 +41,32 @@ function BrowseMedia() {
     const reservedBooks = JSON.parse(localStorage.getItem('reservedBooks')) || [];
 
     if (!reservedBooks.some((reservedBook) => reservedBook.title === book.title)) {
-      reservedBooks.push(book);
+      const dateReserved = new Date();
+      const returnBy = new Date();
+      returnBy.setDate(dateReserved.getDate() + 14); //2 week Reservation window
+
+      //Change date Format to DDMMYYYY
+
+      const formatDate = (date) => {
+        const day = date.getDate().toString().padStart(2, '0');
+        const month = (date.getMonth() + 1).toString().padStart(2, '0');
+        const year = date.getFullYear();
+        return `${day}-${month}-${year}`;
+      };
+
+
+
+      const updatedBook = {
+        ...book,
+        dateReserved: formatDate(dateReserved),
+        returnBy: formatDate(returnBy),
+      };
+
+      reservedBooks.push(updatedBook);
       localStorage.setItem('reservedBooks', JSON.stringify(reservedBooks));
-      alert('"${book.title}" has been reserved');
+      alert('`${book.title}` has been reserved');
     } else {
-      alert('"${book.title}" is already reserved');
+      alert('`${book.title}` is already reserved');
     }
   };
 
@@ -57,9 +78,9 @@ function BrowseMedia() {
     if (!wishlist.some((wishlistBook) => wishlistBook.title === book.title)) {
       wishlist.push(book);
       localStorage.setItem('wishlist', JSON.stringify(wishlist));
-      alert('"${book.title}" has been added to your wishlist');
+      alert('`${book.title}` has been added to your wishlist');
     } else {
-      alert('"${book.title}" is already in your wishlist');
+      alert('`${book.title}` is already in your wishlist');
     }
   };
   
