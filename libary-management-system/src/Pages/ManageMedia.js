@@ -25,7 +25,7 @@ function ManageMedia() {
     setReservedBooks([]);
     await axios.get(`http://localhost:8080/api/user-books-borrowed/${userId}`)
     .then(res => {
-      console.log(res.data);  
+      //console.log(res.data);  
       setReservedBooksId(res.data);
       fetchReservedBooks(res.data);
     })
@@ -36,7 +36,7 @@ function ManageMedia() {
     //const bookIds = ids.join(',');
     await axios.get(`http://localhost:8080/api/books/multiple?ids=${ids}`)
     .then(res => {
-      console.log(res.data);
+      //console.log(res.data);
       setReservedBooks(res.data);
     })
     .catch(err => console.log(err));
