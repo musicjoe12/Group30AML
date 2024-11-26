@@ -89,7 +89,7 @@ function ManageMedia() {
           color: '#333',
         }}
         >
-          Currently Reserved -
+          Currently Borrowed -
         </Typography>
         <Box sx={{
           display: 'flex',
@@ -131,7 +131,7 @@ function ManageMedia() {
 
           ) : (
             <Typography variant='body1' sx={{ textAlign: 'center', color: '#333' }}>
-              No Reserved Books
+              Nothing Borrowed ATM
             </Typography>
           )}
           </Box>
@@ -148,7 +148,7 @@ function ManageMedia() {
             color: '#333',
           }}
           >
-            Wishlist -
+            Reserved to Borrow -
           </Typography>
           <Box sx={{
             display: 'flex',
@@ -189,7 +189,7 @@ function ManageMedia() {
               ))
             ) : (
               <Typography variant='body1' sx={{ textAlign: 'center', color: '#333' }}>
-                No Items Wishlisted
+                Nothing reserved
               </Typography>
             )}
             </Box>

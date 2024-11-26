@@ -238,7 +238,7 @@ function BrowseMedia() {
               textTransform: 'none',
             }}
             >
-              Reserve
+              Borrow
             </Button>
             <Button variant='outlined' disabled={selectedBook?.availability}
 
@@ -257,7 +257,7 @@ function BrowseMedia() {
               },
             }}
             >
-              Notify Me
+              Reserve
             </Button>
           </Box>
       </Drawer>
