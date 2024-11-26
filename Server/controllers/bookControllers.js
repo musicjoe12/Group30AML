@@ -14,6 +14,14 @@ module.exports = {
         .catch(err => console.log(err));
     },  
 
+    getMultipleBooks: async (req, res) => {
+        const { ids } = req.query;
+        const bookIds = ids.split(',');
+        await BookModel.find({ _id: { $in: bookIds } })
+        .then(books => res.json(books))
+        .catch(err => console.log(err));
+    },
+
     createBook: async (req, res) => {
         const book = new BookModel(req.body)
         try{

@@ -7,30 +7,47 @@ import { UserContext } from '../Context/UserContext';
 
 
 function ManageMedia() {
-
+  //user id from navbar login using context
   const { userId } = useContext(UserContext);
+  //state for reserved books
   const [reservedBooks, setReservedBooks] = useState([]);
+  const [reservedBooksId, setReservedBooksId] = useState([]);
   const [wishlist, setWishlist] = useState([]);
   const [modalOpen, setModalOpen] = useState(false);
   const [selectedBook, setSelectedBook] = useState(null);
   const [isWishlistModal, setIsWishlistModal] = useState(false);
 
 
-  const id = "6745acf977193bd38c8e5d8a";
+  
 
   //fetches reserved books from current selceted user
-  const fetchReservedBooks = async() => {
+  const fetchReservedBooksId = async() => {
+    setReservedBooks([]);
     await axios.get(`http://localhost:8080/api/user-books-borrowed/${userId}`)
     .then(res => {
       console.log(res.data);  
-      setReservedBooks(res.data);
+      setReservedBooksId(res.data);
+      fetchReservedBooks(res.data);
     })
     .catch(err => console.log(`error fetching books${err}`));
   };
+  //fetches books from users bowrrowed list
+  const fetchReservedBooks = async(ids) => {
+    //const bookIds = ids.join(',');
+    await axios.get(`http://localhost:8080/api/books/multiple?ids=${ids}`)
+    .then(res => {
+      console.log(res.data);
+      setReservedBooks(res.data);
+    })
+    .catch(err => console.log(err));
 
+  };
   useEffect(() => {
-    fetchReservedBooks();
+    fetchReservedBooksId();
+    
   }, [userId]);
+
+ 
 
   const handleBookClick = (book, isWishlist = false) => {
     setSelectedBook(book);
