@@ -5,6 +5,7 @@
 import './App.css';
 import Navbar from './Components/Navbar';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { UserProvider } from './UserContext';
 import { SearchProvider } from './Components/SearchContext';
 
 //Pages
@@ -16,6 +17,7 @@ import ManageInventory from './Pages/ManageInventory';
 function App() {
   return (
   <SearchProvider>
+    <UserProvider>
     <Router>
       <Navbar /> {}
       <Routes>
@@ -26,6 +28,7 @@ function App() {
         <Route path="/manage-inventory" element={<ManageInventory />} />
       </Routes>
     </Router>
+    </UserProvider>
   </SearchProvider>
   );
   

@@ -1,15 +1,14 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { Box, Grid, Typography, Card, CardMedia, CardContent, Modal, Button } from '@mui/material';
 import { MAX_VERTICAL_CONTENT_RADIUS } from 'antd/es/style/placementArrow';
 import { json } from 'react-router-dom';
 import axios from 'axios';
-
-
-
+import { UserContext } from '../UserContext';
 
 
 function ManageMedia() {
 
+  const { userId } = useContext(UserContext);
   const [reservedBooks, setReservedBooks] = useState([]);
   const [wishlist, setWishlist] = useState([]);
   const [modalOpen, setModalOpen] = useState(false);
@@ -20,8 +19,8 @@ function ManageMedia() {
   const id = "6745acf977193bd38c8e5d8a";
 
   //fetches reserved books from current selceted user
-  const fetchReservedBooks = async(id) => {
-    await axios.get(`http://localhost:8080/api/user-books-borrowed/${id}`)
+  const fetchReservedBooks = async() => {
+    await axios.get(`http://localhost:8080/api/user-books-borrowed/${userId}`)
     .then(res => {
       console.log(res.data);  
       setReservedBooks(res.data);
@@ -30,8 +29,8 @@ function ManageMedia() {
   };
 
   useEffect(() => {
-    fetchReservedBooks(id);
-  }, []);
+    fetchReservedBooks();
+  }, [userId]);
 
   const handleBookClick = (book, isWishlist = false) => {
     setSelectedBook(book);

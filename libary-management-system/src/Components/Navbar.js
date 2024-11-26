@@ -1,7 +1,8 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { Layout, Input, Menu, Button, Switch, Modal, Form, List, Avatar, Input as AntInput } from 'antd';
 import { useNavigate } from 'react-router-dom';
 import '../CSS/navbar.css'; // Custom CSS file
+import { UserContext } from '../UserContext';
 import { useSearch } from '../Components/SearchContext'; 
 
 
@@ -15,6 +16,7 @@ const { Search } = Input;
 
 function Navbar() {
 
+  const { setUserId } = useContext(UserContext);
   const [isToggled, setIsToggled] = useState(false);
   const [users, setUsers] = useState([]); 
   const [isModalVisible, setIsModalVisible] = useState(false);
@@ -51,9 +53,13 @@ function Navbar() {
     })
     .catch(err => console.log(err));
   };
+
   const handleLogin = async(userId) => {
     console.log("User ID:", userId);
+    setUserId(userId);
+    setIsModalVisible(false);
   };
+  
   //Navbar search 
   const { searchValue, setSearchValue } = useSearch(); // Get searchValue and setSearchValue
   const navigate = useNavigate();
