@@ -52,10 +52,6 @@ function Navbar() {
     console.log("User ID:", userId);
   };
 
-  // User data source
-
-  
-
   return (
     <Layout>
       {/* Top Navbar */}
