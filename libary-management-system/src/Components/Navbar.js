@@ -2,14 +2,20 @@ import React, { useState, useEffect } from 'react';
 import { Layout, Input, Menu, Button, Switch, Modal, Form, List, Avatar, Input as AntInput } from 'antd';
 import '../CSS/navbar.css'; // Custom CSS file
 
+
 // Assets
 import logo from '../Assets/logo.png';
+import axios from 'axios';
 
 const { Header } = Layout;
 const { Search } = Input;
 
 function Navbar() {
+
   const [isToggled, setIsToggled] = useState(false);
+  const [users, setUsers] = useState([]); 
+  const [isModalVisible, setIsModalVisible] = useState(false);
+
 
   // Initialize toggle state from localStorage
   useEffect(() => {
@@ -24,9 +30,7 @@ function Navbar() {
     localStorage.setItem('sliderState', checked); // Save state to localStorage
   };
 
-  //Login 
 
-  const [isModalVisible, setIsModalVisible] = useState(false);
 
   const showModal = () => {
     setIsModalVisible(true);
@@ -36,15 +40,21 @@ function Navbar() {
     setIsModalVisible(false);
   };
 
-
-  const handleLogin = (values) => {
-    
-    setIsModalVisible(false);
+  const fetchUsers = async() => {
+    await axios.get("http://localhost:8080/api/users")
+    .then(res => {
+      setUsers(res.data); 
+      //setIsModalVisible(false);
+    })
+    .catch(err => console.log(err));
+  };
+  const handleLogin = async(userId) => {
+    console.log("User ID:", userId);
   };
 
   // User data source
 
-  const users = [];
+  
 
   return (
     <Layout>
@@ -66,7 +76,10 @@ function Navbar() {
               className="navbar-search"
               style={{ width: 250 }}
             />
-            <Button type="primary" className="navbar-login" onClick={showModal}>
+            <Button type="primary" className="navbar-login" onClick={() => {
+              showModal();
+              fetchUsers();
+              }}>
               Login
             </Button>
           </div>
@@ -116,10 +129,10 @@ function Navbar() {
           itemLayout="horizontal"
           dataSource={users}
           renderItem={(user) => (
-            <List.Item onClick={() => handleLogin(user)} className="user-item">
+            <List.Item onClick={() => handleLogin(user._id)} className="user-item">
               <List.Item.Meta
-                avatar={<Avatar src={user.avatar} />}
-                title={<a href="#">{user.name}</a>}
+                title={user.first_name + ' ' + user.last_name}  
+                description={user.email}
               />
             </List.Item>
           )}

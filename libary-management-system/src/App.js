@@ -18,7 +18,8 @@ function App() {
     <Router>
       <Navbar /> {}
       <Routes>
-      <Route path="/homepage" element={<Homepage />} />
+        
+        <Route path="/homepage" element={<Homepage />} />
         <Route path="/browse-media" element={<BrowseMedia />} />
         <Route path="/manage-media" element={<ManageMedia />} />
         <Route path="/manage-inventory" element={<ManageInventory />} />

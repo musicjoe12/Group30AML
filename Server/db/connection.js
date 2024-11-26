@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
 
+//code for db not to disconnect if its connect to the slected db
 
 const connectDB = async (branch) => {
   try {

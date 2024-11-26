@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { Box, Grid, Typography, Card, CardMedia, CardContent, Modal, Button } from '@mui/material';
 import { MAX_VERTICAL_CONTENT_RADIUS } from 'antd/es/style/placementArrow';
 import { json } from 'react-router-dom';
+import axios from 'axios';
+
 
 
 
@@ -15,14 +17,20 @@ function ManageMedia() {
   const [isWishlistModal, setIsWishlistModal] = useState(false);
 
 
+  const id = "6745acf977193bd38c8e5d8a";
 
-  {/* Reserve/Wishlist from local storage */}
+  //fetches reserved books from current selceted user
+  const fetchReservedBooks = async(id) => {
+    await axios.get(`http://localhost:8080/api/user-books-borrowed/${id}`)
+    .then(res => {
+      console.log(res.data);  
+      setReservedBooks(res.data);
+    })
+    .catch(err => console.log(`error fetching books${err}`));
+  };
 
   useEffect(() => {
-    const savedReservedBooks = JSON.parse(localStorage.getItem('reservedBooks')) || [];
-    const savedWishlist = JSON.parse(localStorage.getItem('wishlist')) || [];
-    setReservedBooks(savedReservedBooks);
-    setWishlist(savedWishlist);
+    fetchReservedBooks(id);
   }, []);
 
   const handleBookClick = (book, isWishlist = false) => {
@@ -37,35 +45,20 @@ function ManageMedia() {
   };
 
   const handleReturnMedia = () => {
-    const updateReservedBooks = reservedBooks.filter((book) => book.title !== selectedBook.title);
-    setReservedBooks(updateReservedBooks);
-    localStorage.setItem('reservedBooks', JSON.stringify(updateReservedBooks));
-    alert(`"${selectedBook.title}" has been returned`);
-    handleCloseModal();
+   
   };
 
 
   const handleExtend = () => {
-    alert(`The Reservation for "${selectedBook.title}" has been extended`);
+
   };
 
   const handleRemoveMedia = () => {
-    const updatedWishlist = wishlist.filter((book) => book.title !== selectedBook.title);
-    setWishlist(updatedWishlist);
-    localStorage.setItem('wishlist', JSON.stringify(updatedWishlist));
-    alert(`"${selectedBook.title}" has been removed from your wishlist`);
-    handleCloseModal();
+   
   };
 
   const handleReserveFromWishlist = () => {
-    if (selectedBook && selectedBook.availability) {
-      const updateReservedBooks = [...reservedBooks, selectedBook];
-      setReservedBooks(updateReservedBooks);
-      localStorage.setItem('reservedBooks', JSON.stringify(updateReservedBooks));
-
-      handleRemoveMedia();
-      alert(`"${selectedBook.title}" has been reserved`);
-    }
+  
   };
 
 
