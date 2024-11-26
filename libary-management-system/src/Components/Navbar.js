@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Layout, Input, Menu, Button, Switch } from 'antd';
+import { Layout, Input, Menu, Button, Switch, Modal, Form, List, Avatar, Input as AntInput } from 'antd';
 import '../CSS/navbar.css'; // Custom CSS file
 
 // Assets
@@ -24,6 +24,28 @@ function Navbar() {
     localStorage.setItem('sliderState', checked); // Save state to localStorage
   };
 
+  //Login 
+
+  const [isModalVisible, setIsModalVisible] = useState(false);
+
+  const showModal = () => {
+    setIsModalVisible(true);
+  };
+
+  const handleCancel = () => {
+    setIsModalVisible(false);
+  };
+
+
+  const handleLogin = (values) => {
+    
+    setIsModalVisible(false);
+  };
+
+  // User data source
+
+  const users = [];
+
   return (
     <Layout>
       {/* Top Navbar */}
@@ -44,7 +66,7 @@ function Navbar() {
               className="navbar-search"
               style={{ width: 250 }}
             />
-            <Button type="primary" className="navbar-login">
+            <Button type="primary" className="navbar-login" onClick={showModal}>
               Login
             </Button>
           </div>
@@ -82,6 +104,27 @@ function Navbar() {
     </span>
   </div>
 </div>
+
+{/* Login Modal */}
+<Modal
+        title="Select User to Login"
+        visible={isModalVisible}
+        onCancel={handleCancel}
+        footer={null}
+      >
+        <List
+          itemLayout="horizontal"
+          dataSource={users}
+          renderItem={(user) => (
+            <List.Item onClick={() => handleLogin(user)} className="user-item">
+              <List.Item.Meta
+                avatar={<Avatar src={user.avatar} />}
+                title={<a href="#">{user.name}</a>}
+              />
+            </List.Item>
+          )}
+        />
+      </Modal>
     </Layout>
   );
 }
