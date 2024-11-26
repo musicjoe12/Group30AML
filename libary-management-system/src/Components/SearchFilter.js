@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { Input, Tag, Select, Space, DatePicker, Modal, Button, Typography, Divider } from 'antd';
 import '../CSS/searchFilter.css';
-import { useSearch } from '../Context/SearchContext'; 
+import { useSearch } from '../Context/SearchContext';
+import { FilterAlt, Spa } from '@mui/icons-material';
+import { triggerFocus } from 'antd/es/input/Input';
 
 
 const { Search } = Input;
@@ -9,17 +11,28 @@ const { Option } = Select;
 const { RangePicker } = DatePicker;
 const { Title, Text } = Typography;
 
-const SearchFilter = ({ books, onFilterUpdate, genres }) => {
+const SearchFilter = ({ books, onFilterUpdate, genres, isOpen, onClose }) => {
   const [filters, setFilters] = useState({
     search: '',
     genre: null,
     availability: null,
-    publicationYear: { start: null, end: null },
+    publicationYear: {start: null, end: null},
   });
 
-  const [modalVisible, setModalVisible] = useState(false); // State to manage modal visibility
+  const { searchValue } = useSearch(); // Get searchValue and setSearchValue
 
-  const { searchValue, setSearchValue } = useSearch(); // Get searchValue and setSearchValue
+
+
+//  useEffect(() => {
+ //   if (trigger) {
+  //    trigger(() => setModalVisible(true));
+  //  }
+ // }, [trigger]);
+
+
+  //const [modalVisible, setModalVisible] = useState(false); // State to manage modal visibility
+
+
 
   useEffect(() => {
     if (searchValue.trim() !== "") {
@@ -34,9 +47,10 @@ const SearchFilter = ({ books, onFilterUpdate, genres }) => {
   }, [searchValue, books, onFilterUpdate]);
 
 
-  useEffect(() => {
-    applyFilters(filters);
-  }, [books, filters]); 
+ // useEffect(() => {
+ //   applyFilters(filters);
+ // }, [books, filters]); 
+
 
   const handleSearch = (searchValue) => {
     setFilters((prev) => ({ ...prev, search: searchValue }));
@@ -133,31 +147,21 @@ const SearchFilter = ({ books, onFilterUpdate, genres }) => {
   }).length;
 
   return (
-    <>
-      <Button type="primary" onClick={() => setModalVisible(true)} className="filter-button">
-        Open Filters
-      </Button>
-
       <Modal
-        title={<span className="modal-header">Filters</span>}
-        visible={modalVisible}
-        onCancel={() => setModalVisible(false)}
-        footer={null}
-        bodyStyle={{
-          backgroundColor: '#124E78',
-          display: 'flex',
-          flexDirection: 'column',
-          justifyContent: 'space-between',
-        }}
-        className="filter-modal"
-        width={600}
+      title='Filters'
+      visible={isOpen}
+      onCancel={onClose}
+      footer={null}
+      bodyStyle={{
+        backgroundColor: '#D3D3D3',
+        display: 'flex',
+        flexDirection: 'column',
+      }}
       >
-        <Space className="filter-space" wrap direction="vertical">
-          <Title level={4} className="filter-title">Filter Books</Title>
-          <Text type="secondary" className="filter-count">
-            {filteredBooksCount} books found
-          </Text>
-          <Divider className="filter-divider" />
+        <Title level={4} style={{ color: 'black' }}>
+          Filter Books
+        </Title>
+        <Divider />
 
           {/* Search Input */}
           <Input
@@ -173,15 +177,11 @@ const SearchFilter = ({ books, onFilterUpdate, genres }) => {
             onChange={handleYearChange}
             allowClear
           />
-        </Space>
-
-        {/* Filter by Genre */}
-        <div className="filter-genre">
-          <Text className="filter-subtitle">Genres</Text>
           <Space wrap>
             {genres.map((genre) => (
               <Tag
                 key={genre}
+                color={filters.genre === genre ? 'blue' : 'default'}
                 className={`filter-tag ${filters.genre === genre ? 'filter-tag-available' : ''}`}
                 onClick={() => handleGenreClick(genre)}
               >
@@ -189,9 +189,8 @@ const SearchFilter = ({ books, onFilterUpdate, genres }) => {
               </Tag>
             ))}
           </Space>
-        </div>
-
-        {/* Filter by Availability */}
+          <Space>
+            {/* Filter by Availability */}
         <div className="filter-availability">
           <Text className="filter-subtitle">Availability</Text>
           <Space wrap>
@@ -209,6 +208,9 @@ const SearchFilter = ({ books, onFilterUpdate, genres }) => {
             </Tag>
           </Space>
         </div>
+          </Space>
+
+        
 
         {/* Search Button */}
         <Button
@@ -216,13 +218,12 @@ const SearchFilter = ({ books, onFilterUpdate, genres }) => {
           className="search-button"
           onClick={() => {
             applyFilters(filters);
-            setModalVisible(false); 
+            onClose();
           }}
         >
           Search
         </Button>
       </Modal>
-    </>
   );
 };
 

@@ -36,13 +36,30 @@
 .flip-card-back {
     transform: rotateY(180deg);
     display: flex;
-    justify-content: center;
     align-items: center;
     flex-direction: column;
+    justify-content: space-between;
     background-color: #f5f5f5;
-    padding: 10px;
+    padding: 5px;
     overflow: auto;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.8);
+}
+
+.flip-card-back .MuiButton-root {
+    width: 80%;
+    text-align: center;
+    margin: 5px 0;
+}
+
+.flip-card-back .MuiButton-contained {
+    display: block;
+    text-align: center;
+    margin-right: 4px;
+}
+
+.flip-card-back .MuiButton-outlined {
+    display: block;
+    text-align: center;
 }
 
 .flip-card.flipped .flip-card-front {

@@ -4,16 +4,10 @@ import '../CSS/navbar.css';
 import '../CSS/browsemedia.css';
 import SearchFilter from '../Components/SearchFilter'; // Import SearchFilter
 import { useSearch } from '../Context/SearchContext'; // Import useSearch hook
-
+import { Box, Grid, Typography, Card, CardMedia, CardContent, Drawer, IconButton, Button } from '@mui/material';
+import FilterAltIcon from '@mui/icons-material/FilterAlt';
 
 import axios from 'axios';
-
-//design
-import { Box, Grid, Typography, Card, CardMedia, CardContent, Drawer, IconButton, Button } from '@mui/material';
-import CloseIcon from '@mui/icons-material/Close';
-
-import { MAX_VERTICAL_CONTENT_RADIUS } from 'antd/es/style/placementArrow';
-
 
 
 function BrowseMedia() {
@@ -26,6 +20,9 @@ function BrowseMedia() {
   const [genres, setGenres] = useState(['Fiction', 'Non-fiction', 'Sci-fi', 'Biography']); 
 
   const [flippedCards, setFlippedCards] = useState({});
+  const [filterOpen, setFilterOpen] = useState(false);
+
+  const [openFilterModal, setOpenFilterModal] = useState(null);
 
   //Search Bar
   useEffect(() => {
@@ -134,12 +131,29 @@ function BrowseMedia() {
       </Typography>
 
       {/* Filters Btn */}
-      <SearchFilter
-      books={books}
-      onFilterUpdate={setFilteredBooks}
-      genres={genres}
-      />
-    </Box>
+
+      <IconButton 
+      onClick={() => setFilterOpen(true)}
+      sx={{
+        backgroundColor: '#1976d2',
+        color: 'white',
+        '&:hover': {
+          backgroundColor: '#1565C0',
+        },
+      }}
+      >
+        <FilterAltIcon />
+      </IconButton>
+      </Box>
+      {filterOpen && (
+        <SearchFilter
+        books={books}
+        onFilterUpdate={setFilteredBooks}
+        genres={genres}
+        isOpen={filterOpen}
+        onClose={() => setFilterOpen(false)}
+        />
+      )}
     {/* Media Card Grid */}
 
     <Grid container spacing={3} justifyContent="center" alignItems="center" sx={{ mt: 4, margin: '0 auto', maxWidth: '80%' }}>
@@ -214,7 +228,16 @@ function BrowseMedia() {
                 <Typography variant='body2' sx={{ mb: 2 }}>
                   <strong>In Stock:</strong> {item.availability ? 'Available' : 'Not Available'}
                 </Typography>
-                <Button
+
+                {/* Action Buttons at bottom */}
+                <Box sx={{
+                  display: 'flex',
+                  justifyContent: 'space-evenly',
+                  width: '100%',
+                  marginTop: '10px',
+                }}
+                >
+                  <Button
                 variant='contained'
                 disabled={!item.availability}
                 onClick={() => handleReserve(item)}
@@ -246,6 +269,7 @@ function BrowseMedia() {
                 >
                   Reserve
                 </Button>
+                </Box>
               </Box>
             </div>
           </div>
