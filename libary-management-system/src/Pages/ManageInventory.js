@@ -1,5 +1,7 @@
 import React, { useState, useEffect, useContext, } from 'react';
 import axios from 'axios';
+import '../CSS/manageInventory.css';
+
 
 import { DownOutlined } from '@ant-design/icons';
 import { Table, Button, Modal, Form, Input, Select, Space } from 'antd';
@@ -36,6 +38,8 @@ import { message } from 'antd'; // Warning message
     const [transferBranch, setTransferBranch] = useState(''); 
 
     const [isTransferModalVisible, setIsTransferModalVisible] = useState(false)
+    //Delete Modal
+    const [isDeleteModalVisible, setIsDeleteModalVisible] = useState(false);
 
 
     // Redirect to homepage
@@ -111,6 +115,7 @@ import { message } from 'antd'; // Warning message
     const deleteBook = async (id) => {
       await axios.delete(`http://localhost:8080/api/delete-book/${id}`)
       .then(() => {
+        setIsDeleteModalVisible(false);
         fetchBooks();
       })
       .catch(err => console.log(err));
@@ -213,7 +218,10 @@ import { message } from 'antd'; // Warning message
           }}>
             Transfer
           </Button>
-            <Button type="primary" danger onClick={() => {deleteBook(record._id)}}>
+            <Button type="primary" danger onClick={() => {
+              setIsDeleteModalVisible(true);
+              setEditingBook(record);
+            }}>
               Delete
             </Button>
             <Button type="primary" onClick={() => {
@@ -230,220 +238,192 @@ import { message } from 'antd'; // Warning message
     ];
     
 
-  return (
-    <div style={{ padding: '20px', marginTop: '120px' }}>
-  {/* Search and Filters */}
-  <div style={{ display: 'flex', justifyContent: 'flex-end', alignItems: 'right', gap: '20px' }}>
-    <SearchFilter
-      books={books}
-      onFilterUpdate={setFilteredBooks} // Update filtered books
-      genres={genres}
-    />
-      {/* Branch Dropdown */}
-      <div style={{ marginBottom: '0px' }}>
-      <BranchSelector
-          selectedBranch={selectedBranch}
-          setSelectedBranch={setSelectedBranch}
-          branches={branches}
-          fetchBooks={fetchBooks}
-        /> 
+    return (
+      <div className="manage-inventory-container">
+        {/* Search and Filters */}
+        <div className="search-filters-container">
+          <SearchFilter
+            books={books}
+            onFilterUpdate={setFilteredBooks} // Update filtered books
+            genres={genres}
+          />
+          {/* Branch Dropdown */}
+          <div className="branch-selector-container">
+            <BranchSelector
+              selectedBranch={selectedBranch}
+              setSelectedBranch={setSelectedBranch}
+              branches={branches}
+              fetchBooks={fetchBooks}
+            />
+          </div>
+          {/* Add Button */}
+          <div className="add-button-container">
+            <Button type="primary" onClick={() => setIsModalVisible(true)}>
+              Add New Book
+            </Button>
+          </div>
+        </div>
+  
+        {/* Table */}
+        <div className="table-container">
+          <Table columns={columns} dataSource={filteredBooks} rowKey="_id" />
+        </div>
+  
+        {/* Add Modal */}
+        <Modal
+          title="Add New Book"
+          visible={isModalVisible}
+          onCancel={() => setIsModalVisible(false)}
+          footer={[
+            <Button key="cancel" onClick={() => setIsModalVisible(false)}>
+              Cancel
+            </Button>,
+            <Button key="submit" type="primary" onClick={() => form.submit()}>
+              Submit
+            </Button>,
+          ]}
+        >
+          <Form form={form} layout="vertical" onFinish={createBook}>
+            <Form.Item
+              name="title"
+              label="Title"
+              rules={[{ required: true, message: 'Please enter the title' }]}
+            >
+              <Input />
+            </Form.Item>
+            <Form.Item
+              name="author"
+              label="Author"
+              rules={[{ required: true, message: 'Please enter the author' }]}
+            >
+              <Input />
+            </Form.Item>
+            <Form.Item
+              name="description"
+              label="Description"
+              rules={[{ required: true, message: 'Please enter the description' }]}
+            >
+              <Input />
+            </Form.Item>
+            <Form.Item
+              name="genre"
+              label="Genre"
+              rules={[{ required: true, message: 'Please select the genre' }]}
+            >
+              <Select>
+                {genres.map((genre) => (
+                  <Option key={genre} value={genre}>
+                    {genre}
+                  </Option>
+                ))}
+              </Select>
+            </Form.Item>
+            <Form.Item
+              name="publication_year"
+              label="Publication-Year"
+              rules={[{ required: true, message: 'Please enter the year' }]}
+            >
+              <Input type="number" />
+            </Form.Item>
+            <Form.Item
+              name="image"
+              label="Image-Link"
+              rules={[{ required: true, message: 'Please enter the Image-Link' }]}
+            >
+              <Input />
+            </Form.Item>
+            <Form.Item
+              name="availability"
+              label="Availability"
+              rules={[{ required: true, message: 'Please select availability' }]}
+            >
+              <Select>
+                <Option value={true}>Available</Option>
+                <Option value={false}>Reserved</Option>
+              </Select>
+            </Form.Item>
+          </Form>
+        </Modal>
+  
+        {/* Edit Book Modal */}
+        <Modal
+          title="Edit Book"
+          visible={isEditModalVisible}
+          onCancel={() => setIsEditModalVisible(false)}
+          footer={[
+            <Button key="cancel" onClick={() => setIsEditModalVisible(false)}>
+              Cancel
+            </Button>,
+            <Button key="submit" type="primary" onClick={() => editForm.submit()}>
+              Save Changes
+            </Button>,
+          ]}
+        >
+          <Form
+            form={editForm}
+            layout="vertical"
+            onFinish={(values) => updateBook(editingBook._id, values)}
+          >
+            {/* Form fields for editing book */}
+          </Form>
+        </Modal>
+  
+        {/* Transfer Modal */}
+        <Modal
+          title="Transfer Book"
+          visible={isTransferModalVisible}
+          onCancel={() => setIsTransferModalVisible(false)}
+          footer={[
+            <Button key="cancel" onClick={() => setIsTransferModalVisible(false)}>
+              Cancel
+            </Button>,
+            <Button
+              key="submit"
+              type="primary"
+              onClick={(values) =>
+                handleTransferBook(editingBook._id, { branch: transferBranch })
+              }
+            >
+              Transfer
+            </Button>,
+          ]}
+        >
+          <Form layout="vertical">
+            <Form.Item label="Select Branch you would like to transfer to" required>
+              <Select onChange={(value) => setTransferBranch(value)}>
+                {branches.map((branch) => (
+                  <Select.Option key={branch.key} value={branch.key}>
+                    {branch.label}
+                  </Select.Option>
+                ))}
+              </Select>
+            </Form.Item>
+          </Form>
+        </Modal>
+  
+        {/* Delete Modal */}
+        <Modal
+          title="Delete Book"
+          visible={isDeleteModalVisible}
+          onCancel={() => setIsDeleteModalVisible(false)}
+          footer={[
+            <Button key="cancel" onClick={() => setIsDeleteModalVisible(false)}>
+              Cancel
+            </Button>,
+            <Button
+              key="submit"
+              type="primary"
+              onClick={() => deleteBook(editingBook._id)}
+            >
+              Delete
+            </Button>,
+          ]}
+        >
+          <p>Are you sure you want to delete this book?</p>
+        </Modal>
       </div>
-    {/* Add Button */}
-    <div style={{ marginTop: '0px' }}>
-      <Button type="primary" onClick={() => setIsModalVisible(true)}>
-        Add New Book
-      </Button>
-    </div>
-  </div>
-      {/* Table */}
-      <div style={{ marginTop: '20px' }}>
-      <Table columns={columns} dataSource={filteredBooks} rowKey="_id" />
-      </div>
-
-      {/* Add Modal */}
-      <Modal
-        title="Add New Book"
-        visible={isModalVisible}
-        onCancel={() => setIsModalVisible(false)}
-        footer={[
-          <Button key="cancel" onClick={() => setIsModalVisible(false)}>
-            Cancel
-          </Button>,
-          <Button key="submit" type="primary" onClick={() => form.submit()}>
-            Submit
-          </Button>,
-        ]}
-      >
-        <Form form={form} layout="vertical" onFinish={createBook}>
-          <Form.Item
-            name="title"
-            label="Title"
-            rules={[{ required: true, message: 'Please enter the title' }]}
-          >
-            <Input />
-          </Form.Item>
-          <Form.Item
-            name="author"
-            label="Author"
-            rules={[{ required: true, message: 'Please enter the author' }]}
-          >
-            <Input />  
-          </Form.Item>
-          <Form.Item
-            name = "description"
-            label = "Description"
-            rules = {[{ required: true, message: 'Please enter the description'}]}
-          >
-            <Input/>
-          </Form.Item>
-          <Form.Item
-            name="genre"
-            label="Genre"
-            rules={[{ required: true, message: 'Please select the genre' }]}
-          >
-            <Select>
-              {genres.map((genre) => (
-                <Option key={genre} value={genre}>{genre}</Option>
-              ))}
-            </Select>
-          </Form.Item>
-          <Form.Item
-            name="publication_year"
-            label="Publication-Year"
-            rules={[{ required: true, message: 'Please enter the year' }]}
-          >
-            <Input type="number" />
-          </Form.Item>
-          <Form.Item
-            name="image"
-            label="Image-Link"
-            rules={[{ required: true, message: 'Please enter the Image-Link' }]}
-          >
-            <Input />
-          </Form.Item>
-          <Form.Item
-            name="availability"
-            label="Availability"
-            rules={[{ required: true, message: 'Please select availability' }]}
-          >
-            <Select>
-              <Option value={true}>Available</Option>
-              <Option value={false}>Reserved</Option>
-            </Select>
-          </Form.Item>
-        </Form>
-      </Modal>
-      {/* Edit Book Modal */}
-      <Modal
-  title="Edit Book"
-  visible={isEditModalVisible}
-  onCancel={() => setIsEditModalVisible(false)}
-  footer={[
-    <Button key="cancel" onClick={() => setIsEditModalVisible(false)}>
-      Cancel
-    </Button>,
-    <Button key="submit" type="primary" onClick={() => editForm.submit()}>
-      Save Changes
-    </Button>,
-  ]}
->
-  <Form
-    form={editForm}
-    layout="vertical"
-    onFinish={(values) => updateBook(editingBook._id, values)}
-  >
-    <Form.Item
-      name="title"
-      label="Title"
-      rules={[{ required: true, message: 'Please enter the title' }]}
-    >
-      <Input />
-    </Form.Item>
-
-    <Form.Item
-      name="author"
-      label="Author"
-      rules={[{ required: true, message: 'Please enter the author' }]}
-    >
-      <Input />
-    </Form.Item>
-
-    <Form.Item
-      name="description"
-      label="Description"
-      rules={[{ required: true, message: 'Please enter the description' }]}
-    >
-      <Input />
-    </Form.Item>
-
-    <Form.Item
-      name="genre"
-      label="Genre"
-      rules={[{ required: true, message: 'Please select the genre' }]}
-    >
-      <Select>
-        {genres.map((genre) => (
-        <Option key={genre} value={genre}>{genre}</Option>
-         ))}
-     </Select>
-    </Form.Item>
-
-    <Form.Item
-      name="publication_year"
-      label="Publication Year"
-      rules={[{ required: true, message: 'Please enter the publication year' }]}
-    >
-      <Input type="number" />
-    </Form.Item>
-
-    <Form.Item
-      name="image"
-      label="Image Link"
-      rules={[{ required: true, message: 'Please enter the image link' }]}
-    >
-      <Input />
-    </Form.Item>
-
-    <Form.Item
-      name="availability"
-      label="Availability"
-      rules={[{ required: true, message: 'Please select availability' }]}
-    >
-      <Select>
-        <Option value={true}>Available</Option>
-        <Option value={false}>Reserved</Option>
-      </Select>
-    </Form.Item>
-  </Form>
-</Modal>
-
-{/* Transfer Modal */}
-<Modal
-        title="Transfer Book"
-        visible={isTransferModalVisible}
-        onCancel={() => setIsTransferModalVisible(false)}
-        footer={[
-          <Button key="cancel" onClick={() => setIsTransferModalVisible(false)}>
-            Cancel
-          </Button>,
-          <Button key="submit" type="primary" onClick={(values) => handleTransferBook(editingBook._id, { branch: transferBranch }, )}>
-            Transfer
-          </Button>,
-        ]}
-      >
-        <Form layout="vertical">
-          <Form.Item label="Select Branch you would like to transfer to" required>
-            <Select onChange={(value) => setTransferBranch(value)}>
-              {branches.map((branch) => (
-                <Select.Option key={branch.key} value={branch.key}>{branch.label}</Select.Option>
-              ))}
-            </Select>
-          </Form.Item>
-        </Form>
-      </Modal>
-    </div>
-  );
-};
+    );
+  };
 
 
 export default ManageInventory;
