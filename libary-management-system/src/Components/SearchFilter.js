@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { Input, Tag, Select, Space, DatePicker, Modal, Button, Typography, Divider } from 'antd';
 import '../CSS/searchFilter.css';
+import { useSearch } from '../Components/SearchContext'; 
+
 
 const { Search } = Input;
 const { Option } = Select;
@@ -16,6 +18,21 @@ const SearchFilter = ({ books, onFilterUpdate, genres }) => {
   });
 
   const [modalVisible, setModalVisible] = useState(false); // State to manage modal visibility
+
+  const { searchValue, setSearchValue } = useSearch(); // Get searchValue and setSearchValue
+
+  useEffect(() => {
+    if (searchValue.trim() !== "") {
+      const filteredBooks = books.filter((book) =>
+        book.title.toLowerCase().includes(searchValue.toLowerCase()) ||
+        book.author.toLowerCase().includes(searchValue.toLowerCase())
+      );
+      onFilterUpdate(filteredBooks);
+    } else {
+      onFilterUpdate(books); // Reset to all books if search is cleared
+    }
+  }, [searchValue, books, onFilterUpdate]);
+
 
   useEffect(() => {
     applyFilters(filters);

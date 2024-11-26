@@ -3,6 +3,7 @@ import { useState, useEffect } from 'react';
 import '../CSS/navbar.css';
 import '../CSS/browsemedia.css';
 import SearchFilter from '../Components/SearchFilter'; // Import SearchFilter
+import { useSearch } from '../Components/SearchContext'; // Import useSearch hook
 
 
 import axios from 'axios';
@@ -18,6 +19,7 @@ import { MAX_VERTICAL_CONTENT_RADIUS } from 'antd/es/style/placementArrow';
 function BrowseMedia() {
   const [books, setBooks] = useState([]);
 
+  const { searchValue } = useSearch(); 
 
 
   const [filteredBooks, setFilteredBooks] = useState([]); 
@@ -25,7 +27,18 @@ function BrowseMedia() {
 
   const [flippedCards, setFlippedCards] = useState({});
 
-  
+  //Search Bar
+  useEffect(() => {
+    if (searchValue.trim() !== "") {
+      const filtered = books.filter((book) =>
+        book.title.toLowerCase().includes(searchValue.toLowerCase()) ||
+        book.author.toLowerCase().includes(searchValue.toLowerCase())
+      );
+      setFilteredBooks(filtered);
+    } else {
+      setFilteredBooks(books); // If search is cleared, reset to all books
+    }
+  }, [searchValue, books]);
 
   const fetchBooks = () => {
     axios.get('http://localhost:8080/api/books')

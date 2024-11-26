@@ -1,6 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { Layout, Input, Menu, Button, Switch, Modal, Form, List, Avatar, Input as AntInput } from 'antd';
+import { useNavigate } from 'react-router-dom';
 import '../CSS/navbar.css'; // Custom CSS file
+import { useSearch } from '../Components/SearchContext'; 
+
 
 
 // Assets
@@ -51,7 +54,14 @@ function Navbar() {
   const handleLogin = async(userId) => {
     console.log("User ID:", userId);
   };
+  //Navbar search 
+  const { searchValue, setSearchValue } = useSearch(); // Get searchValue and setSearchValue
+  const navigate = useNavigate();
 
+  const onSearch = (value) => {
+    navigate(`/browse-media?search=${value}`);
+  };
+  
   return (
     <Layout>
       {/* Top Navbar */}
@@ -71,6 +81,10 @@ function Navbar() {
               placeholder="Search"
               className="navbar-search"
               style={{ width: 250 }}
+              value={searchValue} // Controlled input
+              onChange={(e) => setSearchValue(e.target.value)} // Update search value
+              onSearch={onSearch}
+
             />
             <Button type="primary" className="navbar-login" onClick={() => {
               showModal();

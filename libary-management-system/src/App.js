@@ -5,7 +5,7 @@
 import './App.css';
 import Navbar from './Components/Navbar';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import { Carousel } from 'antd';
+import { SearchProvider } from './Components/SearchContext';
 
 //Pages
 import Homepage from "./Pages/Homepage";
@@ -15,6 +15,7 @@ import ManageInventory from './Pages/ManageInventory';
 
 function App() {
   return (
+  <SearchProvider>
     <Router>
       <Navbar /> {}
       <Routes>
@@ -25,6 +26,7 @@ function App() {
         <Route path="/manage-inventory" element={<ManageInventory />} />
       </Routes>
     </Router>
+  </SearchProvider>
   );
   
 }
