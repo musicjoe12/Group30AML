@@ -2,8 +2,8 @@ import React, { useState, useEffect, useContext } from 'react';
 import { Layout, Input, Menu, Button, Switch, Modal, Form, List, Avatar, Input as AntInput } from 'antd';
 import { useNavigate } from 'react-router-dom';
 import '../CSS/navbar.css'; // Custom CSS file
-import { UserContext } from '../UserContext';
-import { useSearch } from '../Components/SearchContext'; 
+import { UserContext } from '../Context/UserContext';
+import { useSearch } from '../Context/SearchContext'; 
 
 
 

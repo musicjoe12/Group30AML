@@ -3,7 +3,7 @@ import { useState, useEffect } from 'react';
 import '../CSS/navbar.css';
 import '../CSS/browsemedia.css';
 import SearchFilter from '../Components/SearchFilter'; // Import SearchFilter
-import { useSearch } from '../Components/SearchContext'; // Import useSearch hook
+import { useSearch } from '../Context/SearchContext'; // Import useSearch hook
 
 
 import axios from 'axios';

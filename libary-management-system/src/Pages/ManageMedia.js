@@ -3,7 +3,7 @@ import { Box, Grid, Typography, Card, CardMedia, CardContent, Modal, Button } fr
 import { MAX_VERTICAL_CONTENT_RADIUS } from 'antd/es/style/placementArrow';
 import { json } from 'react-router-dom';
 import axios from 'axios';
-import { UserContext } from '../UserContext';
+import { UserContext } from '../Context/UserContext';
 
 
 function ManageMedia() {

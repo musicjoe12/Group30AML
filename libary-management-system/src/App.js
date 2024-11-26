@@ -5,8 +5,8 @@
 import './App.css';
 import Navbar from './Components/Navbar';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import { UserProvider } from './UserContext';
-import { SearchProvider } from './Components/SearchContext';
+import { UserProvider } from './Context/UserContext';
+import { SearchProvider } from './Context/SearchContext';
 
 //Pages
 import Homepage from "./Pages/Homepage";

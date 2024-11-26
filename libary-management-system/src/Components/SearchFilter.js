@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Input, Tag, Select, Space, DatePicker, Modal, Button, Typography, Divider } from 'antd';
 import '../CSS/searchFilter.css';
-import { useSearch } from '../Components/SearchContext'; 
+import { useSearch } from '../Context/SearchContext'; 
 
 
 const { Search } = Input;
