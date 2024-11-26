@@ -1,28 +1,29 @@
 import React from 'react';
 import { useState, useEffect } from 'react';
 import '../CSS/navbar.css';
+import '../CSS/browsemedia.css';
 import SearchFilter from '../Components/SearchFilter'; // Import SearchFilter
 
 
 import axios from 'axios';
 
 //design
-import { Box, Grid, Typography, Card, CardMedia, CardContent, Drawer, IconButton, } from '@mui/material';
+import { Box, Grid, Typography, Card, CardMedia, CardContent, Drawer, IconButton, Button } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
 
 import { MAX_VERTICAL_CONTENT_RADIUS } from 'antd/es/style/placementArrow';
-import { Button } from 'antd';
+
 
 
 function BrowseMedia() {
- //return <h1>Browse Media Page</h1>;
   const [books, setBooks] = useState([]);
 
-  const [selectedBook, setSelectedBook] = useState(null);
-  const [drawerOpen, setDrawerOpen] = useState(false);
+
 
   const [filteredBooks, setFilteredBooks] = useState([]); 
   const [genres, setGenres] = useState(['Fiction', 'Non-fiction', 'Sci-fi', 'Biography']); 
+
+  const [flippedCards, setFlippedCards] = useState({});
 
   
 
@@ -40,17 +41,11 @@ function BrowseMedia() {
   useEffect(() => {
     fetchBooks();
   }, []);
+
+  const handleFlipCard = (index) => {
+    setFlippedCards((prev) => ({ ...prev, [index]: !prev[index] }));
+  };
   
-  const handleCardClick = (book) => {
-    setSelectedBook(book);
-    setDrawerOpen(true);
-  };
-
-  const handleCloseDrawer = () => {
-    setDrawerOpen(false);
-    setSelectedBook(null);
-  };
-
   {/* Reserve Book */}
 
   const handleReserve = (book) => {
@@ -101,169 +96,161 @@ function BrowseMedia() {
   };
   
  return (
-  <Box sx={{ backgroundColor: 'ADD8E6', py: 4, minHeight: '100vh', marginTop: '120px'}}>
+  <Box sx={{ backgroundColor: 'ADD8E6', py: 4, minHeight: '100vh', marginTop: '90px'}}>
     {/* Search Results Title */}
-    <div style={{ display: 'flex', justifyContent: 'flex-center', alignItems: 'center', gap: '20px', padding: '10px', align: 'center' }}>
-    <Typography variant="h4" align="center" gutterBottom className= "typography-heading" sx={{ fontWeight: 'bold',mt: 4, mb: 4}}>
-      Browse Our Media 
-    </Typography>
+    <Box
+    sx={{
+      display: 'flex',
+      justifyContent: 'space-between',
+      alignItems: 'center',
+      mt: 4,
+      mb: 4,
+      px: 3,
+    }}
+    >
+      <Box />
 
-    <SearchFilter
+      {/* Centered Title */}
+      <Typography
+      variant='h4'
+      gutterBottom
+      className='typography-heading'
+      sx={{ fontWeight: 'bold', textAlign: 'center' }}
+      >
+        Browse Our Media
+      </Typography>
+
+      {/* Filters Btn */}
+      <SearchFilter
       books={books}
-      onFilterUpdate={setFilteredBooks} // Update filtered books
+      onFilterUpdate={setFilteredBooks}
       genres={genres}
-    />
-    </div>
+      />
+    </Box>
     {/* Media Card Grid */}
 
-    <Grid container spacing={3} justifyContent="center" sx={{ mt: 4}}>
+    <Grid container spacing={3} justifyContent="center" alignItems="center" sx={{ mt: 4, margin: '0 auto', maxWidth: '80%' }}>
       {filteredBooks.map((item, index) => (
-        <Grid item xs={6} sm={4} md={3} key={index}>
-          <Card sx={{ 
-            maxWidth: 220, //width of cards
-            mx: 'auto',
-            transition: 'transform 0.3s ease, box-shadow 0.3s ease',
-            '&:hover': {
-              transform: 'scale(1.05)',
-              boxShadow: 3,
-            },
-            
-            }}
-            onClick={() => handleCardClick(item)}
-            >
-            <CardMedia
-            component="img"
-            height="350" //img height
-            image={item.image} //placeholder image for now
-            alt={item.title} 
-            />
-
-            <CardContent> {/*padding top*/}
-              <Typography variant="subtitle1" component="div" align="center" sx={{ fontWeight: 'bold', color: 'rgba(0, 0, 0, 0.7)',}}>
-                {item.title}
-              </Typography>
-            </CardContent>
-          </Card>
-    </Grid>
-      ))}
-      </Grid>
-
-      {/* Focused Media Drawer */}
-
-      <Drawer anchor='right' open={drawerOpen} onClose={handleCloseDrawer} PaperProps={{
-        sx: {
-          width: '50%',
-          backgroundColor: '#124E78',
-          color: 'white',
-          padding: '20px',
-        },
-      }}
-      >
-
-        {/* Close Button */}
-        <IconButton onClick={handleCloseDrawer} sx={{ position: 'absolute', top: 10, right: 10, color: 'red',}}>
-          <CloseIcon sx={{ fontSize: '36px' }}/>
-        </IconButton>
-
-        {/* Media Details */}
-
-        {selectedBook && (
-          <Box>
-
-            {/* Media Image */}
-
-            <Box sx={{ textAlign: 'center', mb: 10, mt: 5,
-            }}
-            >
-              <img src={selectedBook.image} alt={selectedBook.title} style={{
-                width: 'auto',
-                maxWidth: '100%',
-                height: 'auto',
-                maxHeight: '250px',
-                objectFit: 'cover',
-                borderRadius: '10px',
-                boxShadow: '0px 10px 25px rgba(0, 0, 0, 0.5)',
-              }}
-              />
-
-            </Box>
-
-            {/* Media Details in Text */}
-
-
-
-            <Typography variant='h5' gutterBottom sx={{ fontWeight: 'bold' }}>
-              {selectedBook.title}
-            </Typography>
-            <Typography variant='body1' gutterBottom>
-              <strong>Author:</strong> {selectedBook.author}
-            </Typography>
-            <Typography variant='body1' gutterBottom>
-              <strong>Genre:</strong> {selectedBook.genre}
-            </Typography>
-            <Typography variant='body1' gutterBottom>
-              <strong>Year Published:</strong> {selectedBook.publication_year}
-            </Typography>
-            <Typography variant='body1' gutterBottom>
-              <strong>Description:</strong> {selectedBook.description}
-            </Typography>
-            <Typography variant='body1' gutterBottom>
-              <strong>In Stock:</strong> {selectedBook.availability ? 'Available' : 'Not Available'}
-            </Typography>
-          </Box>
-        )}
-
-          {/* Buttons at the bottom */}
-
-          <Box sx={{
-            position: 'absolute',
-            bottom: '200px',
-            left: 0,
-            width: '100%',
-            display: 'flex',
-            justifyContent: 'space-evenly',
-            padding: '0 20px',
-          }}
+        <Grid item xs={12} sm={6} md={4} lg={3} key={index}>
+          <div className={`flip-card ${flippedCards[index] ? 'flipped' : ''}`}
+          onClick={() => handleFlipCard(index)}
           >
-            <Button variant='contained' disabled={!selectedBook?.availability}
-            onClick={() => handleReserve(selectedBook)}
-            
-            sx={{
-              backgroundColor: selectedBook?.availability ? '#4CAF50' : '#D3D3D3',
-              '&:hover': selectedBook?.availability ? { backgroundColor: '#45A049' } : {},
-              color: 'white',
-              fontSize: '1.2rem',
-              padding: '15px 30px',
-              minWidth: '150px',
-              textTransform: 'none',
-            }}
-            >
-              Borrow
-            </Button>
-            <Button variant='outlined' disabled={selectedBook?.availability}
+            {/* Front of Card */}
+            <div className="flip-card-front">
+              <Card sx={{ 
+                maxWidth: 220,
+                mx: 'auto',
+                height: '100%',
+                display: 'flex',
+                flexDirection: 'column',
+                justifyContent: 'space-between',
+                transition: 'transform 0.3s ease',
+               }}>
+                <CardMedia
+                component='img'
+                height='350'
+                image={item.image}
+                alt={item.title}
+                sx={{ 
+                  maxHeight: 300,
+                  objectFit: 'cover',
+                  borderTopLeftRadius: '10px',
+                  borderTopRightRadius: '10px',
+                 }}
+                />
+                <CardContent sx={{
+                  flexGrow: 1,
+                  textAlign: 'center',
+                }}>
+                  <Typography
+                  className='book-title'
+                  variant='subtitle1'
+                  align='center'
+                  sx={{ 
+                    fontWeight: 'bold',
+                    color: 'rgba(0, 0, 0, 0.7)',
+                    whiteSpace: 'nowrap',
+                    overflow: 'hidden',
+                    textOverflow: 'ellipsis',
+                   }}
+                  >
+                    {item.title}
+                  </Typography>
+                </CardContent>
+              </Card>
+            </div>
 
-            onClick={() => handleNotifyMe(selectedBook)}
-            sx={{
-              borderColor: selectedBook?.availability ? '#D3D3D3' : '#FF5722',
-              color: selectedBook?.availability ? '#D3D3D3' : '#FF5722',
-              fontSize: '1.2rem',
-              padding: '15px 30px',
-              minWidth: '150px',
-              textTransform: 'none',
-              '&:hover': selectedBook?.availability ? {} : {
-                backgroundColor: '#FF5722',
-                color: 'white',
-
-              },
-            }}
-            >
-              Reserve
-            </Button>
-          </Box>
-      </Drawer>
-
-  </Box>
+            {/* Back of Card */}
+            <div className='flip-card-back'>
+              <Box sx={{ textAlign: 'center', p: 2 }}>
+                <Typography variant='h6' gutterBottom sx={{ fontWeight: 'bold' }}>
+                  {item.title}
+                </Typography>
+                <Typography variant='body2' sx={{ mb: 1 }}>
+                  <strong>Author:</strong> {item.author}
+                </Typography>
+                <Typography variant='body2' sx={{ mb: 1 }}>
+                  <strong>Genre:</strong> {item.genre}
+                </Typography>
+                <Typography variant='body2' sx={{ mb: 1 }}>
+                  <strong>Year Published:</strong> {item.publication_year}
+                </Typography>
+                <Typography variant='body2' sx={{ mb: 1 }}>
+                  <strong>Description:</strong> {item.description}
+                </Typography>
+                <Typography variant='body2' sx={{ mb: 2 }}>
+                  <strong>In Stock:</strong> {item.availability ? 'Available' : 'Not Available'}
+                </Typography>
+                <Button
+                variant='contained'
+                disabled={!item.availability}
+                onClick={() => handleReserve(item)}
+                sx={{
+                  backgroundColor: item.availability ? '#4CAF50' : '#D3D3D3',
+                  '&:hover': item.availability ? { backgroundColor: '#45A049' } : {},
+                  color: 'white',
+                  textTransform: 'none',
+                  mb: 1,
+                }}
+                >
+                  Borrow
+                </Button>
+                <Button
+                variant='outlined'
+                disabled={item.availability}
+                onClick={() => handleNotifyMe(item)}
+                sx={{
+                  borderColor: item.availability ? '#D3D3D3' : '#FF5722',
+                  color: item.availability ? '#D3D3D3' : '#FF5722',
+                  textTransform: 'none',
+                  '&:hover': item.availability
+                  ? {}
+                  : {
+                    backgroundColor: '#FF5722',
+                    color: 'white', 
+                  },
+                }}
+                >
+                  Reserve
+                </Button>
+              </Box>
+            </div>
+          </div>
+          </Grid>
+        ))}
+        </Grid>
+        </Box>
  );
 }
 
 export default BrowseMedia;
+
+
+
+
+
+
+
+
+
+
