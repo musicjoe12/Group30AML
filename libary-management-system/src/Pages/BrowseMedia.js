@@ -3,6 +3,7 @@ import { useState, useEffect } from 'react';
 import '../CSS/navbar.css';
 import '../CSS/browsemedia.css';
 import SearchFilter from '../Components/SearchFilter'; // Import SearchFilter
+import MediaTypeSelector from '../Components/MediaTypeSelector';
 import { useSearch } from '../Context/SearchContext'; // Import useSearch hook
 import { Box, Grid, Typography, Card, CardMedia, CardContent, Drawer, IconButton, Button } from '@mui/material';
 import FilterAltIcon from '@mui/icons-material/FilterAlt';
@@ -13,7 +14,7 @@ import axios from 'axios';
 function BrowseMedia() {
   const [books, setBooks] = useState([]);
 
-  const { searchValue } = useSearch(); 
+  const { searchValue } = useSearch();
 
 
   const [filteredBooks, setFilteredBooks] = useState([]); 
@@ -132,6 +133,7 @@ function BrowseMedia() {
 
       {/* Filters Btn */}
 
+      <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
       <IconButton 
       onClick={() => setFilterOpen(true)}
       sx={{
@@ -144,6 +146,15 @@ function BrowseMedia() {
       >
         <FilterAltIcon />
       </IconButton>
+
+      {/* Media Type Selector */}
+
+      <MediaTypeSelector />
+      </Box>
+
+
+
+
       </Box>
       {filterOpen && (
         <SearchFilter
