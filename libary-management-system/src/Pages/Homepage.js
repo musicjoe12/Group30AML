@@ -1,7 +1,8 @@
 import React from 'react';
-import { Carousel, Button, Flex, Splitter, Typography } from 'antd';
+import { Carousel, Button, Flex, Splitter, Typography, Divider } from 'antd';
 import { useNavigate } from 'react-router-dom';
 import '../CSS/homepage.css';
+import TestimonialCarousel from '../Components/TestimonialCarousel';
 
 //Assets
 import logo1 from '../Assets/logo1.png';
@@ -11,6 +12,8 @@ import slide1 from '../Assets/slide1.jpg';
 import slide2 from '../Assets/slide2.jpg';
 import slide3 from '../Assets/slide3.jpg';
 import slide4 from '../Assets/slide4.jpg';
+import { imageListClasses } from '@mui/material';
+
 
 
 const blueBoxStyle = {
@@ -89,20 +92,13 @@ const Homepage = () => {
     </div>
     </div>
 
+    <Divider style={{ margin: '2px', backgroundColor: '#1565C0', height: '6px' }} />
 
+    <div>
+      <TestimonialCarousel />
+    </div>
+    <Divider style={{ margin: '2px', backgroundColor: '#1565C0', height: '6px' }} />
 
-
-
-    
-      <div style={blueBoxStyle}>
-        <h1 className="heading">Welcome to AML - Your Gateway to the UK's Largest Library Network</h1>
-        <p>Discover a world of knowledge with the Advanced Media Library (AML), offering books, journals, multimedia, and more across England's largest library network. Whether you're in Sheffield, Manchester, or a smaller town, AML provides seamless access to resources through our in-branch services, web-mobile app, and 24/7 online systems.</p>
-        <Button type="primary" onClick={handleGetStarted}>Get Started!</Button>
-      </div>
-
-      
-
-     
       <div style={{ textAlign: 'center', marginTop: '30px' }}>
         <Typography.Title level={2}>Who Do We Work For?</Typography.Title>
       </div>
