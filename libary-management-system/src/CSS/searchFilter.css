@@ -14,11 +14,6 @@
     
 }
 
-.ant-modal-header{
-    cursor: move !important; 
-    z-index: 1060; 
-}
-
 .filter-modal .ant-modal-body {
     padding: 25px;
     background-color: white !important;

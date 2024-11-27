@@ -177,3 +177,20 @@
 .user-item:hover {
   background-color: #e6f7ff; 
 }
+
+.settings-icon {
+  color: #1621bb; 
+}
+
+.logout-btn {
+  margin-top: 20px; 
+  font-size: 16px;   
+  font-weight: bold; 
+  background-color: #ff4d4f;
+  color: white; 
+  border-color: #ff4d4f; 
+  border-radius: 5px; 
+  padding: 10px 20px; 
+  transition: all 0.3s ease; 
+  width: 100%; 
+}
