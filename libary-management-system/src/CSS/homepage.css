@@ -1,0 +1,49 @@
+.carousel-container {
+    height: 80vh;
+    position: relative;
+}
+
+.carousel-image {
+    width: 100%;
+    height: 80vh;
+    object-fit: cover;
+    border-radius: 8px;
+}
+
+.carousel-text-box {
+    position: absolute;
+    top: 20%;
+    left: 5%;
+    background-color: rgba(0, 0, 0, 0.6);
+    color: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    max-width: 30%;
+    z-index: 1;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.carousel-text-box h2 {
+    margin-bottom: 10px;
+    font-size: 24px;
+    font-weight: bold;
+}
+
+.carousel-text-box p {
+    margin-bottom: 20px;
+    font-size: 16px;
+}
+
+.carousel-text-box button {
+    background-color: #1976D2;
+    border: none;
+    color: white;
+    padding: 10px 20px;
+    border-radius: 4px;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+.carousel-text-box button:hover {
+    background-color: #1565c0;
+}
