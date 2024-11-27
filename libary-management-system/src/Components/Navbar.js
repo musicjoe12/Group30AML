@@ -20,6 +20,8 @@ function Navbar() {
   const [isToggled, setIsToggled] = useState(false);
   const [users, setUsers] = useState([]); 
   const [isModalVisible, setIsModalVisible] = useState(false);
+  const [loginText, setLoginText] = useState("Login");
+
 
 
   // Initialize toggle state from localStorage
@@ -58,6 +60,7 @@ function Navbar() {
     console.log("User ID:", userId);
     setUserId(userId);
     setIsModalVisible(false);
+    setLoginText(`User: ${users.find(user => user._id === userId).first_name}`);    
   };
   
   //Navbar search 
@@ -96,7 +99,7 @@ function Navbar() {
               showModal();
               fetchUsers();
               }}>
-              Login
+              {loginText}
             </Button>
           </div>
         </div>
@@ -145,7 +148,7 @@ function Navbar() {
           itemLayout="horizontal"
           dataSource={users}
           renderItem={(user) => (
-            <List.Item onClick={() => handleLogin(user._id)} className="user-item">
+            <List.Item onClick={() => handleLogin(user._id) } className="user-item">
               <List.Item.Meta
                 title={user.first_name + ' ' + user.last_name}  
                 description={user.email}
