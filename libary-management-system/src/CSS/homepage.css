@@ -47,3 +47,45 @@
 .carousel-text-box button:hover {
     background-color: #1565c0;
 }
+
+/* Testimonial Carousel CSS */
+
+.testimonial-carousel-container {
+    text-align: center;
+    padding: 50px 20px;
+    background-color: #d3d3d3;
+}
+
+.testimonial-title {
+    margin-bottom: 20px;
+    color: #333;
+    font-weight: bold;
+}
+
+.testimonial-slide {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+.testimonial-name {
+    margin-top: 15px;
+    margin-left: 15px;
+    font-size: 30px;
+    font-weight: 500;
+}
+
+.testimonial-review {
+    margin-top: 40px;
+    font-size: 20px;
+    color: #555;
+    line-height: 1.5;
+}
+
+.avatar {
+    border: 2px solid #1976D2;
+}
