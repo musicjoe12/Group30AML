@@ -9,5 +9,7 @@ router.get('/users', userControllers.getAllUsers);
 router.get('/user/:id', userControllers.getUser);
 // Get user's books borrowed
 router.get('/user-books-borrowed/:id', userControllers.getUserBookBorrowed);
+// delete user book borrowed
+router.delete('/user-books-borrowed/:id/:books_borrowed', userControllers.deleteUserBookBorrowed);
 
 module.exports = router;

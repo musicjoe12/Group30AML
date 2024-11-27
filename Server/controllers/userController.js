@@ -21,7 +21,19 @@ module.exports = {
         .catch(err => console.log(err));
     },
 
-
-
+    deleteUserBookBorrowed: async (req, res) => {
+        await UserModel.findById(req.params.id)
+        .then(user => {
+            const bookBorrowed = req.params.books_borrowed
+            const bookIndex = user.books_borrowed.indexOf(bookBorrowed);
+            if(bookIndex === -1){
+                return res.status(404).json({ message: 'Book not found in borrowed books' });
+            }
+            user.books_borrowed.splice(bookIndex, 1);   
+            user.save()
+            res.json(user.books_borrowed);
+        })
+        .catch(err => console.log(err));
+    },
 };
 

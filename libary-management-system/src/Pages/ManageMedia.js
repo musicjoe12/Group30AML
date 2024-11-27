@@ -22,6 +22,10 @@ function ManageMedia() {
 
   //fetches reserved books from current selceted user
   const fetchReservedBooksId = async() => {
+    if (!userId) {
+      console.log('User ID is null or undefined');
+      return;
+    }
     setReservedBooks([]);
     await axios.get(`http://localhost:8080/api/user-books-borrowed/${userId}`)
     .then(res => {
@@ -60,8 +64,25 @@ function ManageMedia() {
     setSelectedBook(null);
   };
 
-  const handleReturnMedia = () => {
-   
+  const handleReturnMedia = async() => {
+   await axios.delete(`http://localhost:8080/api/user-books-borrowed/${userId}/${selectedBook._id}`)
+   .then(res => {
+      console.log(res.data);
+    })
+    .catch(err => console.log(`unable to delete book:${err}`));
+    //update book availability of book to true
+    updateBookAvailability();
+  };
+  const updateBookAvailability = async() => {
+    await axios.patch(`http://localhost:8080/api/update-book/${selectedBook._id}`, {
+      availability: true,
+    })
+    .then(res => {
+      console.log(res.data);
+      fetchReservedBooksId();
+      setModalOpen(false);
+    })
+    .catch(err => console.log(err));
   };
 
 
