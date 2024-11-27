@@ -29,10 +29,14 @@ const userSchema = new mongoose.Schema({
         type: Array,
         required: true
     },
+    books_reserved: {
+        type: Array,
+        required: true
+    }, 
     branch: {
         type: String,
         required: true
-    }  
+    },
 
 },{ versionKey: false });
 

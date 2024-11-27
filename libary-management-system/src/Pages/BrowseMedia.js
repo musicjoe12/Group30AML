@@ -39,6 +39,7 @@ function BrowseMedia() {
     }
   }, [searchValue, books]);
 
+  // Fetch books from API
   const fetchBooks = () => {
     axios.get('http://localhost:8080/api/books')
       .then((response) => {
@@ -49,29 +50,28 @@ function BrowseMedia() {
       })
       .catch((err) => console.log(err));
   };
-
   useEffect(() => {
     fetchBooks();
   }, []);
 
+  // flip book card
   const handleFlipCard = (index) => {
     setFlippedCards((prev) => ({ ...prev, [index]: !prev[index] }));
   };
   
 
-
+  
+  //borrow book 
   const handleBorrow = async(id) => {
-    // get book id 
     await axios.post(`http://localhost:8080/api/add-borrowed-book/${userId}`, { book: id })
       .then(res => {
         console.log(res.data);
         updateBookAvailability(id);
-
       })
       .catch(err => console.log(`borrow failed:${err}`));
-    // update book availability
-  };
-
+    };
+    
+  // update book availability
   const updateBookAvailability = async(id) => {
     await axios.patch(`http://localhost:8080/api/update-book/${id}`, {
       availability: false,
@@ -84,9 +84,26 @@ function BrowseMedia() {
   };
 
 
+  //reserve book
+  const handleReserve = async(id) => {
+    await axios.post(`http://localhost:8080/api/add-reserved-book/${userId}`, { book: id })
+    .then(res => {
+      console.log(res.data);
+      updateBookReservation(id);
+    })
+    .catch(err => console.log(`reserve failed:${err}`));
+  };
 
-  const handleReserve = (book) => {
-    
+  // update book reservation
+  const updateBookReservation = async(id) => {
+    await axios.patch(`http://localhost:8080/api/update-book/${id}`, {
+      reserved: true,
+    })
+    .then(res => {
+      console.log(res.data);
+      fetchBooks();
+    })
+    .catch(err => console.log(err));
   };
   
  return (
@@ -249,13 +266,13 @@ function BrowseMedia() {
                 </Button>
                 <Button
                   variant='outlined'
-                  disabled={item.availability}
-                  onClick={() => handleReserve(item)}
+                  disabled={item.reserved}
+                  onClick={() => handleReserve(item._id)}
                   sx={{
-                    borderColor: item.availability ? '#D3D3D3' : '#FF5722',
-                    color: item.availability ? '#D3D3D3' : '#FF5722',
+                    borderColor: item.reserved ? '#D3D3D3' : '#FF5722',
+                    color: item.reserved ? '#D3D3D3' : '#FF5722',
                     textTransform: 'none',
-                    '&:hover': item.availability
+                    '&:hover': item.reserved
                       ? {}
                       : {
                           backgroundColor: '#FF5722',

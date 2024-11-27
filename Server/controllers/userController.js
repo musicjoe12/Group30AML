@@ -21,6 +21,12 @@ module.exports = {
         .catch(err => console.log(err));
     },
 
+    getUserBookReserved: async (req, res) => {
+        await UserModel.findById(req.params.id)
+        .then(user => res.json(user.books_reserved))
+        .catch(err => console.log(err));
+    },
+
     deleteUserBookBorrowed: async (req, res) => {
         await UserModel.findById(req.params.id)
         .then(user => {
@@ -45,6 +51,32 @@ module.exports = {
             .catch(err => res.status(500).json({ message: 'Error saving user', error: err }));
         })
         .catch(err => res.status(500).json({ message: 'Error finding user', error: err }));
+    },
+
+    addReservedBook: async (req, res) => {
+        await UserModel.findById(req.params.id)
+        .then(user => {
+            user.books_reserved.push(req.body.book);
+            user.save()
+            .then(updatedUser => res.json(updatedUser.books_reserved))
+            .catch(err => res.status(500).json({ message: 'Error saving user', error: err }));
+        })
+        .catch(err => res.status(500).json({ message: 'Error finding user', error: err }));
+    },
+
+    deleteUserReservedBook: async (req, res) => {
+        await UserModel.findById(req.params.id)
+        .then(user => {
+            const bookReserved = req.params.books_reserved
+            const bookIndex = user.books_reserved.indexOf(bookReserved);
+            if(bookIndex === -1){
+                return res.status(404).json({ message: 'Book not found in reserved books' });
+            }
+            user.books_reserved.splice(bookIndex, 1);   
+            user.save()
+            res.json(user.books_reserved);
+        })
+        .catch(err => console.log(err));
     },
 };
 

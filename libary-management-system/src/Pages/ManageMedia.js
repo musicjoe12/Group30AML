@@ -6,12 +6,19 @@ import axios from 'axios';
 import { UserContext } from '../Context/UserContext';
 
 
+
 function ManageMedia() {
   //user id from navbar login using context
   const { userId } = useContext(UserContext);
+  //state for borrowed books
+  const [borrowedBooks, setBorrowedBooks] = useState([]);
+  //state for borrowed books id
+  const [borrowBooksId, setBorrowedBooksId] = useState([]);
   //state for reserved books
   const [reservedBooks, setReservedBooks] = useState([]);
+  //state for reserved books id
   const [reservedBooksId, setReservedBooksId] = useState([]);
+
   const [wishlist, setWishlist] = useState([]);
   const [modalOpen, setModalOpen] = useState(false);
   const [selectedBook, setSelectedBook] = useState(null);
@@ -20,14 +27,41 @@ function ManageMedia() {
 
   
 
-  //fetches reserved books from current selceted user
+  //fetches borrowed books from current selceted user
+  const fetchBorrowedBooksId = async() => {
+    if (!userId) {
+      console.log('User ID is null or undefined');
+      return;
+    }
+    setBorrowedBooks([]);
+    await axios.get(`http://localhost:8080/api/user-books-borrowed/${userId}`)
+    .then(res => {
+      //console.log(res.data);  
+      setBorrowedBooksId(res.data);
+      fetchBorrowedBooks(res.data);
+    })
+    .catch(err => console.log(`error fetching books${err}`));
+  };
+  //fetches books from users bowrrowed list
+  const fetchBorrowedBooks = async(ids) => {
+    //const bookIds = ids.join(',');
+    await axios.get(`http://localhost:8080/api/books/multiple?ids=${ids}`)
+    .then(res => {
+      //console.log(res.data);
+      setBorrowedBooks(res.data);
+    })
+    .catch(err => console.log(err));
+
+  };
+
+  //fetches reserved books from current selected user
   const fetchReservedBooksId = async() => {
     if (!userId) {
       console.log('User ID is null or undefined');
       return;
     }
     setReservedBooks([]);
-    await axios.get(`http://localhost:8080/api/user-books-borrowed/${userId}`)
+    await axios.get(`http://localhost:8080/api/user-books-reserved/${userId}`)
     .then(res => {
       //console.log(res.data);  
       setReservedBooksId(res.data);
@@ -35,20 +69,21 @@ function ManageMedia() {
     })
     .catch(err => console.log(`error fetching books${err}`));
   };
-  //fetches books from users bowrrowed list
+  //fetches books from users reserved list
   const fetchReservedBooks = async(ids) => {
-    //const bookIds = ids.join(',');
     await axios.get(`http://localhost:8080/api/books/multiple?ids=${ids}`)
     .then(res => {
       //console.log(res.data);
       setReservedBooks(res.data);
     })
     .catch(err => console.log(err));
-
   };
+
+
   useEffect(() => {
+    fetchBorrowedBooksId();
     fetchReservedBooksId();
-    
+      
   }, [userId]);
 
  
@@ -64,20 +99,43 @@ function ManageMedia() {
     setSelectedBook(null);
   };
 
-  //returns media
-  const handleReturnMedia = async() => {
-   await axios.delete(`http://localhost:8080/api/user-books-borrowed/${userId}/${selectedBook._id}`)
+  //returns borrowed media
+  const handleRemoveBorrowed = async() => {
+    await axios.delete(`http://localhost:8080/api/user-books-borrowed/${userId}/${selectedBook._id}`)
    .then(res => {
       console.log(res.data);
+      updateBookAvailability();
     })
     .catch(err => console.log(`unable to delete book:${err}`));
-    //update book availability of book to true
-    updateBookAvailability();
   };
   //updates book availability
   const updateBookAvailability = async() => {
     await axios.patch(`http://localhost:8080/api/update-book/${selectedBook._id}`, {
       availability: true,
+    })
+    .then(res => {
+      console.log(res.data);
+      fetchBorrowedBooksId();
+      setModalOpen(false);
+    })
+    .catch(err => console.log(err));
+  };
+
+
+  //removes reserved media
+  const handleRemoveReserved = async() => {
+    console.log(selectedBook._id, userId);
+    await axios.delete(`http://localhost:8080/api/user-books-reserved/${userId}/${selectedBook._id}`)
+    .then(res => {
+      console.log(res.data);
+      updateBookReservation();
+    })
+    .catch(err => console.log(`unable to delete book:${err}`));
+  };
+  //updates book reservation
+  const updateBookReservation = async() => {
+    await axios.patch(`http://localhost:8080/api/update-book/${selectedBook._id}`, {
+      reserved: false,
     })
     .then(res => {
       console.log(res.data);
@@ -87,18 +145,6 @@ function ManageMedia() {
     .catch(err => console.log(err));
   };
 
-
-  const handleExtend = () => {
-
-  };
-
-  const handleRemoveMedia = () => {
-   
-  };
-
-  const handleReserveFromWishlist = () => {
-  
-  };
 
 
   return (
@@ -110,7 +156,7 @@ function ManageMedia() {
       px: 4,
       marginTop: '40px'
     }}>
-      {/* Currently Reserved Section */}
+      {/* Currently borrowed Section */}
 
       <Box sx={{ mb: 6 }}>
         <Typography variant='h5' gutterBottom sx={{
@@ -134,8 +180,8 @@ function ManageMedia() {
           backgroundColor: '#E0F7FA',
         }}>
 
-          {reservedBooks.length > 0 ? (
-            reservedBooks.map((book, index) => (
+          {borrowedBooks.length > 0 ? (
+            borrowedBooks.map((book, index) => (
               <Box key={index}
               sx={{
                 display: 'flex',
@@ -169,7 +215,7 @@ function ManageMedia() {
           </Box>
           </Box>
 
-        {/* Wishlist Section */}
+        {/* reserved Section */}
 
         <Box>
           <Typography variant='h5' gutterBottom sx={{
@@ -180,7 +226,7 @@ function ManageMedia() {
             color: '#333',
           }}
           >
-            Reserved to Borrow -
+            Currently Reserved -
           </Typography>
           <Box sx={{
             display: 'flex',
@@ -194,8 +240,8 @@ function ManageMedia() {
           }}
           >
 
-            {wishlist.length > 0 ? (
-              wishlist.map((book, index) => (
+            {reservedBooks.length > 0 ? (
+              reservedBooks.map((book, index) => (
                 <Box
                 key={index}
                 sx={{
@@ -280,7 +326,7 @@ function ManageMedia() {
                     <Button
                     variant='contained'
                     color='error'
-                    onClick={handleReturnMedia}
+                    onClick={handleRemoveBorrowed}
                     sx={{ textTransform: 'none' }}
                     >
                       Return Media
@@ -288,7 +334,7 @@ function ManageMedia() {
                     <Button
                     variant='contained'
                     color='primary'
-                    onClick={handleExtend}
+                    // onClick={}
                     sx={{ textTransform: 'none' }}
                     >
                       Extend
@@ -300,20 +346,20 @@ function ManageMedia() {
                       <Button
                       variant='contained'
                       color='error'
-                      onClick={handleRemoveMedia}
+                      onClick={handleRemoveReserved}
                       sx={{ textTransform: 'none' }}
                       >
                         Remove Media
                       </Button>
                       <Button
                       variant='contained'
-                      disabled={!selectedBook.availability}
-                      onClick={handleReserveFromWishlist}
+                      disabled={!selectedBook.reserved}
+                      //onClick={handleReserveFromWishlist}
                       sx={{
                         textTransform: 'none',
-                        backgroundColor: selectedBook.availability ? 'primary.main' : '#ccc',
+                        backgroundColor: selectedBook.reserved ? 'primary.main' : '#ccc',
                         '&:hover': {
-                          backgroundColor: selectedBook.availability ? 'primary.dark' : '#ccc',
+                          backgroundColor: selectedBook.reserved ? 'primary.dark' : '#ccc',
                         },
                       }}
                       >
