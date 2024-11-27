@@ -1,38 +1,21 @@
 import React, { useState, useEffect } from 'react';
-import { Input, Tag, Select, Space, DatePicker, Modal, Button, Typography, Divider } from 'antd';
+import { Input, Tag, Space, DatePicker, Modal, Button, Typography, Divider } from 'antd';
 import '../CSS/searchFilter.css';
 import { useSearch } from '../Context/SearchContext';
-import { FilterAlt, Spa } from '@mui/icons-material';
-import { triggerFocus } from 'antd/es/input/Input';
+import Draggable from 'react-draggable';  // Import Draggable
 
-
-const { Search } = Input;
-const { Option } = Select;
-const { RangePicker } = DatePicker;
 const { Title, Text } = Typography;
+const { RangePicker } = DatePicker;
 
 const SearchFilter = ({ books, onFilterUpdate, genres, isOpen, onClose }) => {
   const [filters, setFilters] = useState({
     search: '',
     genre: null,
     availability: null,
-    publicationYear: {start: null, end: null},
+    publicationYear: { start: null, end: null },
   });
 
   const { searchValue } = useSearch(); // Get searchValue and setSearchValue
-
-
-
-//  useEffect(() => {
- //   if (trigger) {
-  //    trigger(() => setModalVisible(true));
-  //  }
- // }, [trigger]);
-
-
-  //const [modalVisible, setModalVisible] = useState(false); // State to manage modal visibility
-
-
 
   useEffect(() => {
     if (searchValue.trim() !== "") {
@@ -45,12 +28,6 @@ const SearchFilter = ({ books, onFilterUpdate, genres, isOpen, onClose }) => {
       onFilterUpdate(books); // Reset to all books if search is cleared
     }
   }, [searchValue, books, onFilterUpdate]);
-
-
- // useEffect(() => {
- //   applyFilters(filters);
- // }, [books, filters]); 
-
 
   const handleSearch = (searchValue) => {
     setFilters((prev) => ({ ...prev, search: searchValue }));
@@ -147,21 +124,27 @@ const SearchFilter = ({ books, onFilterUpdate, genres, isOpen, onClose }) => {
   }).length;
 
   return (
-      <Modal
-      title='Filters'
-      visible={isOpen}
-      onCancel={onClose}
-      footer={null}
-      bodyStyle={{
-        backgroundColor: '#D3D3D3',
-        display: 'flex',
-        flexDirection: 'column',
-      }}
-      >
-        <Title level={4} style={{ color: 'black' }}>
-          Filter Books
-        </Title>
-        <Divider />
+    <Draggable handle=".ant-modal-header">
+      <div>
+        <Modal
+          title='Filters'
+          visible={isOpen}
+          onCancel={onClose}
+          footer={null}
+          bodyStyle={{
+            backgroundColor: '#D3D3D3',
+            display: 'flex',
+            flexDirection: 'column',
+            pointerEvents: 'auto', // Ensure clickable area is active
+          }}
+        >
+          <Title level={4} style={{ color: 'black' }}>
+            Filter Books
+          </Title>
+          <Text type="secondary" style={{ marginBottom: 10 }}>
+            {filteredBooksCount} books match the filters.
+          </Text>
+          <Divider />
 
           {/* Search Input */}
           <Input
@@ -177,6 +160,8 @@ const SearchFilter = ({ books, onFilterUpdate, genres, isOpen, onClose }) => {
             onChange={handleYearChange}
             allowClear
           />
+          {/* Genre Section */}
+          <Text className="filter-subtitle">Genre</Text>
           <Space wrap>
             {genres.map((genre) => (
               <Tag
@@ -189,41 +174,40 @@ const SearchFilter = ({ books, onFilterUpdate, genres, isOpen, onClose }) => {
               </Tag>
             ))}
           </Space>
-          <Space>
-            {/* Filter by Availability */}
-        <div className="filter-availability">
-          <Text className="filter-subtitle">Availability</Text>
-          <Space wrap>
-            <Tag
-              className={`filter-tag ${filters.availability === true ? 'filter-tag-available' : ''}`}
-              onClick={() => handleAvailabilityClick(true)}
-            >
-              Available
-            </Tag>
-            <Tag
-              className={`filter-tag ${filters.availability === false ? 'filter-tag-reserved' : ''}`}
-              onClick={() => handleAvailabilityClick(false)}
-            >
-              Reserved
-            </Tag>
-          </Space>
-        </div>
-          </Space>
 
-        
+          {/* Filter by Availability */}
+          <div className="filter-availability">
+            <Text className="filter-subtitle">Availability</Text>
+            <div className="filter-tags-container">
+              <Tag
+                className={`filter-tag ${filters.availability === true ? 'filter-tag-available' : ''}`}
+                onClick={() => handleAvailabilityClick(true)}
+              >
+                Available
+              </Tag>
+              <Tag
+                className={`filter-tag ${filters.availability === false ? 'filter-tag-reserved' : ''}`}
+                onClick={() => handleAvailabilityClick(false)}
+              >
+                Reserved
+              </Tag>
+            </div>
+          </div>
 
-        {/* Search Button */}
-        <Button
-          type="primary"
-          className="search-button"
-          onClick={() => {
-            applyFilters(filters);
-            onClose();
-          }}
-        >
-          Search
-        </Button>
-      </Modal>
+          {/* Search Button */}
+          <Button
+            type="primary"
+            className="search-button"
+            onClick={() => {
+              applyFilters(filters);
+              onClose();
+            }}
+          >
+            Search
+          </Button>
+        </Modal>
+      </div>
+    </Draggable>
   );
 };
 

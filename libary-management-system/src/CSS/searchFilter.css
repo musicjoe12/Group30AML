@@ -4,15 +4,34 @@
     padding: 0;
     border-radius: 8px;
     overflow: hidden;
+    position: relative; 
+    z-index: 9999; 
+
+}
+
+.filter-modal .ant-modal-header {
+    cursor: move; 
+    
+}
+
+.ant-modal-header{
+    cursor: move !important; 
+    z-index: 1060; 
 }
 
 .filter-modal .ant-modal-body {
-    padding: 20px;
+    padding: 25px;
     background-color: white !important;
     color: black;
     display: flex;
     flex-direction: column;
-    gap: 15px;
+    gap: 20px; 
+}
+
+.ant-modal-body {
+    background-color: white !important;
+    pointer-events: auto !important; 
+
 }
 
 /* Title and Count */
@@ -21,12 +40,13 @@
     font-size: 22px;
     font-weight: bold;
     color: black !important;
+    text-align: left;
 }
 
 .ant-typography.filter-count {
     font-size: 16px;
     color: black !important;
-    margin-bottom: 15px;
+    margin-bottom: 20px;
 }
 
 /* Input Fields */
@@ -39,6 +59,7 @@
     height: 50px;
     font-size: 16px;
     padding: 0 15px;
+    margin-bottom: 20px; /* Added spacing below the input field */
 }
 
 .filter-input::placeholder {
@@ -53,6 +74,7 @@
     color: black;
     font-size: 16px;
     height: 50px;
+    margin-bottom: 20px; /* Added spacing below the date picker */
 }
 
 .ant-picker {
@@ -80,6 +102,52 @@
     color: black !important;
 }
 
+/* Tags Section */
+.filter-subtitle {
+    font-size: 16px;
+    font-weight: bold;
+    color: black;
+    margin-bottom: 10px;
+}
+
+.filter-tag {
+    font-size: 14px;
+    padding: 10px 18px; /* Increased padding for better spacing */
+    border-radius: 16px;
+    margin: 8px 10px; /* Increased spacing between tags */
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.2s ease;
+    background-color: #f5f5f5;
+    color: black;
+}
+
+.filter-tag:hover {
+    background-color: #ddd;
+    transform: scale(1.05);
+}
+
+/* Selected Tag Colors */
+.filter-tag-available {
+    background-color: #2DBF7A;
+    color: white;
+}
+
+.filter-tag-reserved {
+    background-color: #F44336;
+    color: white;
+}
+
+/* Availability Section */
+.filter-availability {
+    margin-top: 20px; /* Added spacing above availability section */
+}
+
+/* Divider */
+.filter-divider {
+    border-color: #ddd;
+    margin: 20px 0; /* Increased spacing for divider */
+}
+
 /* Search Button */
 .search-button {
     width: 100%;
@@ -91,54 +159,9 @@
     color: white;
     border: none;
     transition: background-color 0.3s ease;
-    margin-top: 10px;
+    margin-top: 20px; /* Increased spacing above the button */
 }
 
 .search-button:hover {
     background-color: #127BC2;
-}
-
-/* Filter by Genre & Availability Tags */
-.filter-genre, .filter-availability {
-    margin-top: 10px;
-}
-
-.filter-subtitle {
-    font-size: 16px;
-    font-weight: bold;
-    color: black;
-    margin-bottom: 10px;
-}
-
-.filter-tag {
-    font-size: 14px;
-    padding: 8px 16px;
-    border-radius: 16px;
-    margin: 5px 8px;
-    cursor: pointer;
-    transition: background-color 0.3s, transform 0.2s ease;
-    background-color: #e0e0e0;
-    color: black;
-}
-
-.filter-tag:hover {
-    background-color: #ccc;
-    transform: scale(1.05);
-}
-
-/* Available Tag Colors */
-.filter-tag-available {
-    background-color: #2DBF7A;
-    color: white;
-}
-
-.filter-tag-reserved {
-    background-color: #F44336;
-    color: white;
-}
-
-/* Divider */
-.filter-divider {
-    border-color: #ddd;
-    margin: 10px 0;
 }

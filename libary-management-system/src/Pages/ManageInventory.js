@@ -10,6 +10,9 @@ import BranchSelector from '../Components/BranchSelector';
 import Loader from '../Components/Loader'; // Import Loader
 import { TailSpin } from 'react-loader-spinner';
 
+import { IconButton, Box } from '@mui/material';
+import FilterAltIcon from '@mui/icons-material/FilterAlt';
+
 import { useNavigate } from 'react-router-dom'; // For Redirecting
 import { message } from 'antd'; // Warning message
 
@@ -40,6 +43,9 @@ import { message } from 'antd'; // Warning message
     const [isTransferModalVisible, setIsTransferModalVisible] = useState(false)
     //Delete Modal
     const [isDeleteModalVisible, setIsDeleteModalVisible] = useState(false);
+
+    const [filterOpen, setFilterOpen] = useState(false);
+
 
 
     // Redirect to homepage
@@ -242,11 +248,33 @@ import { message } from 'antd'; // Warning message
       <div className="manage-inventory-container">
         {/* Search and Filters */}
         <div className="search-filters-container">
-          <SearchFilter
-            books={books}
-            onFilterUpdate={setFilteredBooks} // Update filtered books
-            genres={genres}
-          />
+          <Box sx={{ display: 'flex', alignItems: 'center' }}>
+            {/* Filter Button */}
+            <IconButton 
+              onClick={() => setFilterOpen(true)}
+              sx={{
+                backgroundColor: '#1976d2',
+                color: 'white',
+                '&:hover': {
+                  backgroundColor: '#1565C0',
+                },
+              }}
+            >
+              <FilterAltIcon />
+            </IconButton>
+    
+            {/* Show Filter Component if the filter button is clicked */}
+            {filterOpen && (
+              <SearchFilter
+                books={books}
+                onFilterUpdate={setFilteredBooks}
+                genres={genres}
+                isOpen={filterOpen}
+                onClose={() => setFilterOpen(false)}
+              />
+            )}
+          </Box>
+    
           {/* Branch Dropdown */}
           <div className="branch-selector-container">
             <BranchSelector
@@ -256,6 +284,7 @@ import { message } from 'antd'; // Warning message
               fetchBooks={fetchBooks}
             />
           </div>
+    
           {/* Add Button */}
           <div className="add-button-container">
             <Button type="primary" onClick={() => setIsModalVisible(true)}>
@@ -263,12 +292,12 @@ import { message } from 'antd'; // Warning message
             </Button>
           </div>
         </div>
-  
+    
         {/* Table */}
         <div className="table-container">
           <Table columns={columns} dataSource={filteredBooks} rowKey="_id" />
         </div>
-  
+    
         {/* Add Modal */}
         <Modal
           title="Add New Book"
@@ -344,7 +373,7 @@ import { message } from 'antd'; // Warning message
             </Form.Item>
           </Form>
         </Modal>
-  
+    
         {/* Edit Book Modal */}
         <Modal
           title="Edit Book"
@@ -367,7 +396,7 @@ import { message } from 'antd'; // Warning message
             {/* Form fields for editing book */}
           </Form>
         </Modal>
-  
+    
         {/* Transfer Modal */}
         <Modal
           title="Transfer Book"
@@ -400,7 +429,7 @@ import { message } from 'antd'; // Warning message
             </Form.Item>
           </Form>
         </Modal>
-  
+    
         {/* Delete Modal */}
         <Modal
           title="Delete Book"
@@ -424,6 +453,5 @@ import { message } from 'antd'; // Warning message
       </div>
     );
   };
-
 
 export default ManageInventory;
