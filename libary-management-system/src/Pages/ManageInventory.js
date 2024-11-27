@@ -374,8 +374,8 @@ import { message } from 'antd'; // Warning message
           </Form>
         </Modal>
     
-        {/* Edit Book Modal */}
-        <Modal
+                {/* Edit Book Modal */}
+              <Modal
           title="Edit Book"
           visible={isEditModalVisible}
           onCancel={() => setIsEditModalVisible(false)}
@@ -393,7 +393,63 @@ import { message } from 'antd'; // Warning message
             layout="vertical"
             onFinish={(values) => updateBook(editingBook._id, values)}
           >
-            {/* Form fields for editing book */}
+            <Form.Item
+              name="title"
+              label="Title"
+              rules={[{ required: true, message: 'Please enter the title' }]}
+            >
+              <Input />
+            </Form.Item>
+            <Form.Item
+              name="author"
+              label="Author"
+              rules={[{ required: true, message: 'Please enter the author' }]}
+            >
+              <Input />
+            </Form.Item>
+            <Form.Item
+              name="description"
+              label="Description"
+              rules={[{ required: true, message: 'Please enter the description' }]}
+            >
+              <Input />
+            </Form.Item>
+            <Form.Item
+              name="genre"
+              label="Genre"
+              rules={[{ required: true, message: 'Please select the genre' }]}
+            >
+              <Select>
+                <Option value="Fiction">Fiction</Option>
+                <Option value="Non-fiction">Non-fiction</Option>
+                <Option value="Sci-fi">Sci-fi</Option>
+                <Option value="Biography">Biography</Option>
+              </Select>
+            </Form.Item>
+            <Form.Item
+              name="publication_year"
+              label="Publication Year"
+              rules={[{ required: true, message: 'Please enter the publication year' }]}
+            >
+              <Input type="number" />
+            </Form.Item>
+            <Form.Item
+              name="image"
+              label="Image Link"
+              rules={[{ required: true, message: 'Please enter the image link' }]}
+            >
+              <Input />
+            </Form.Item>
+            <Form.Item
+              name="availability"
+              label="Availability"
+              rules={[{ required: true, message: 'Please select availability' }]}
+            >
+              <Select>
+                <Option value={true}>Available</Option>
+                <Option value={false}>Reserved</Option>
+              </Select>
+            </Form.Item>
           </Form>
         </Modal>
     
