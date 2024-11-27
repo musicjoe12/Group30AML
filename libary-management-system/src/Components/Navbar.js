@@ -60,7 +60,7 @@ function Navbar() {
     console.log("User ID:", userId);
     setUserId(userId);
     setIsModalVisible(false);
-    setLoginText(`User: ${users.find(user => user._id === userId).first_name}`);    
+    setLoginText(`${users.find(user => user._id === userId).first_name}`);    
   };
   
   //Navbar search 

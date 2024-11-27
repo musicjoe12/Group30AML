@@ -231,38 +231,42 @@ function BrowseMedia() {
                   marginTop: '10px',
                 }}
                 >
-                  <Button
-                variant='contained'
-                disabled={!item.availability}
-                onClick={() => handleBorrow(item._id)}
-                sx={{
-                  backgroundColor: item.availability ? '#4CAF50' : '#D3D3D3',
-                  '&:hover': item.availability ? { backgroundColor: '#45A049' } : {},
-                  color: 'white',
-                  textTransform: 'none',
-                  mb: 1,
-                }}
+                {userId && (
+                <>
+                <Button
+                  variant='contained'
+                  disabled={!item.availability}
+                  onClick={() => handleBorrow(item._id)}
+                  sx={{
+                    backgroundColor: item.availability ? '#4CAF50' : '#D3D3D3',
+                    '&:hover': item.availability ? { backgroundColor: '#45A049' } : {},
+                    color: 'white',
+                    textTransform: 'none',
+                    mb: 1,
+                  }}
                 >
                   Borrow
                 </Button>
                 <Button
-                variant='outlined'
-                disabled={item.availability}
-                onClick={() => handleReserve(item)}
-                sx={{
-                  borderColor: item.availability ? '#D3D3D3' : '#FF5722',
-                  color: item.availability ? '#D3D3D3' : '#FF5722',
-                  textTransform: 'none',
-                  '&:hover': item.availability
-                  ? {}
-                  : {
-                    backgroundColor: '#FF5722',
-                    color: 'white', 
-                  },
-                }}
+                  variant='outlined'
+                  disabled={item.availability}
+                  onClick={() => handleReserve(item)}
+                  sx={{
+                    borderColor: item.availability ? '#D3D3D3' : '#FF5722',
+                    color: item.availability ? '#D3D3D3' : '#FF5722',
+                    textTransform: 'none',
+                    '&:hover': item.availability
+                      ? {}
+                      : {
+                          backgroundColor: '#FF5722',
+                          color: 'white',
+                        },
+                  }}
                 >
                   Reserve
                 </Button>
+                </>
+                )}
                 </Box>
               </Box>
             </div>
