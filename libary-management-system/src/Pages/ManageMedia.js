@@ -64,6 +64,7 @@ function ManageMedia() {
     setSelectedBook(null);
   };
 
+  //returns media
   const handleReturnMedia = async() => {
    await axios.delete(`http://localhost:8080/api/user-books-borrowed/${userId}/${selectedBook._id}`)
    .then(res => {
@@ -73,6 +74,7 @@ function ManageMedia() {
     //update book availability of book to true
     updateBookAvailability();
   };
+  //updates book availability
   const updateBookAvailability = async() => {
     await axios.patch(`http://localhost:8080/api/update-book/${selectedBook._id}`, {
       availability: true,

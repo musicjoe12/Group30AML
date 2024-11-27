@@ -35,5 +35,16 @@ module.exports = {
         })
         .catch(err => console.log(err));
     },
+
+    addBorrowedBook: async (req, res) => {
+        await UserModel.findById(req.params.id)
+        .then(user => {
+            user.books_borrowed.push(req.body.book);
+            user.save()
+            .then(updatedUser => res.json(updatedUser.books_borrowed))
+            .catch(err => res.status(500).json({ message: 'Error saving user', error: err }));
+        })
+        .catch(err => res.status(500).json({ message: 'Error finding user', error: err }));
+    },
 };
 

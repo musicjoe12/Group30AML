@@ -18,7 +18,7 @@ router.patch('/update-book/:id', bookControllers.updateBook);
 
 //delete a book
 router.delete('/delete-book/:id', bookControllers.deleteBook);
-
+// transfer a book
 router.post('/transfer-book/:id', bookControllers.transferBook);
 
 module.exports = router;

@@ -1,5 +1,5 @@
 import React from 'react';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useContext } from 'react';
 import '../CSS/navbar.css';
 import '../CSS/browsemedia.css';
 import SearchFilter from '../Components/SearchFilter'; // Import SearchFilter
@@ -7,14 +7,15 @@ import MediaTypeSelector from '../Components/MediaTypeSelector';
 import { useSearch } from '../Context/SearchContext'; // Import useSearch hook
 import { Box, Grid, Typography, Card, CardMedia, CardContent, Drawer, IconButton, Button } from '@mui/material';
 import FilterAltIcon from '@mui/icons-material/FilterAlt';
+import { UserContext } from '../Context/UserContext';
 
 import axios from 'axios';
 
 
 function BrowseMedia() {
   const [books, setBooks] = useState([]);
-
   const { searchValue } = useSearch();
+  const { userId } = useContext(UserContext);
 
 
   const [filteredBooks, setFilteredBooks] = useState([]); 
@@ -57,53 +58,35 @@ function BrowseMedia() {
     setFlippedCards((prev) => ({ ...prev, [index]: !prev[index] }));
   };
   
-  {/* Reserve Book */}
-
-  const handleReserve = (book) => {
-    const reservedBooks = JSON.parse(localStorage.getItem('reservedBooks')) || [];
-
-    if (!reservedBooks.some((reservedBook) => reservedBook.title === book.title)) {
-      const dateReserved = new Date();
-      const returnBy = new Date();
-      returnBy.setDate(dateReserved.getDate() + 14); //2 week Reservation window
-
-      //Change date Format to DDMMYYYY
-
-      const formatDate = (date) => {
-        const day = date.getDate().toString().padStart(2, '0');
-        const month = (date.getMonth() + 1).toString().padStart(2, '0');
-        const year = date.getFullYear();
-        return `${day}-${month}-${year}`;
-      };
 
 
+  const handleBorrow = async(id) => {
+    // get book id 
+    await axios.post(`http://localhost:8080/api/add-borrowed-book/${userId}`, { book: id })
+      .then(res => {
+        console.log(res.data);
+        updateBookAvailability(id);
 
-      const updatedBook = {
-        ...book,
-        dateReserved: formatDate(dateReserved),
-        returnBy: formatDate(returnBy),
-      };
-
-      reservedBooks.push(updatedBook);
-      localStorage.setItem('reservedBooks', JSON.stringify(reservedBooks));
-      alert('`${book.title}` has been reserved');
-    } else {
-      alert('`${book.title}` is already reserved');
-    }
+      })
+      .catch(err => console.log(`borrow failed:${err}`));
+    // update book availability
   };
 
-  {/* Notify Me */ }
+  const updateBookAvailability = async(id) => {
+    await axios.patch(`http://localhost:8080/api/update-book/${id}`, {
+      availability: false,
+    })
+    .then(res => {
+      console.log(res.data);
+      fetchBooks();
+    })
+    .catch(err => console.log(err));
+  };
 
-  const handleNotifyMe = (book) => {
-    const wishlist = JSON.parse(localStorage.getItem('wishlist')) || [];
 
-    if (!wishlist.some((wishlistBook) => wishlistBook.title === book.title)) {
-      wishlist.push(book);
-      localStorage.setItem('wishlist', JSON.stringify(wishlist));
-      alert('`${book.title}` has been added to your wishlist');
-    } else {
-      alert('`${book.title}` is already in your wishlist');
-    }
+
+  const handleReserve = (book) => {
+    
   };
   
  return (
@@ -251,7 +234,7 @@ function BrowseMedia() {
                   <Button
                 variant='contained'
                 disabled={!item.availability}
-                onClick={() => handleReserve(item)}
+                onClick={() => handleBorrow(item._id)}
                 sx={{
                   backgroundColor: item.availability ? '#4CAF50' : '#D3D3D3',
                   '&:hover': item.availability ? { backgroundColor: '#45A049' } : {},
@@ -265,7 +248,7 @@ function BrowseMedia() {
                 <Button
                 variant='outlined'
                 disabled={item.availability}
-                onClick={() => handleNotifyMe(item)}
+                onClick={() => handleReserve(item)}
                 sx={{
                   borderColor: item.availability ? '#D3D3D3' : '#FF5722',
                   color: item.availability ? '#D3D3D3' : '#FF5722',
