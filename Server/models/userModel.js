@@ -25,10 +25,10 @@ const userSchema = new mongoose.Schema({
         type: String,
         required: true
     },
-    books_borrowed: {
-        type: Array,
-        required: true
-    },
+    books_borrowed: [{
+        book_id: { type: String, required: true },
+        due_date: { type: String, required: true },
+    }],
     books_reserved: {
         type: Array,
         required: true

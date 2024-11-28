@@ -18,6 +18,8 @@ function ManageMedia() {
   const [reservedBooks, setReservedBooks] = useState([]);
   //state for reserved books id
   const [reservedBooksId, setReservedBooksId] = useState([]);
+  //state for due date
+  const [dueDate, setDueDate] = useState([]);
 
   const [wishlist, setWishlist] = useState([]);
   const [modalOpen, setModalOpen] = useState(false);
@@ -34,11 +36,15 @@ function ManageMedia() {
       return;
     }
     setBorrowedBooks([]);
+    setDueDate([]);
     await axios.get(`http://localhost:8080/api/user-books-borrowed/${userId}`)
     .then(res => {
-      //console.log(res.data);  
-      setBorrowedBooksId(res.data);
-      fetchBorrowedBooks(res.data);
+      const borrowedBooks = res.data; 
+      const bookIds = borrowedBooks.map(book => book.book_id);
+      setBorrowedBooksId(bookIds);
+      fetchBorrowedBooks(bookIds);
+      
+      setDueDate([...new Set(borrowedBooks.map(book => book.due_date))]);
     })
     .catch(err => console.log(`error fetching books${err}`));
   };
@@ -101,6 +107,7 @@ function ManageMedia() {
 
   //returns borrowed media
   const handleRemoveBorrowed = async() => {
+    console.log(`Deleting book with ID: ${selectedBook.book_id} for user: ${userId}`);
     await axios.delete(`http://localhost:8080/api/user-books-borrowed/${userId}/${selectedBook._id}`)
    .then(res => {
       console.log(res.data);
@@ -145,6 +152,10 @@ function ManageMedia() {
     .catch(err => console.log(err));
   };
 
+  //renews borrowed media
+  const handleRenewBorrowed = async() => {
+  
+  };
 
 
   return (
@@ -311,17 +322,20 @@ function ManageMedia() {
                   <Typography sx={{ mb: 2 }}>
                     <strong>Description:</strong> {selectedBook.description}
                   </Typography>
+                  <Typography sx={{ mb: 4}}>
+                    <strong>Return By:</strong> {dueDate}
+                  </Typography>
 
                   {/* Conditional Content depending on Modal */}
 
                   {!isWishlistModal ? (
                     <>
-                    <Typography sx={{ mb: 2}}>
+                    {/* <Typography sx={{ mb: 2}}>
                     <strong>Date Reserved:</strong> {selectedBook.dateReserved || 'N/A'}
                   </Typography>
                   <Typography sx={{ mb: 4}}>
                     <strong>Return By:</strong> {selectedBook.returnBy || 'N/A'}
-                  </Typography>
+                  </Typography> */}
                   <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
                     <Button
                     variant='contained'
@@ -334,10 +348,10 @@ function ManageMedia() {
                     <Button
                     variant='contained'
                     color='primary'
-                    // onClick={}
+                    onClick={handleRenewBorrowed}
                     sx={{ textTransform: 'none' }}
                     >
-                      Extend
+                      Renew Media
                     </Button>
                   </Box>
                   </>

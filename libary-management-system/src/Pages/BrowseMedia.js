@@ -62,14 +62,19 @@ function BrowseMedia() {
 
   
   //borrow book 
-  const handleBorrow = async(id) => {
-    await axios.post(`http://localhost:8080/api/add-borrowed-book/${userId}`, { book: id })
-      .then(res => {
-        console.log(res.data);
-        updateBookAvailability(id);
-      })
-      .catch(err => console.log(`borrow failed:${err}`));
-    };
+  const handleBorrow = async(id, dueDate) => {
+    console.log(id, dueDate); 
+    try {
+      const response = await axios.post(`http://localhost:8080/api/add-borrowed-book/${userId}`, {
+          book_id: id,
+          due_date: dueDate,
+      });
+      console.log(response.data);
+      updateBookAvailability(id);
+  } catch (err) {
+      console.error(`Borrow failed: ${err.response?.data?.message || err.message}`);
+  }
+  };
     
   // update book availability
   const updateBookAvailability = async(id) => {
@@ -253,7 +258,7 @@ function BrowseMedia() {
                 <Button
                   variant='contained'
                   disabled={!item.availability}
-                  onClick={() => handleBorrow(item._id)}
+                  onClick={() => handleBorrow(item._id, "28/11/2024")}
                   sx={{
                     backgroundColor: item.availability ? '#4CAF50' : '#D3D3D3',
                     '&:hover': item.availability ? { backgroundColor: '#45A049' } : {},
