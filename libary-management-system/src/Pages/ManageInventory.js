@@ -371,6 +371,16 @@ import { message } from 'antd'; // Warning message
                 <Option value={false}>Reserved</Option>
               </Select>
             </Form.Item>
+            <Form.Item
+              name="reserved"
+              label="Reserved"
+              rules={[{ required: true, message: 'Please select if it has already been reserved' }]}
+            >
+              <Select>
+                <Option value={true}>Available</Option>
+                <Option value={false}>Reserved</Option>
+              </Select>
+            </Form.Item>
           </Form>
         </Modal>
     
@@ -450,6 +460,7 @@ import { message } from 'antd'; // Warning message
                 <Option value={false}>Reserved</Option>
               </Select>
             </Form.Item>
+            <Input />
           </Form>
         </Modal>
     
