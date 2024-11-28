@@ -1,11 +1,11 @@
 import React, { useState, useEffect, useContext } from 'react';
-import { Layout, Input, Menu, Button, Switch, Modal, List } from 'antd';
+import { Layout, Input, Menu, Button, Switch, Modal, List, Drawer, Typography } from 'antd';
 import { useNavigate } from 'react-router-dom';
 import '../CSS/navbar.css'; // Custom CSS file
 import { UserContext } from '../Context/UserContext';  // Import UserContext
 import { useSearch } from '../Context/SearchContext'; 
 import Cookies from 'js-cookie'; // Import js-cookie
-import { SettingOutlined } from '@ant-design/icons'; // Import settings cog icon
+import { SettingOutlined, MenuOutlined } from '@ant-design/icons'; // Import settings cog icon
 
 
 // Assets
@@ -22,6 +22,21 @@ function Navbar() {
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [loginText, setLoginText] = useState("Login");
   const [isSettingsVisible, setIsSettingsVisible] = useState(false); // For settings modal visibility
+  const [drawerVisible, setDrawerVisible] = useState(false); //for hamburger menu on smaller screens
+  const [isMobileView, setIsMobileView] = useState(window.innerWidth <= 768);
+
+  //mobile view state on resize
+  useEffect(() => {
+    const handleResize = () => {
+      setIsMobileView(window.innerWidth <= 768);
+    };
+
+    window.addEventListener("resize", handleResize);
+
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
+  }, []);
 
 
   // Initialize toggle state from localStorage
@@ -109,6 +124,10 @@ function Navbar() {
     navigate(`/browse-media?search=${value}`);
   };
 
+  const toggleDrawer = () => {
+    setDrawerVisible(!drawerVisible);
+  };
+
   return (
     <Layout>
       {/* Top Navbar */}
@@ -120,10 +139,20 @@ function Navbar() {
               <img src={logo} alt="AML Logo" className="navbar-logo" />
               <span className="navbar-title">AML</span>
             </a>
-          </div>
+          </div>  
 
           {/* Right: Search Bar and Login Button */}
           <div className="navbar-right">
+          {isMobileView && (
+          <Button
+          className='hamburger-button'
+          icon={<MenuOutlined />}
+          onClick={toggleDrawer}
+          />
+
+            )}
+            {!isMobileView && (
+              <>
             <Search
               placeholder="Search"
               className="navbar-search"
@@ -132,7 +161,7 @@ function Navbar() {
               onChange={(e) => setSearchValue(e.target.value)} // Update search value
               onSearch={onSearch}
             />
-            <Button type="primary" className="navbar-login" onClick={() => {
+              <Button type="primary" className="navbar-login" onClick={() => {
               showModal();
               fetchUsers();
             }}>
@@ -143,7 +172,10 @@ function Navbar() {
             className="settings-icon"
             style={{ fontSize: '24px', color: '#white', marginLeft: '10px', cursor: 'pointer' }}
             onClick={showSettingsModal} // Open the settings modal
-          />      
+          />
+          </>
+            )}
+              
           </div>
         </div>
       </Header>
@@ -180,7 +212,73 @@ function Navbar() {
         </div>
       </div>
 
-      /* Login Modal */
+      {/* Drawer for small screens */}
+      <Drawer
+      title='Menu'
+      placement='right'
+      onClose={toggleDrawer}
+      visible={drawerVisible}
+      >
+
+        {/* Search bar in Drawer */}
+        <div className='drawer-search-section' style={{ marginTop: '20px' }}>
+          <Input.Search
+          placeholder='Search'
+          value={searchValue}
+          onChange={(e) => setSearchValue(e.target.value)}
+          onSearch={onSearch}
+          enterButton
+          className='drawer-search-bar'
+          />
+        </div>
+
+        <Menu mode='vertical'>
+          <Menu.Item key={'browse-media-mobile'}>
+            <a href='/browse-media'>Browse Media</a>
+          </Menu.Item>
+          <Menu.Item key={'manage-media-mobile'}>
+            <a href='/manage-media'>Manage Media</a>
+          </Menu.Item>
+          {isToggled && (
+            <Menu.Item key={'manage-inventory-mobile'}>
+              <a href='/manage-inventory'>Manage Inventory</a>
+            </Menu.Item>
+          )}
+        </Menu>
+
+        {/* Login and Settings for hamburger menu */}
+        <div className='drawer-login-section' style={{ marginTop: '20px' }}>
+          <Button type='primary' block onClick={() => {
+            showModal();
+            fetchUsers();
+          }}>
+            {loginText}
+          </Button>
+          <Button
+          type='default'
+          block
+          style={{ marginTop: '10px' }}
+          icon={<SettingOutlined />}
+          onClick={showSettingsModal}
+          >
+            Settings
+          </Button>
+        </div>
+
+        {/* BM toggle */}
+        <div className='drawer-toggle-section' style={{ marginTop: '20px' }}>
+          <Typography.Text>Branch Manager Mode</Typography.Text>
+          <Switch
+          checked={isToggled}
+          onChange={handleToggle}
+          checkedChildren='On'
+          unCheckedChildren='Off'
+          style={{ marginLeft: '10px' }}
+          />
+        </div>
+      </Drawer>
+
+      {/* Login Modal */}
         <Modal
           title="Select User to Login"
           visible={isModalVisible}

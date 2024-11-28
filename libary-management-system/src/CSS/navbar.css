@@ -57,6 +57,7 @@
   display: flex;
   align-items: center;
   gap: 15px;
+  position: relative;
 }
 
 .navbar-search .ant-input {
@@ -136,6 +137,20 @@
   font-style: italic;
 }
 
+.hamburger-button {
+  display: none;
+  position: absolute;
+  top: -37px;
+  right: 15px;
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  color: white;
+  font-size: 24px;
+  cursor: pointer;
+  z-index: 1100;
+}
+
 /* Responsive Design */
 @media (max-width: 768px) {
   .navbar-top {
@@ -159,6 +174,29 @@
 
   .secondary-menu {
     justify-content: flex-start;
+  }
+
+  .hamburger-button {
+    display: block;
+  }
+
+  .secondary-navbar {
+    display: none;
+  }
+
+  .navbar-search {
+    display: none;
+  }
+
+  .drawer-login-section {
+    padding: 10px 0;
+  }
+
+  .drawer-toggle-section {
+    padding: 10px 0;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
   }
 }
 

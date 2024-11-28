@@ -89,3 +89,63 @@
 .avatar {
     border: 2px solid #1976D2;
 }
+
+@media (max-width: 768px) {
+
+    /* top carousel */
+    .carousel-text-box {
+        top: 50%;
+        left: 10%;
+        transform: translateY(-50%);
+        max-width: 80%;
+        padding: 15px;
+        font-size: 14px;
+    }
+
+    .carousel-text-box h2 {
+        font-size: 18px;
+    }
+
+    .carousel-text-box p {
+        font-size: 14px;
+    }
+
+    .carousel-text-box button {
+        font-size: 14px;
+        padding: 8px 16px;
+    }
+
+    .carousel-container {
+        height: 60vh;
+    }
+
+    .carousel-image {
+        height: 60vh;
+        object-fit: cover;
+    }
+
+
+    /* Testimonial Carousel */
+    .testimonial-carousel-container {
+        padding: 10px 10px;
+    }
+
+    .testimonial-slide {
+        padding: 5px;
+        text-align: center;
+        margin-bottom: 10px;
+    }
+
+    .testimonial-name {
+        font-size: 16px;
+    }
+
+    .testimonial-review {
+        font-size: 14px;
+    }
+
+    .avatar {
+        width: 60px;
+        height: 60px;
+    }
+}
