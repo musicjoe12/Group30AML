@@ -31,19 +31,25 @@ import axios from 'axios';
 
 const { Option } = Select;
 
-const BranchSelector = ({ selectedBranch, setSelectedBranch, branches, fetchBooks }) => {
+
+const BranchSelector = ({ selectedBranch, setSelectedBranch, branches, fetchBooks, setLoading }) => {
+  
   const handleBranchChange = (value) => {
+    setLoading(true);
     setSelectedBranch(value);
     axios.post('http://localhost:8080/api/change-branch', { branch: value })
       .then(response => {
         fetchBooks();
         console.log('Branch updated successfully:', response.data);
+        setLoading(false); 
       })
       .catch(error => {
         console.error('There was an error updating the branch:', error);
+        setLoading(false); 
       });
   };
 
+  
   return (
     <Select value={selectedBranch} onChange={handleBranchChange} style={{ width: 200 }}>
       {branches.map((branch) => (

@@ -45,6 +45,9 @@ import { message } from 'antd'; // Warning message
     const [isDeleteModalVisible, setIsDeleteModalVisible] = useState(false);
 
     const [filterOpen, setFilterOpen] = useState(false);
+    //Loading
+    const [loading, setLoading] = useState(false);
+
 
 
 
@@ -58,7 +61,6 @@ import { message } from 'antd'; // Warning message
       { key: 'BranchManchester', label: 'Manchester Branch' },
     ];
     
-    const [loading, setLoading] = useState(false);
     
     // Check if the Branch Manager Mode is enabled
     useEffect(() => {
@@ -144,6 +146,7 @@ import { message } from 'antd'; // Warning message
 
     // Handle Transfer Book
     const handleTransferBook = async(id, branch) => {
+      setLoading(true);
       console.log('info',id, branch);
       try{
         const response = await axios.get(`http://localhost:8080/api/book/${id}`);
@@ -160,10 +163,12 @@ import { message } from 'antd'; // Warning message
         await deleteBook(id);
         
         setIsTransferModalVisible(false);
+        setLoading(false);
         fetchBooks();
       }
       catch{
         console.log('error');
+        setLoading(false);
       }
         
     };
@@ -246,6 +251,12 @@ import { message } from 'antd'; // Warning message
 
     return (
       <div className="manage-inventory-container">
+      {/* Loader Overlay */}
+    {loading && (
+      <div className="loader-overlay">
+        <TailSpin height={80} width={80} color="#1976d2" />
+      </div>
+    )}
         {/* Search and Filters */}
         <div className="search-filters-container">
           <Box sx={{ display: 'flex', alignItems: 'center' }}>
@@ -282,6 +293,7 @@ import { message } from 'antd'; // Warning message
               setSelectedBranch={setSelectedBranch}
               branches={branches}
               fetchBooks={fetchBooks}
+              setLoading={setLoading}
             />
           </div>
     
@@ -460,7 +472,6 @@ import { message } from 'antd'; // Warning message
                 <Option value={false}>Reserved</Option>
               </Select>
             </Form.Item>
-            <Input />
           </Form>
         </Modal>
     
