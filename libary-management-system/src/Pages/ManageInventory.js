@@ -389,8 +389,8 @@ import { message } from 'antd'; // Warning message
               rules={[{ required: true, message: 'Please select if it has already been reserved' }]}
             >
               <Select>
-                <Option value={true}>Available</Option>
-                <Option value={false}>Reserved</Option>
+                <Option value={false}>Available</Option>
+                <Option value={true}>Reserved</Option>
               </Select>
             </Form.Item>
           </Form>

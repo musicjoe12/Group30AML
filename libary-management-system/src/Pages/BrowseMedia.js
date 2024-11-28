@@ -258,7 +258,7 @@ function BrowseMedia() {
                 <Button
                   variant='contained'
                   disabled={!item.availability}
-                  onClick={() => handleBorrow(item._id, "28/11/2024")}
+                  onClick={() => handleBorrow(item._id, new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toISOString().split('T')[0] )}
                   sx={{
                     backgroundColor: item.availability ? '#4CAF50' : '#D3D3D3',
                     '&:hover': item.availability ? { backgroundColor: '#45A049' } : {},

@@ -20,6 +20,8 @@ function ManageMedia() {
   const [reservedBooksId, setReservedBooksId] = useState([]);
   //state for due date
   const [dueDate, setDueDate] = useState([]);
+  //stae for borrowed books for renew
+  const [books, setBooks] = useState([]);
 
   const [wishlist, setWishlist] = useState([]);
   const [modalOpen, setModalOpen] = useState(false);
@@ -40,6 +42,7 @@ function ManageMedia() {
     await axios.get(`http://localhost:8080/api/user-books-borrowed/${userId}`)
     .then(res => {
       const borrowedBooks = res.data; 
+      setBooks(borrowedBooks);
       const bookIds = borrowedBooks.map(book => book.book_id);
       setBorrowedBooksId(bookIds);
       fetchBorrowedBooks(bookIds);
@@ -93,7 +96,7 @@ function ManageMedia() {
   }, [userId]);
 
  
-
+  
   const handleBookClick = (book, isWishlist = false) => {
     setSelectedBook(book);
     setIsWishlistModal(isWishlist);
@@ -153,8 +156,20 @@ function ManageMedia() {
   };
 
   //renews borrowed media
-  const handleRenewBorrowed = async() => {
-  
+  const handleRenewBorrowed = async(id, dd) => {
+    console.log(id, dd);
+
+    // Parse the date string to a Date object
+    const dateObj = new Date(dd);
+
+    // Add 7 days to the date
+    const newDateObj = new Date(dateObj.getTime() + 7 * 24 * 60 * 60 * 1000);
+    console.log(newDateObj);
+
+    // Convert the updated date back to a string in "YYYY-MM-DD" format
+    const newDD = newDateObj.toISOString().split('T')[0];
+    console.log(newDD);
+    
   };
 
 
@@ -348,7 +363,7 @@ function ManageMedia() {
                     <Button
                     variant='contained'
                     color='primary'
-                    onClick={handleRenewBorrowed}
+                    onClick={ () => handleRenewBorrowed(selectedBook._id, dueDate)}
                     sx={{ textTransform: 'none' }}
                     >
                       Renew Media

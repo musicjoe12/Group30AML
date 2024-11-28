@@ -108,5 +108,9 @@ module.exports = {
         })
         .catch(err => console.log(err));
     },
+
+    updateDueDate: async (req, res) => {
+        
+    },
 };
 

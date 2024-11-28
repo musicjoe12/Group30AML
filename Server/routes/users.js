@@ -19,5 +19,7 @@ router.post('/add-borrowed-book/:id', userControllers.addBorrowedBook);
 router.post('/add-reserved-book/:id', userControllers.addReservedBook);
 // delete user reserved book
 router.delete('/user-books-reserved/:id/:books_reserved', userControllers.deleteUserReservedBook);
+// update due date of borrowed book
+router.patch('/update-due-date/:id/:books_borrowed', userControllers.updateDueDate);
 
 module.exports = router;
