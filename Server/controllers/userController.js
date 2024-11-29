@@ -1,5 +1,6 @@
 
 const UserModel = require('../models/userModel');
+const mongoose = require('mongoose');
 
 module.exports = {
 
@@ -110,7 +111,36 @@ module.exports = {
     },
 
     updateDueDate: async (req, res) => {
-        
+        try {
+            const { id, book_id } = req.params; // Extract user ID and book ID from params
+            const { due_date } = req.body; // Extract new due date from request body
+    
+            // Validate the input
+            if (!mongoose.Types.ObjectId.isValid(id)) {
+                return res.status(400).json({ message: "Invalid user ID" });
+            }
+            if (!due_date) {
+                return res.status(400).json({ message: "New due date is required" });
+            }
+    
+            // Find the user and update the specific book's due date
+            const user = await UserModel.findOneAndUpdate(
+                { _id: id, "books_borrowed.book_id": book_id }, // Match user and specific book
+                { $set: { "books_borrowed.$.due_date": due_date } }, // Update due_date in the matched book
+                { new: true } // Return the updated user document
+            );
+    
+            // If user or book not found, return an error
+            if (!user) {
+                return res.status(404).json({ message: "User or book not found" });
+            }
+    
+            res.json(user.books_borrowed); // Return the updated books_borrowed array
+        } catch (err) {
+            console.error("Error updating due date:", err);
+            res.status(500).json({ message: "Internal server error", error: err });
+        }
+
     },
 };
 

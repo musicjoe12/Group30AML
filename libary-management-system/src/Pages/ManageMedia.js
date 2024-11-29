@@ -7,6 +7,7 @@ import { UserContext } from '../Context/UserContext';
 
 
 
+
 function ManageMedia() {
   //user id from navbar login using context
   const { userId } = useContext(UserContext);
@@ -156,9 +157,9 @@ function ManageMedia() {
   };
 
   //renews borrowed media
-  const handleRenewBorrowed = async(id, dd) => {
-    console.log(id, dd);
-
+  const handleRenewBorrowed = async(bookId, dd) => {
+    console.log(bookId, dd);
+    
     // Parse the date string to a Date object
     const dateObj = new Date(dd);
 
@@ -169,6 +170,16 @@ function ManageMedia() {
     // Convert the updated date back to a string in "YYYY-MM-DD" format
     const newDD = newDateObj.toISOString().split('T')[0];
     console.log(newDD);
+
+    await axios.patch(`http://localhost:8080/api/update-due-date/${userId}/${bookId}`, {
+      due_date: newDD,
+    })
+    .then(res => {
+      console.log(res.data);
+      fetchBorrowedBooksId();
+      setModalOpen(false);
+    })
+    .catch(err => console.log(err));
     
   };
 

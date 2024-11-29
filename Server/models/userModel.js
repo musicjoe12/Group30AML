@@ -28,6 +28,7 @@ const userSchema = new mongoose.Schema({
     books_borrowed: [{
         book_id: { type: String, required: true },
         due_date: { type: String, required: true },
+        
     }],
     books_reserved: {
         type: Array,
