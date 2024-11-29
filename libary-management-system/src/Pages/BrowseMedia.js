@@ -117,6 +117,7 @@ function BrowseMedia() {
     <Box
     sx={{
       display: 'flex',
+      flexDirection: 'row',
       justifyContent: 'space-between',
       alignItems: 'center',
       mt: 4,
@@ -124,14 +125,14 @@ function BrowseMedia() {
       px: 3,
     }}
     >
-      <Box />
+      
 
       {/* Centered Title */}
       <Typography
       variant='h4'
       gutterBottom
       className='typography-heading'
-      sx={{ fontWeight: 'bold', textAlign: 'center' }}
+      sx={{ fontWeight: 'bold', textAlign: 'left', flex: 1, }}
       >
         Browse Our Media
       </Typography>
@@ -147,6 +148,7 @@ function BrowseMedia() {
         '&:hover': {
           backgroundColor: '#1565C0',
         },
+        marginRight: 1,
       }}
       >
         <FilterAltIcon />
@@ -191,14 +193,14 @@ function BrowseMedia() {
                }}>
                 <CardMedia
                 component='img'
-                height='350'
+                height='300'
                 image={item.image}
                 alt={item.title}
                 sx={{ 
-                  maxHeight: 300,
+                 // maxHeight: 300,
                   objectFit: 'cover',
-                  borderTopLeftRadius: '10px',
-                  borderTopRightRadius: '10px',
+                 // borderTopLeftRadius: '10px',
+                //  borderTopRightRadius: '10px',
                  }}
                 />
                 <CardContent sx={{
