@@ -12,7 +12,7 @@
 
 .carousel-text-box {
     position: absolute;
-    top: 20%;
+    top: 30%;
     left: 5%;
     background-color: rgba(0, 0, 0, 0.6);
     color: #fff;
@@ -95,7 +95,7 @@
     /* top carousel */
     .carousel-text-box {
         top: 50%;
-        left: 10%;
+        left: 7%;
         transform: translateY(-50%);
         max-width: 80%;
         padding: 15px;
