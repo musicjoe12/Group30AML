@@ -28,6 +28,7 @@ function ManageMedia() {
   const [modalOpen, setModalOpen] = useState(false);
   const [selectedBook, setSelectedBook] = useState(null);
   const [isWishlistModal, setIsWishlistModal] = useState(false);
+  const [selectedBookIndex, setSelectedBookIndex] = useState(null); 
 
 
   
@@ -48,7 +49,7 @@ function ManageMedia() {
       setBorrowedBooksId(bookIds);
       fetchBorrowedBooks(bookIds);
       
-      setDueDate([...new Set(borrowedBooks.map(book => book.due_date))]);
+      setDueDate(borrowedBooks.map(book => book.due_date));
     })
     .catch(err => console.log(`error fetching books${err}`));
   };
@@ -100,6 +101,10 @@ function ManageMedia() {
   
   const handleBookClick = (book, isWishlist = false) => {
     setSelectedBook(book);
+    console.log(books.find(b => b.book_id === book._id));
+    const selectedBookIndex = books.findIndex(b => b.book_id === book._id);
+    console.log(selectedBookIndex);
+    setSelectedBookIndex(selectedBookIndex);
     setIsWishlistModal(isWishlist);
     setModalOpen(true);
   };
@@ -177,11 +182,13 @@ function ManageMedia() {
     .then(res => {
       console.log(res.data);
       fetchBorrowedBooksId();
-      setModalOpen(false);
+      //setModalOpen(false);
     })
     .catch(err => console.log(err));
     
   };
+
+  
 
 
   return (
@@ -349,7 +356,8 @@ function ManageMedia() {
                     <strong>Description:</strong> {selectedBook.description}
                   </Typography>
                   <Typography sx={{ mb: 4}}>
-                    <strong>Return By:</strong> {dueDate}
+                    <strong>Return By: </strong>
+                      {selectedBookIndex !== null ? dueDate[selectedBookIndex] : 'N/A'}
                   </Typography>
 
                   {/* Conditional Content depending on Modal */}
@@ -374,7 +382,7 @@ function ManageMedia() {
                     <Button
                     variant='contained'
                     color='primary'
-                    onClick={ () => handleRenewBorrowed(selectedBook._id, dueDate)}
+                    onClick={ () => handleRenewBorrowed(selectedBook._id, dueDate[selectedBookIndex])}
                     sx={{ textTransform: 'none' }}
                     >
                       Renew Media

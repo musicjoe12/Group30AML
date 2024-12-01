@@ -146,6 +146,7 @@ import { message } from 'antd'; // Warning message
 
     // Handle Transfer Book
     const handleTransferBook = async(id, branch) => {
+      setIsTransferModalVisible(false);
       setLoading(true);
       console.log('info',id, branch);
       try{
@@ -162,9 +163,8 @@ import { message } from 'antd'; // Warning message
         
         await deleteBook(id);
         
-        setIsTransferModalVisible(false);
-        setLoading(false);
         fetchBooks();
+        setLoading(false);
       }
       catch{
         console.log('error');
