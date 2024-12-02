@@ -48,9 +48,6 @@ import { message } from 'antd'; // Warning message
     //Loading
     const [loading, setLoading] = useState(false);
 
-
-
-
     // Redirect to homepage
     const navigate = useNavigate();
     // Selected branch
@@ -79,19 +76,25 @@ import { message } from 'antd'; // Warning message
     }, [navigate]);
     
     // Fetch books from the API
-    const fetchBooks = () => {
-      axios.get('http://localhost:8080/api/books')
+    const fetchBooks = async() => {
+      //setLoading(true);
+      await axios.get('http://localhost:8080/api/books')
         .then((response) => {
           setBooks(response.data);
           setFilteredBooks(response.data); // Update filteredBooks
           const uniqueGenres = [...new Set(response.data.map((book) => book.genre))];
           setGenres(uniqueGenres);
+          setLoading(false);
         })
-        .catch((err) => console.log(err));
+        .catch((err) => {
+          console.log(err)
+          setLoading(false);
+        });
     };
     
     // Fetch books when the component mounts
     useEffect(() => {
+      setLoading(true);
       fetchBooks(); 
     }, []);
 
@@ -164,16 +167,14 @@ import { message } from 'antd'; // Warning message
         await deleteBook(id);
         
         fetchBooks();
-        setLoading(false);
+        //setLoading(false);
       }
       catch{
         console.log('error');
         setLoading(false);
-      }
-        
+      }      
     };
     
-
     // Handle branch change
     const handleBranchChange = async (value) => {
       setLoading(true);
@@ -182,7 +183,7 @@ import { message } from 'antd'; // Warning message
       .then(response => {
         console.log('Branch updated successfully:', response.data);
         fetchBooks();
-        setLoading(false)
+        //setLoading(false)
       })
       .catch(error => {
         console.error('There was an error updating the branch:', error);

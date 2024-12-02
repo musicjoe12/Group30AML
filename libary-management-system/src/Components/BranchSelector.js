@@ -41,11 +41,11 @@ const BranchSelector = ({ selectedBranch, setSelectedBranch, branches, fetchBook
       .then(response => {
         fetchBooks();
         console.log('Branch updated successfully:', response.data);
-        setLoading(false); 
+        //setLoading(false); 
       })
       .catch(error => {
         console.error('There was an error updating the branch:', error);
-        setLoading(false); 
+        //setLoading(false); 
       });
   };
 
