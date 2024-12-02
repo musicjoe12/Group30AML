@@ -116,18 +116,18 @@ function ManageMedia() {
   };
 
   //returns borrowed media
-  const handleRemoveBorrowed = async() => {
-    console.log(`Deleting book with ID: ${selectedBook.book_id} for user: ${userId}`);
-    await axios.delete(`http://localhost:8080/api/user-books-borrowed/${userId}/${selectedBook._id}`)
+  const handleRemoveBorrowed = async(book = selectedBook) => {
+    console.log(`Deleting book with ID: ${book.book_id} for user: ${userId}`);
+    await axios.delete(`http://localhost:8080/api/user-books-borrowed/${userId}/${book.book_id}`)
    .then(res => {
       console.log(res.data);
-      updateBookAvailability();
+      updateBookAvailability(book);
     })
     .catch(err => console.log(`unable to delete book:${err}`));
   };
   //updates book availability
-  const updateBookAvailability = async() => {
-    await axios.patch(`http://localhost:8080/api/update-book/${selectedBook._id}`, {
+  const updateBookAvailability = async(book) => {
+    await axios.patch(`http://localhost:8080/api/update-book/${book._id}`, {
       availability: true,
     })
     .then(res => {
@@ -138,6 +138,19 @@ function ManageMedia() {
     .catch(err => console.log(err));
   };
 
+  const checkDueDates = () => {
+    const currentDate = new Date().toISOString().split('T')[0];
+    books.forEach(book => {
+      console.log(book.due_date, currentDate);
+      if (book.due_date === currentDate) {
+        handleRemoveBorrowed(book);
+      }
+    });
+  };
+
+  useEffect(() => {
+    checkDueDates();
+  }, [books]);
 
   //removes reserved media
   const handleRemoveReserved = async() => {
@@ -161,6 +174,7 @@ function ManageMedia() {
     })
     .catch(err => console.log(err));
   };
+
 
   //renews borrowed media
   const handleRenewBorrowed = async(bookId, dd) => {
@@ -406,7 +420,7 @@ function ManageMedia() {
                     <Button
                     variant='contained'
                     color='error'
-                    onClick={handleRemoveBorrowed}
+                    onClick={() => handleRemoveBorrowed(selectedBook)}
                     sx={{ textTransform: 'none' }}
                     >
                       Return Media
