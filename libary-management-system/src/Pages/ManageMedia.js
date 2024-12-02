@@ -1,10 +1,11 @@
 import React, { useState, useEffect, useContext } from 'react';
-import { Box, Grid, Typography, Card, CardMedia, CardContent, Modal, Button} from '@mui/material';
+import { Box, Grid, Typography, Card, CardMedia, CardContent, Modal, Button } from '@mui/material';
 import { MAX_VERTICAL_CONTENT_RADIUS } from 'antd/es/style/placementArrow';
 import { json } from 'react-router-dom';
 import axios from 'axios';
 import { UserContext } from '../Context/UserContext';
 import { message } from 'antd';
+import {Dropdown, Menu } from 'antd';
 
 
 
@@ -30,6 +31,8 @@ function ManageMedia() {
   const [selectedBook, setSelectedBook] = useState(null);
   const [isWishlistModal, setIsWishlistModal] = useState(false);
   const [selectedBookIndex, setSelectedBookIndex] = useState(null); 
+  const [activeTab, setActiveTab] = useState('borrowed'); 
+
 
   //For cards
   const [flippedCards, setFlippedCards] = useState({});
@@ -37,6 +40,13 @@ function ManageMedia() {
   const handleFlipCard = (index) => {
     setFlippedCards((prev) => ({ ...prev, [index]: !prev[index] }));
   };
+
+  const menu = (setActiveTab) => (
+    <Menu>
+      <Menu.Item onClick={() => setActiveTab('borrowed')}>Currently Borrowed</Menu.Item>
+      <Menu.Item onClick={() => setActiveTab('reserved')}>Currently Reserved</Menu.Item>
+    </Menu>
+  );
 
   //fetches borrowed books from current selceted user
   const fetchBorrowedBooksId = async() => {
@@ -122,25 +132,18 @@ function ManageMedia() {
   };
 
   //returns borrowed media
-  const handleRemoveBorrowed = async(userBooks = selectedBook) => {
-    console.log(userBooks);
-    const bookId = userBooks.book_id || userBooks._id; // Fallback to _id if book_id is missing
-    // if (!bookId) {
-    //   console.error("Book ID is missing.");
-    //   return;
-    // }
-    console.log(`Deleting book with ID: ${bookId} for user: ${userId}`);
-    await axios.delete(`http://localhost:8080/api/user-books-borrowed/${userId}/${bookId}`)
-    .then(res => {
+  const handleRemoveBorrowed = async() => {
+    console.log(`Deleting book with ID: ${selectedBook.book_id} for user: ${userId}`);
+    await axios.delete(`http://localhost:8080/api/user-books-borrowed/${userId}/${selectedBook._id}`)
+   .then(res => {
       console.log(res.data);
-      console.log(res.data);
-      updateBookAvailability(bookId);
+      updateBookAvailability();
     })
     .catch(err => console.log(`unable to delete book:${err}`));
   };
   //updates book availability
-  const updateBookAvailability = async(userBooks) => {
-    await axios.patch(`http://localhost:8080/api/update-book/${userBooks}`, {
+  const updateBookAvailability = async() => {
+    await axios.patch(`http://localhost:8080/api/update-book/${selectedBook._id}`, {
       availability: true,
     })
     .then(res => {
@@ -150,21 +153,7 @@ function ManageMedia() {
     })
     .catch(err => console.log(err));
   };
-  const checkDueDates = () => {
-    const currentDate = new Date().toISOString().split('T')[0];
-    books.forEach(book => {
-      console.log(book.due_date, currentDate);
-      if (book.due_date === currentDate) {
-        handleRemoveBorrowed(book);
-      }
-      else{
-        return;
-      }
-    });
-  };
-  useEffect(() => {
-    checkDueDates();
-  }, [books]);
+
 
   //removes reserved media
   const handleRemoveReserved = async() => {
@@ -252,143 +241,153 @@ function ManageMedia() {
 
 
   return (
-    <Box sx={{ backgroundColor: '#white', py: 4, pt: 16, minHeight: '100vh', px: 4, marginTop: '40px' }}>
-      {/* Currently Borrowed Section */}
-      <Box sx={{ mb: 6 }}>
-        <Typography variant='h5' gutterBottom sx={{ fontWeight: 'bold', textAlign: 'left', flex: 1, }}>
-          Currently Borrowed -
+    <Box sx={{ backgroundColor: '#fff', py: 4, pt: 16, minHeight: '100vh', px: 4, marginTop: '40px' }}>
+      {/* Dropdown to toggle between Borrowed and Reserved */}
+      <Box sx={{ mb: 6, display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+        <Typography variant='h5' gutterBottom sx={{ fontWeight: 'bold', textAlign: 'left', flex: 1 }}>
+          {activeTab === 'borrowed' ? 'Currently Borrowed' : 'Currently Reserved'} -
         </Typography>
-        <Grid container spacing={3} justifyContent="center">
-          {borrowedBooks.length > 0 ? (
-            borrowedBooks.map((book, index) => (
-              <Grid item xs={12} sm={6} md={4} key={index}>
-                <div
-                  className={`flip-card ${flippedCards[index] ? 'flipped' : ''}`}
-                  onClick={() => handleBookClick(book, index)}
-                  style={{ cursor: 'pointer' }}
-                >
-                  {/* Front of Card */}
-                  <div className="flip-card-front">
-                    <Card sx={{ maxWidth: 220, mx: 'auto', height: '100%', display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
-                      <CardMedia component="img" height="300" image={book.image} alt={book.title} sx={{ objectFit: 'cover' }} />
-                      <CardContent sx={{ textAlign: 'center' }}>
-                        <Typography variant='subtitle1' sx={{ fontWeight: 'bold', color: 'rgba(0, 0, 0, 0.7)', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
+        <Dropdown overlay={menu(setActiveTab)} trigger={['click']}>
+          <Button>
+            Switch Tab
+          </Button>
+        </Dropdown>
+      </Box>
+
+      {/* Currently Borrowed Section */}
+      {activeTab === 'borrowed' && (
+        <Box sx={{ mb: 6 }}>
+          <Grid container spacing={3} justifyContent="center">
+            {borrowedBooks.length > 0 ? (
+              borrowedBooks.map((book, index) => (
+                <Grid item xs={12} sm={6} md={4} key={index}>
+                  <div
+                    className={`flip-card ${flippedCards[index] ? 'flipped' : ''}`}
+                    onClick={() => handleBookClick(book, index)}
+                    style={{ cursor: 'pointer' }}
+                  >
+                    {/* Front of Card */}
+                    <div className="flip-card-front">
+                      <Card sx={{ maxWidth: 220, mx: 'auto', height: '100%', display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
+                        <CardMedia component="img" height="300" image={book.image} alt={book.title} sx={{ objectFit: 'cover' }} />
+                        <CardContent sx={{ textAlign: 'center' }}>
+                          <Typography variant='subtitle1' sx={{ fontWeight: 'bold', color: 'rgba(0, 0, 0, 0.7)', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
+                            {book.title}
+                          </Typography>
+                        </CardContent>
+                      </Card>
+                    </div>
+
+                    {/* Back of Card */}
+                    <div className="flip-card-back">
+                      <Box sx={{ textAlign: 'center', p: 2 }}>
+                        <Typography variant='h6' gutterBottom sx={{ fontWeight: 'bold' }}>
                           {book.title}
                         </Typography>
-                      </CardContent>
-                    </Card>
-                  </div>
+                        <Typography variant='body2' sx={{ mb: 1 }}>
+                          <strong>Author:</strong> {book.author}
+                        </Typography>
+                        <Typography variant='body2' sx={{ mb: 1 }}>
+                          <strong>Genre:</strong> {book.genre}
+                        </Typography>
+                        <Typography variant='body2' sx={{ mb: 1 }}>
+                          <strong>Year Published:</strong> {book.publication_year}
+                        </Typography>
+                        <Typography variant='body2' sx={{ mb: 1 }}>
+                          <strong>Description:</strong> {book.description}
+                        </Typography>
+                        <Typography variant='body2' sx={{ mb: 2 }}>
+                          <strong>Return By:</strong> {dueDate[index] || 'N/A'}
+                        </Typography>
 
-                  {/* Back of Card */}
-                  <div className="flip-card-back">
-                    <Box sx={{ textAlign: 'center', p: 2 }}>
-                      <Typography variant='h6' gutterBottom sx={{ fontWeight: 'bold' }}>
-                        {book.title}
-                      </Typography>
-                      <Typography variant='body2' sx={{ mb: 1 }}>
-                        <strong>Author:</strong> {book.author}
-                      </Typography>
-                      <Typography variant='body2' sx={{ mb: 1 }}>
-                        <strong>Genre:</strong> {book.genre}
-                      </Typography>
-                      <Typography variant='body2' sx={{ mb: 1 }}>
-                        <strong>Year Published:</strong> {book.publication_year}
-                      </Typography>
-                      <Typography variant='body2' sx={{ mb: 1 }}>
-                        <strong>Description:</strong> {book.description}
-                      </Typography>
-                      <Typography variant='body2' sx={{ mb: 2 }}>
-                        <strong>Return By:</strong> {dueDate[index] || 'N/A'}
-                      </Typography>
-
-                      {/* Action Buttons */}
-                      <Box sx={{ display: 'flex', justifyContent: 'space-evenly', width: '100%' }}>
-                      <Button variant='contained' color='error' onClick={() => handleRemoveBorrowed(selectedBook)} sx={{ textTransform: 'none' }}>
-                          Return Media
-                        </Button>
-                        <Button variant='contained' color='primary' onClick={() => handleRenewBorrowed(selectedBook._id, dueDate[index])} sx={{ textTransform: 'none' }}>
-                          Renew Media
-                        </Button>
+                        {/* Action Buttons */}
+                        <Box sx={{ display: 'flex', justifyContent: 'space-evenly', width: '100%' }}>
+                          <Button variant='contained' color='error' onClick={() => handleRemoveBorrowed(book._id)} sx={{ textTransform: 'none' }}>
+                            Return
+                          </Button>
+                          <Button variant='contained' color='primary' onClick={() => handleRenewBorrowed(book._id, dueDate[index])} sx={{ textTransform: 'none' }}>
+                            Renew
+                          </Button>
+                        </Box>
                       </Box>
-                    </Box>
+                    </div>
                   </div>
-                </div>
-              </Grid>
-            ))
-          ) : (
-            <Typography variant='body1' sx={{ textAlign: 'center', color: '#333' }}>
-              Nothing Borrowed ATM
-            </Typography>
-          )}
-        </Grid>
-      </Box>
+                </Grid>
+              ))
+            ) : (
+              <Typography variant='body1' sx={{ textAlign: 'center', color: '#333' }}>
+                Nothing Borrowed ATM
+              </Typography>
+            )}
+          </Grid>
+        </Box>
+      )}
 
       {/* Currently Reserved Section */}
-      <Box>
-        <Typography variant='h5' gutterBottom sx={{ fontWeight: 'bold', textAlign: 'left', flex: 1, }}>
-          Currently Reserved -
-        </Typography>
-        <Grid container spacing={3} justifyContent="center">
-          {reservedBooks.length > 0 ? (
-            reservedBooks.map((book, index) => (
-              <Grid item xs={12} sm={6} md={4} key={index}>
-                <div
-                  className={`flip-card ${flippedCards[index] ? 'flipped' : ''}`}
-                  onClick={() => handleBookClick(book, index)}
-                  style={{ cursor: 'pointer' }}
-                >
-                  {/* Front of Card */}
-                  <div className="flip-card-front">
-                    <Card sx={{ maxWidth: 220, mx: 'auto', height: '100%', display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
-                      <CardMedia component="img" height="300" image={book.image} alt={book.title} sx={{ objectFit: 'cover' }} />
-                      <CardContent sx={{ textAlign: 'center' }}>
-                        <Typography variant='subtitle1' sx={{ fontWeight: 'bold', color: 'rgba(0, 0, 0, 0.7)', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
+      {activeTab === 'reserved' && (
+        <Box>
+          <Grid container spacing={3} justifyContent="center">
+            {reservedBooks.length > 0 ? (
+              reservedBooks.map((book, index) => (
+                <Grid item xs={12} sm={6} md={4} key={index}>
+                  <div
+                    className={`flip-card ${flippedCards[index] ? 'flipped' : ''}`}
+                    onClick={() => handleBookClick(book, index)}
+                    style={{ cursor: 'pointer' }}
+                  >
+                    {/* Front of Card */}
+                    <div className="flip-card-front">
+                      <Card sx={{ maxWidth: 220, mx: 'auto', height: '100%', display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
+                        <CardMedia component="img" height="300" image={book.image} alt={book.title} sx={{ objectFit: 'cover' }} />
+                        <CardContent sx={{ textAlign: 'center' }}>
+                          <Typography variant='subtitle1' sx={{ fontWeight: 'bold', color: 'rgba(0, 0, 0, 0.7)', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
+                            {book.title}
+                          </Typography>
+                        </CardContent>
+                      </Card>
+                    </div>
+
+                    {/* Back of Card */}
+                    <div className="flip-card-back">
+                      <Box sx={{ textAlign: 'center', p: 2 }}>
+                        <Typography variant='h6' gutterBottom sx={{ fontWeight: 'bold' }}>
                           {book.title}
                         </Typography>
-                      </CardContent>
-                    </Card>
-                  </div>
+                        <Typography variant='body2' sx={{ mb: 1 }}>
+                          <strong>Author:</strong> {book.author}
+                        </Typography>
+                        <Typography variant='body2' sx={{ mb: 1 }}>
+                          <strong>Genre:</strong> {book.genre}
+                        </Typography>
+                        <Typography variant='body2' sx={{ mb: 1 }}>
+                          <strong>Year Published:</strong> {book.publication_year}
+                        </Typography>
+                        <Typography variant='body2' sx={{ mb: 1 }}>
+                          <strong>Description:</strong> {book.description}
+                        </Typography>
 
-                  {/* Back of Card */}
-                  <div className="flip-card-back">
-                    <Box sx={{ textAlign: 'center', p: 2 }}>
-                      <Typography variant='h6' gutterBottom sx={{ fontWeight: 'bold' }}>
-                        {book.title}
-                      </Typography>
-                      <Typography variant='body2' sx={{ mb: 1 }}>
-                        <strong>Author:</strong> {book.author}
-                      </Typography>
-                      <Typography variant='body2' sx={{ mb: 1 }}>
-                        <strong>Genre:</strong> {book.genre}
-                      </Typography>
-                      <Typography variant='body2' sx={{ mb: 1 }}>
-                        <strong>Year Published:</strong> {book.publication_year}
-                      </Typography>
-                      <Typography variant='body2' sx={{ mb: 1 }}>
-                        <strong>Description:</strong> {book.description}
-                      </Typography>
-
-                      {/* Action Buttons */}
-                      <Box sx={{ display: 'flex', justifyContent: 'space-evenly', width: '100%' }}>
-                        <Button variant='contained' color='error' onClick={() => handleRemoveReserved()} sx={{ textTransform: 'none' }}>
-                          Remove
-                        </Button>
-                        <Button variant='contained' color='primary' onClick={() => handleRemoveReserved} sx={{ textTransform: 'none' }}>
-                          Reserve
-                        </Button>
+                        {/* Action Buttons */}
+                        <Box sx={{ display: 'flex', justifyContent: 'space-evenly', width: '100%' }}>
+                          <Button variant='contained' color='error' onClick={() => handleRemoveReserved(book._id)} sx={{ textTransform: 'none' }}>
+                            Remove
+                          </Button>
+                          <Button variant='contained' color='primary' onClick={() => handleRemoveReserved(book._id)} sx={{ textTransform: 'none' }}>
+                            Reserve
+                          </Button>
+                        </Box>
                       </Box>
-                    </Box>
+                    </div>
                   </div>
-                </div>
-              </Grid>
-            ))
-          ) : (
-            <Typography variant='body1' sx={{ textAlign: 'center', color: '#333' }}>
-              Nothing Reserved
-            </Typography>
-          )}
-        </Grid>
-      </Box>
+                </Grid>
+              ))
+            ) : (
+              <Typography variant='body1' sx={{ textAlign: 'center', color: '#333' }}>
+                Nothing Reserved
+              </Typography>
+            )}
+          </Grid>
+        </Box>
+      )}
     </Box>
   );
 }
