@@ -32,6 +32,10 @@ const bookSchema = new mongoose.Schema({
     reserved: {
         type: Boolean,
         required: true
+    },
+    quantity: {
+        type: Number,
+        required: true
     }
     
 },{ versionKey: false });

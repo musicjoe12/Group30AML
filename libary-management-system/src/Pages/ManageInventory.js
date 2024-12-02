@@ -394,6 +394,13 @@ import { message } from 'antd'; // Warning message
                 <Option value={true}>Reserved</Option>
               </Select>
             </Form.Item>
+            <Form.Item
+              name="quantity"
+              label="Quantity"
+              rules={[{ required: true, message: 'Please enter the Quantity' }]}
+            >
+              <Input type="number" />
+            </Form.Item>
           </Form>
         </Modal>
     
@@ -472,6 +479,13 @@ import { message } from 'antd'; // Warning message
                 <Option value={true}>Available</Option>
                 <Option value={false}>Reserved</Option>
               </Select>
+            </Form.Item>
+            <Form.Item
+              name="quantity"
+              label="Quantity"
+              rules={[{ required: true, message: 'Please enter the Quantity' }]}
+            >
+              <Input type="number" />
             </Form.Item>
           </Form>
         </Modal>
