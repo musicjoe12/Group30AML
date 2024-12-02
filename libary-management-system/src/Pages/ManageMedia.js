@@ -116,18 +116,24 @@ function ManageMedia() {
   };
 
   //returns borrowed media
-  const handleRemoveBorrowed = async(book = selectedBook) => {
-    console.log(`Deleting book with ID: ${book.book_id} for user: ${userId}`);
-    await axios.delete(`http://localhost:8080/api/user-books-borrowed/${userId}/${book.book_id}`)
+  const handleRemoveBorrowed = async(userBooks = selectedBook) => {
+    console.log(userBooks);
+    const bookId = userBooks.book_id || userBooks._id; // Fallback to _id if book_id is missing
+    // if (!bookId) {
+    //   console.error("Book ID is missing.");
+    //   return;
+    // }
+    console.log(`Deleting book with ID: ${bookId} for user: ${userId}`);
+    await axios.delete(`http://localhost:8080/api/user-books-borrowed/${userId}/${bookId}`)
    .then(res => {
       console.log(res.data);
-      updateBookAvailability(book);
+      updateBookAvailability(bookId);
     })
     .catch(err => console.log(`unable to delete book:${err}`));
   };
   //updates book availability
-  const updateBookAvailability = async(book) => {
-    await axios.patch(`http://localhost:8080/api/update-book/${book._id}`, {
+  const updateBookAvailability = async(userBooks) => {
+    await axios.patch(`http://localhost:8080/api/update-book/${userBooks}`, {
       availability: true,
     })
     .then(res => {
@@ -144,6 +150,9 @@ function ManageMedia() {
       console.log(book.due_date, currentDate);
       if (book.due_date === currentDate) {
         handleRemoveBorrowed(book);
+      }
+      else{
+        return;
       }
     });
   };
