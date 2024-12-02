@@ -5,7 +5,7 @@ import '../CSS/browsemedia.css';
 import SearchFilter from '../Components/SearchFilter'; // Import SearchFilter
 import MediaTypeSelector from '../Components/MediaTypeSelector';
 import { useSearch } from '../Context/SearchContext'; // Import useSearch hook
-import { Box, Grid, Typography, Card, CardMedia, CardContent, Drawer, IconButton, Button } from '@mui/material';
+import { Box, Grid, Typography, Card, CardMedia, CardContent, Drawer, IconButton, Button, Pagination } from '@mui/material';
 import FilterAltIcon from '@mui/icons-material/FilterAlt';
 import { UserContext } from '../Context/UserContext';
 
@@ -25,6 +25,18 @@ function BrowseMedia() {
   const [filterOpen, setFilterOpen] = useState(false);
 
   const [openFilterModal, setOpenFilterModal] = useState(null);
+
+  // Pagination
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 4;
+
+  const indexOfLastItem = currentPage * itemsPerPage;
+  const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+  const currentItems = filteredBooks.slice(indexOfFirstItem, indexOfLastItem);
+
+  const handlePageChange = (event, value) => {
+    setCurrentPage(value);
+  };
 
   //Search Bar
   useEffect(() => {
@@ -175,7 +187,7 @@ function BrowseMedia() {
     {/* Media Card Grid */}
 
     <Grid container spacing={3} justifyContent="center" alignItems="center" sx={{ mt: 4, margin: '0 auto', maxWidth: '80%' }}>
-      {filteredBooks.map((item, index) => (
+      {currentItems.map((item, index) => (
         <Grid item xs={12} sm={6} md={4} lg={3} key={index}>
           <div className={`flip-card ${flippedCards[index] ? 'flipped' : ''}`}
           onClick={() => handleFlipCard(index)}
@@ -288,18 +300,28 @@ function BrowseMedia() {
                   }}
                 >
                   Reserve
-                </Button>
-                </>
-                )}
+                  </Button>
+                      </>
+                    )}
+                  </Box>
                 </Box>
-              </Box>
+              </div>
             </div>
-          </div>
           </Grid>
         ))}
-        </Grid>
-        </Box>
- );
+      </Grid>
+
+      {/* Pagination Controls */}
+      <Box sx={{ display: 'flex', justifyContent: 'center', mt: 4 }}>
+        <Pagination
+          count={Math.ceil(filteredBooks.length / itemsPerPage)}
+          page={currentPage}
+          onChange={handlePageChange}
+          color="primary"
+        />
+      </Box>
+    </Box>
+  );
 }
 
 export default BrowseMedia;
