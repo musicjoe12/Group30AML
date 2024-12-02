@@ -313,12 +313,14 @@ function BrowseMedia() {
 
       {/* Pagination Controls */}
       <Box sx={{ display: 'flex', justifyContent: 'center', mt: 4 }}>
-        <Pagination
-          count={Math.ceil(filteredBooks.length / itemsPerPage)}
-          page={currentPage}
-          onChange={handlePageChange}
-          color="primary"
-        />
+      <Pagination
+    defaultCurrent={6}
+    total={500}
+    onChange={handlePageChange}
+    color="primary"
+    shape="rounded"
+    size="large"
+    ></Pagination>
       </Box>
     </Box>
   );
