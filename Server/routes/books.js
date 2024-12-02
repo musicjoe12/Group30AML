@@ -10,6 +10,9 @@ router.get('/books', bookControllers.getAllBooks);
 router.get('/book/:id', bookControllers.getBook);
 // Get multiple books
 router.get('/books/multiple', bookControllers.getMultipleBooks);
+// Check if a book is reserved
+router.get('/reserved/:id', bookControllers.isReserved);
+
 //Create a new book
 router.post('/add-book', bookControllers.createBook);
 

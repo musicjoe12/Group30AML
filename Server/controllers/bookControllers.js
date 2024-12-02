@@ -22,6 +22,12 @@ module.exports = {
         .catch(err => console.log(err));
     },
 
+    isReserved: async (req, res) => {
+        await BookModel.findById(req.params.id)
+        .then(book => res.json(book.reserved))
+        .catch(err => console.log(err));  
+    },
+
     createBook: async (req, res) => {
         const book = new BookModel(req.body)
         try{

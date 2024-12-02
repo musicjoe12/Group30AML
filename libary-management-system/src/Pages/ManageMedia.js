@@ -4,6 +4,7 @@ import { MAX_VERTICAL_CONTENT_RADIUS } from 'antd/es/style/placementArrow';
 import { json } from 'react-router-dom';
 import axios from 'axios';
 import { UserContext } from '../Context/UserContext';
+import { message } from 'antd';
 
 
 
@@ -164,13 +165,43 @@ function ManageMedia() {
   //renews borrowed media
   const handleRenewBorrowed = async(bookId, dd) => {
     console.log(bookId, dd);
+    let isReserved = false;
+
+    await axios.get(`http://localhost:8080/api/reserved/${bookId}`)
+    .then(res => {
+      console.log(res.data);
+      isReserved = res.data;
+    })
+    .catch(err => {
+      console.log(err);
+      return false;
+    });
+    if (isReserved) {
+      console.log("Media is reserved by another user. Renewal not allowed.");
+      message.error('Renewal not allowed. The media is reserved by another user.');
+      fetchBorrowedBooksId();
+      return
+    }
+
     
     // Parse the date string to a Date object
     const dateObj = new Date(dd);
 
     // Add 7 days to the date
-    const newDateObj = new Date(dateObj.getTime() + 7 * 24 * 60 * 60 * 1000);
+    let newDateObj = new Date(dateObj.getTime() + 7 * 24 * 60 * 60 * 1000);
     console.log(newDateObj);
+
+    // Get the current date and add 14 days to it
+    const currentDate = new Date();
+    const maxRenewDate = new Date(currentDate.getTime() + 14 * 24 * 60 * 60 * 1000);
+
+    // Check if the new due date is over 14 days from the current date
+    if (newDateObj > maxRenewDate) {
+      console.log("New due date is over 14 days from the current date. Renewal not allowed.");
+      newDateObj = maxRenewDate;
+      message.error('Renewal not allowed. Maximum renewal period is 14 days.');
+      return;
+    }
 
     // Convert the updated date back to a string in "YYYY-MM-DD" format
     const newDD = newDateObj.toISOString().split('T')[0];
@@ -182,6 +213,7 @@ function ManageMedia() {
     .then(res => {
       console.log(res.data);
       fetchBorrowedBooksId();
+      message.success(`Media Renewed. New due date is ${newDD}`);
       //setModalOpen(false);
     })
     .catch(err => console.log(err));
@@ -380,6 +412,7 @@ function ManageMedia() {
                       Return Media
                     </Button>
                     <Button
+                    id='renewButton'
                     variant='contained'
                     color='primary'
                     onClick={ () => handleRenewBorrowed(selectedBook._id, dueDate[selectedBookIndex])}
