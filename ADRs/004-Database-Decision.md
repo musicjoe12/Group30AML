@@ -77,7 +77,7 @@ We chose **MongoDB** for the Advanced Library Management System because of its f
 
 ## Comparison
 
-While PostgreSQL and MySQL are strong candidates for relational use cases, MongoDBs flexibility and scalability make it the best choice for this project. Its document-based allows for rapid iteration and seamless integration with the chosen Node.js back-end, ensuring the system can evolve alongside changing requirements.
+While PostgreSQL and MySQL are strong candidates for relational use cases, MongoDBs flexibility and scalability make it the best choice for this project. Its document-based strucure allows for rapid iteration and seamless integration with the chosen Node.js back-end, ensuring the system can evolve alongside changing requirements.
 
 ## References
 
