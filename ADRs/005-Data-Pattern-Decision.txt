@@ -1,0 +1,53 @@
+---
+status: Accepted
+date: 10/10/2024
+decision-makers: All
+consulted: All
+informed: All
+---
+
+# 3-Data Paern
+
+## Context and Problem Statement
+
+
+## Decision Drivers
+
+* 
+
+## Considered Options
+
+* 
+
+## Decision Outcome
+
+### Consequences
+#### Pros
+* 
+#### Cons
+* 
+
+### Confirmation
+
+
+## Pros and Cons of the Options
+### Monolithic Architecture
+#### Pros
+* 
+#### Cons
+* 
+###  Microservices Architecture
+#### Pros
+* 
+#### Cons
+* 
+### Comparison
+
+### Referencing
+* 
+
+‌
+
+‌
+
+‌
