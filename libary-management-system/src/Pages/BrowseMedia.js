@@ -10,6 +10,7 @@ import FilterAltIcon from '@mui/icons-material/FilterAlt';
 import { UserContext } from '../Context/UserContext';
 
 import axios from 'axios';
+import { message } from 'antd';
 
 
 function BrowseMedia() {
@@ -75,8 +76,15 @@ function BrowseMedia() {
   
   //borrow book 
   const handleBorrow = async(id, dueDate) => {
-    console.log(id, dueDate); 
+    //console.log(id, dueDate); 
     try {
+      const reservedBooksResponse = await axios.get(`http://localhost:8080/api/user-books-reserved/${userId}`);
+      const reservedBooks = reservedBooksResponse.data;
+      if (reservedBooks.includes(id)) {
+        message.error('You cannot borrow a book you have already reserved.');
+        return;
+      }
+
       const response = await axios.post(`http://localhost:8080/api/add-borrowed-book/${userId}`, {
           book_id: id,
           due_date: dueDate,
@@ -88,27 +96,44 @@ function BrowseMedia() {
   }
   };
     
-  // update book availability
+  // update book availability and quantity
   const updateBookAvailability = async(id) => {
-    await axios.patch(`http://localhost:8080/api/update-book/${id}`, {
-      availability: false,
-    })
-    .then(res => {
-      console.log(res.data);
-      fetchBooks();
-    })
-    .catch(err => console.log(err));
+    try{
+      const bookResponse = await axios.get(`http://localhost:8080/api/book/${id}`);
+      const currentQuantity = bookResponse.data.quantity;
+      await axios.patch(`http://localhost:8080/api/update-book/${id}`, {
+        availability: false,
+        quantity: currentQuantity - 1,
+      })
+      .then(res => {
+        console.log(res.data);
+        fetchBooks();
+        message.success('Book borrowed successfully!');
+      })
+      .catch(err => console.log(err));
+    } catch (err) {console.log(err);}
+    
   };
 
 
   //reserve book
   const handleReserve = async(id) => {
-    await axios.post(`http://localhost:8080/api/add-reserved-book/${userId}`, { book: id })
-    .then(res => {
-      console.log(res.data);
-      updateBookReservation(id);
-    })
-    .catch(err => console.log(`reserve failed:${err}`));
+    try {
+      // Check if the book is already borrowed by the user
+      const borrowedBooksResponse = await axios.get(`http://localhost:8080/api/user-books-borrowed/${userId}`);
+      const borrowedBooks = borrowedBooksResponse.data;
+      if (borrowedBooks.some(book => book.book_id === id)) {
+        message.error('You cannot reserve a book you have already borrowed.');
+        return;
+      }
+
+      await axios.post(`http://localhost:8080/api/add-reserved-book/${userId}`, { book: id })
+      .then(res => {
+        console.log(res.data);
+        updateBookReservation(id);
+      })
+      .catch(err => console.log(`reserve failed:${err}`));
+    }catch (err) {console.log(err);}
   };
 
   // update book reservation
@@ -119,6 +144,7 @@ function BrowseMedia() {
     .then(res => {
       console.log(res.data);
       fetchBooks();
+      message.success('Book reserved successfully!');
     })
     .catch(err => console.log(err));
   };

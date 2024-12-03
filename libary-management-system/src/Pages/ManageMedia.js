@@ -131,27 +131,58 @@ function ManageMedia() {
     setSelectedBook(null);
   };
 
+  const checkDueDates = () => {
+    const currentDate = new Date().toISOString().split('T')[0];
+    books.forEach(book => {
+      console.log(book.due_date, currentDate);
+      if (book.due_date === currentDate) {
+        handleRemoveBorrowed(book);
+        // if (book.reserved) {
+        //   handleAddBorrowedIfReserved(book);
+        // }
+      }
+      else{
+        return;
+      }
+    });
+  };
+  useEffect(() => {
+    checkDueDates();
+  }, [books]);
+
+  //adds borrowed media if reserved
+  //const handleAddBorrowedIfReserved = async(book) => {};
+  //updates book availability if reserved
+  //const updateBookAvailabilityIfReserved = async(book) => {};
+
   //returns borrowed media
-  const handleRemoveBorrowed = async() => {
-    console.log(`Deleting book with ID: ${selectedBook.book_id} for user: ${userId}`);
-    await axios.delete(`http://localhost:8080/api/user-books-borrowed/${userId}/${selectedBook._id}`)
+  const handleRemoveBorrowed = async(userBooks = selectedBook)=> {
+    const bookId = userBooks.book_id || userBooks._id;
+    console.log(`Deleting book with ID: ${bookId} for user: ${userId}`);
+    await axios.delete(`http://localhost:8080/api/user-books-borrowed/${userId}/${bookId}`)
    .then(res => {
       console.log(res.data);
-      updateBookAvailability();
+      updateBookAvailability(bookId);
     })
     .catch(err => console.log(`unable to delete book:${err}`));
   };
   //updates book availability
-  const updateBookAvailability = async() => {
-    await axios.patch(`http://localhost:8080/api/update-book/${selectedBook._id}`, {
-      availability: true,
-    })
-    .then(res => {
-      console.log(res.data);
-      fetchBorrowedBooksId();
-      setModalOpen(false);
-    })
-    .catch(err => console.log(err));
+  const updateBookAvailability = async(book) => {
+    try{
+      const quantityResponse = await axios.get(`http://localhost:8080/api/book/${book}`);
+      const currentQuantity = quantityResponse.data.quantity;
+      await axios.patch(`http://localhost:8080/api/update-book/${book}`, {
+        availability: true,
+        quantity: currentQuantity + 1,
+      })
+      .then(res => {
+        console.log(res.data);
+        fetchBorrowedBooksId();
+        setModalOpen(false);
+        message.success('Media returned successfully');
+      })
+      .catch(err => console.log(err));
+    }catch(err){console.log(err);}
   };
 
 
@@ -175,13 +206,14 @@ function ManageMedia() {
       console.log(res.data);
       fetchReservedBooksId();
       setModalOpen(false);
+      message.success('Media reservation removed successfully');
     })
     .catch(err => console.log(err));
   };
 
   //renews borrowed media
   const handleRenewBorrowed = async(bookId, dd) => {
-    console.log(bookId, dd);
+    console.log(`bookID: ${bookId}, DueDate: ${dd}`);
     let isReserved = false;
 
     await axios.get(`http://localhost:8080/api/reserved/${bookId}`)
@@ -199,19 +231,14 @@ function ManageMedia() {
       fetchBorrowedBooksId();
       return
     }
-
-    
     // Parse the date string to a Date object
     const dateObj = new Date(dd);
-
     // Add 7 days to the date
     let newDateObj = new Date(dateObj.getTime() + 7 * 24 * 60 * 60 * 1000);
     console.log(newDateObj);
-
     // Get the current date and add 14 days to it
     const currentDate = new Date();
     const maxRenewDate = new Date(currentDate.getTime() + 14 * 24 * 60 * 60 * 1000);
-
     // Check if the new due date is over 14 days from the current date
     if (newDateObj > maxRenewDate) {
       console.log("New due date is over 14 days from the current date. Renewal not allowed.");
@@ -219,11 +246,9 @@ function ManageMedia() {
       message.error('Renewal not allowed. Maximum renewal period is 14 days.');
       return;
     }
-
     // Convert the updated date back to a string in "YYYY-MM-DD" format
     const newDD = newDateObj.toISOString().split('T')[0];
     console.log(newDD);
-
     await axios.patch(`http://localhost:8080/api/update-due-date/${userId}/${bookId}`, {
       due_date: newDD,
     })
@@ -302,10 +327,16 @@ function ManageMedia() {
 
                         {/* Action Buttons */}
                         <Box sx={{ display: 'flex', justifyContent: 'space-evenly', width: '100%' }}>
-                          <Button variant='contained' color='error' onClick={() => handleRemoveBorrowed(book._id)} sx={{ textTransform: 'none' }}>
+                          <Button variant='contained' color='error' onClick={() => handleRemoveBorrowed(book)} sx={{ textTransform: 'none' }}>
                             Return
                           </Button>
-                          <Button variant='contained' color='primary' onClick={() => handleRenewBorrowed(book._id, dueDate[index])} sx={{ textTransform: 'none' }}>
+                          <Button variant='contained' 
+                            color='primary' 
+                            onClick={(event) => {
+                              event.stopPropagation(); 
+                              handleRenewBorrowed(book._id, dueDate[index]);
+                            }} 
+                            sx={{ textTransform: 'none' }}>
                             Renew
                           </Button>
                         </Box>
