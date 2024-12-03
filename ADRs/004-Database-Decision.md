@@ -34,15 +34,15 @@ We chose **MongoDB** for the Advanced Library Management System because of its f
 #### Pros
 
 - **Flexible Schema Design:** MongoDBs document-based structure allows for easy schema evolutionm, reducing the complexity of migrations as the system grows.
-- **JSON-Friendly:** Direct support for JSON documents simplifies data exchange between the database and the Node.js back-end [MongoDB Advantages & Disadvantages](https://www.geeksforgeeks.org/mongodb-advantages-disadvantages/).
-- **Scalability:** MongoDB is designed to scale horizontally, making it ideal for applications with growing data requirements [Scaling with MongoDB](https://www.mongodb.com/docs/manual/sharding/).
-- **Node.js Integration:** MongoDB integrates seamlessly with Node.js through libraries like Mongoose, enabling efficient development [MongoDB vs PostgreSQL: A Detailed Comparison](https://hevodata.com/learn/mongodb-vs-postgresql/).
+- **JSON-Friendly:** Direct support for JSON documents simplifies data exchange between the database and the Node.js back-end (GeeksforGeeks, n.d.).
+- **Scalability:** MongoDB is designed to scale horizontally, making it ideal for applications with growing data requirements (MongoDB, n.d.).
+- **Node.js Integration:** MongoDB integrates seamlessly with Node.js through libraries like Mongoose, enabling efficient development (Hevo Data, n.d.).
 
 
 #### Cons
 
-- **Lack of Strong ACID Compliance:** While MongoDB supports ACID transactions at the document level, it may require additional effort for complex multi-document transactions [MongoDB Advantages & Disadvantages](https://www.geeksforgeeks.org/mongodb-advantages-disadvantages/).
-- **Limited Relational Features:** Queries requiring complex joins may be less efficient compared to relational databases like PostgreSQL [MongoDB vs PostgreSQL: A Detailed Comparison](https://hevodata.com/learn/mongodb-vs-postgresql/).
+- **Lack of Strong ACID Compliance:** While MongoDB supports ACID transactions at the document level, it may require additional effort for complex multi-document transactions (GeeksforGeeks, n.d.).
+- **Limited Relational Features:** Queries requiring complex joins may be less efficient compared to relational databases like PostgreSQL (Hevo Data, n.d.).
 
 
 ## Pros and Cons of the Options
@@ -51,11 +51,11 @@ We chose **MongoDB** for the Advanced Library Management System because of its f
 #### Pros
 - Flexible schema, enabling rapid iteration and development.
 - JSON-like documents align naturally with JavaScript, easing data handling in a Node.js environment.
-- Horizontal scaling capabilities for large datasets [Scaling with MongoDB](https://www.mongodb.com/docs/manual/sharding/).
+- Horizontal scaling capabilities for large datasets (MongoDB, n.d.).
 
 #### Cons
 - Less suitable for applications with strict relational data requirements.
-- Transactions across multiple collections or documents require additional consideration [MongoDB Advantages & Disadvantages](https://www.geeksforgeeks.org/mongodb-advantages-disadvantages/).
+- Transactions across multiple collections or documents require additional consideration (GeeksforGeeks, n.d.).
 
 ### PostgreSQL
 #### Pros
@@ -64,7 +64,7 @@ We chose **MongoDB** for the Advanced Library Management System because of its f
 
 #### Cons
 - Rigid schema design compared to MongoDB, requiring migrations for schema changes.
-- Higher setup and maintenance effort for schema evolution [MongoDB vs PostgreSQL: A Detailed Comparison](https://hevodata.com/learn/mongodb-vs-postgresql/).
+- Higher setup and maintenance effort for schema evolution (Hevo Data, n.d.).
 
 ### MySQL
 #### Pros
@@ -81,7 +81,7 @@ While PostgreSQL and MySQL are strong candidates for relational use cases, Mongo
 
 ## References
 
-1. [MongoDB Advantages & Disadvantages](https://www.geeksforgeeks.org/mongodb-advantages-disadvantages/)
-2. [MongoDB vs PostgreSQL: A Detailed Comparison](https://hevodata.com/learn/mongodb-vs-postgresql/)
-3. [Scaling with MongoDB](https://www.mongodb.com/docs/manual/sharding/)
+1. GeeksforGeeks. (n.d.). *MongoDB Advantages & Disadvantages*. Retrieved from [https://www.geeksforgeeks.org/mongodb-advantages-disadvantages/](https://www.geeksforgeeks.org/mongodb-advantages-disadvantages/)
+2. Hevo Data. (n.d.). *MongoDB vs PostgreSQL: A Detailed Comparison*. Retrieved from [https://hevodata.com/learn/mongodb-vs-postgresql/](https://hevodata.com/learn/mongodb-vs-postgresql/)
+3. MongoDB. (n.d.). *Sharding Introduction*. Retrieved from [https://www.mongodb.com/docs/manual/sharding/](https://www.mongodb.com/docs/manual/sharding/)
 
