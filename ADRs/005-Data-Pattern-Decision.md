@@ -1,85 +1,73 @@
 ---
 status: Accepted
-date: 10/10/2024
-decision-makers: All
+date: 15/10/2024
+decision-makers: Joe
 consulted: All
 informed: All
 ---
 
-# 3-Tier Architecture for the Library Management System
+# Data Patern - MVC
 
 ## Context and Problem Statement
-In order to design a scalable, maintainable, and flexible system for managing library operations, we need to select an appropriate architectural style. 
-The system should allow us to separate concerns between the presentation tier, application tier, and data storage tier, while supporting ease of expansion for future features.
-
+The goal is to determine the data pattern we are going to use for structuring thte applicaion to ensure scalability, performance and ease of intergration. We are evaluating if MVC alligns with these goals.
 
 ## Decision Drivers
 
 * Scalability
-* Maintainability
 * Performance
-
+* Flexibility
+  
 ## Considered Options
 
-* Monolithic Architecture
-* Microservices Architecture
-* 3-Tier Architecture
+* MVC
+* Flux
+* MVP
 
 ## Decision Outcome
 
-The architecture style we choose was 3-Tier Architecture because it provides a clear separation between the presentation tier, 
-application tier, and data storage tier. This allows for easier scalability and maintence due to each tier being updated or scaled as needed without impacting the other tiers.
-This architecture is simple to implement for the current scope of the project and will easily support future growth without significant rework. The chief benefit of three-tier architecture is that because each tier runs on its own infrastructure, each tier can be developed simultaneously by a separate development team. And can be updated or scaled as needed without impacting the other tiers. (IBM. 2023)
+* We have decided to use MVC pattern.
 
 ### Consequences
 #### Pros
-* It allows for modularity and separation, making the system easier to maintain and scale.
-* Each layer can be scaled independently based on performance needs.
-* It provides a solid foundation for adding new features.
-* Security is improved since the client does not have direct access to the database; it is more difficult for a client to obtain unauthorized data. Business logic is more secure because it is stored on a secure central server. (GeeksForGeeks. 2021, June 10)
+* Faster Development Process: While developing any specific web application, MVC architecture could be put to better use. Through this architectural pattern, one programmer could work on its view component, while the other one could work on the other component. (Benefits and Drawbacks of MVC Architecture – Shrey Sharma, n.d.)
+* Easily Modifiable - MVC makes it easy to implement modifications to the entire app. Adding or updating the view is simplified in the MVC pattern, as each section is independent. (Model-View-Controller Architecture Pattern: Usage, Advantages, Examples | HackerNoon, n.d.)
 
 #### Cons
-* Introducing clear boundaries between layers requires careful planning and communication between layers, which could increase the initial development time.
-* Communication between layers may hinder performance, although this is generally minimal.
-
+*Steeper Learning Curve: For beginners, understanding and implementing MVC properly can be challenging, especially when dealing with the interactions between Model, View, and Controller. (What Is MVC? Advantages and Disadvantages of MVC ⋆ ALexHost SRL, 2024)
 
 ### Confirmation
-The decision to use a 3-Tier architecture has been confirmed as the best choice based on current project requirements. 
-With this we can monitor the system's performance and scalability.
-
+The decision alligns with our project specification and team skills.
 
 ## Pros and Cons of the Options
-### Monolithic Architecture
+### Flux
 #### Pros
-* Simplicity: Monoliths are relatively straightforward to develop and deploy since all the code resides in one place.
-  This simplicity can be advantageous for projects with limited complexity.
-* Debugging: With all code located in one place, it’s easier debug and find an issue.
+* Ensures a unidirectional data flow which reduces potential bugs.
+* Works well with frontends like React
+* Flux architecture is better in an application where views don’t map directly to domain stores. To put it in a different way, when views can create actions that will update many stores and stores can trigger changes that will update many views. (Nipun Dimantha, 2021)
 #### Cons
-* Deployment: A small change to a monolithic application requires the redeployment of the entire monolith.
-* Less scalability: Because monolithic architecture software is tightly coupled, it can be hard to scale. If you want to add new features or your codebase grows, you will need to take the entirety of the architecture with you. (Davis, A. 2022, October 5)
-Scaling a monolith typically involves replicating the entire application, which can be inefficient and costly.
-* Slower development speed: A large, monolithic application makes development more complex and slower.
-
-###  Microservices Architecture
+* Flux can add unnecessary complexity to an application where each view maps to one store. In this kind of application, a separation between view and store is enough. (Nipun Dimantha, 2021)
+* Implementing Flux requires a significant amount of boilerplate code, including setting up actions, the dispatcher, and stores (Sharma, 2024)
+###  MVP
 #### Pros
-* Improved fault isolation: Larger applications can remain mostly unaffected by the failure of a single module.
-* Smaller and faster deployments: Smaller codebases and scope mean quicker deployments.
-* Enhance team productivity - Microservices architecture allows small, focused teams to concentrate on a particular service’s development, deployment, and maintenance without being burdened by the complexities of the entire system. (Atlassian. 2024)
+* Simpler, clear separation of concerns between UI and Presenter.
+* Presenter is unit-testable independently of the Android framework.
+* Easier to understand, especially for those familiar with traditional patterns.
+  (Gideon, 2024)
   
 #### Cons
-* Communication between services is complex: Since everything is now an independent service, you have to carefully handle requests traveling between your modules.
-* Debugging: Each service has its own set of logs to go through.
-* Deployment challengers: The product may need coordination among multiple services.
-
+* No built-in data binding, requiring manual UI updates.
+* Less flexibility for complex UI interactions.
+(Gideon, 2024)
 ### Comparison
-Monolithic is straightfoward to develop and deploy, making it a good fit for smaller applications or with limited complexity, however as the aplication grows the scalabilty becomes significant challenges, leading to bottlenecks and slower development. However microservice arcitecture excels in scaleability making it more ideal for bigger complex systems with dynamic needs, however, this comes at the cost of communication, testing and management of the service. Many projects initially start out as a monolith and then evolve into a microservice architecture. As new features are added to a monolith, it may start to become cumbersome to have many developers working on a singular codebase. (Harris, C. 2024)
+Overall MVC seperates application logic, this allows for scalability, performance making it easy to modify views of models and controllers. However it has a steeper learning curve due to its interactions between the components. It allows for team members to work on different components simultaniously which makes development faster. However MVP offers a more simple and easier to understand and implement, especially for smaller and mid sized applications. However MVP lacks the ability for built in data binding requiring manual updates which may lead to complex UI interactions compared to MVC.
 
 ### Referencing
-* IBM. (2023). What is Three-Tier Architecture | IBM. Www.ibm.com. https://www.ibm.com/topics/three-tier-architecture
-* GeeksForGeeks. (2021, June 10). Advantages and Disadvantages of Three-Tier Architecture in DBMS. GeeksforGeeks. https://www.geeksforgeeks.org/advantages-and-disadvantages-of-three-tier-architecture-in-dbms/
-* Davis, A. (2022, October 5). The Pros and Cons of a Monolithic Application Vs. Microservices. Www.openlegacy.com. https://www.openlegacy.com/blog/monolithic-application
-* Atlassian. (2024). 5 Advantages of Microservices [+ Disadvantages]. Atlassian. https://www.atlassian.com/microservices/cloud-computing/advantages-of-microservices
-
+*  Benefits and Drawbacks of MVC Architecture – Shrey Sharma. (n.d.). https://shreysharma.com/benefits-and-drawbacks-of-mvc-architecture/
+*  Model-View-Controller Architecture Pattern: Usage, Advantages, Examples | HackerNoon. (n.d.). Hackernoon.com. https://hackernoon.com/model-view-controller-architecture-pattern-usage-advantages-examples
+*  What is MVC? Advantages and Disadvantages of MVC ⋆ ALexHost SRL. (2024, October 10). ALexHost SRL. https://alexhost.com/faq/what-is-mvc-advantages-and-disadvantages-of-mvc/
+*  Nipun Dimantha. (2021, March 7). Flux Pattern Architecture in React - Webtips - Medium. Medium; Webtips. https://medium.com/weekly-webtips/flux-pattern-architecture-in-react-35d0b55313f6
+*  Sharma, S. (2024, July 10). Understanding React Flux: A Comprehensive Guide. Yourteaminindia.com; ValueAppz Solutions Private Limited. https://www.yourteaminindia.com/tech-insights/understanding-react-flux
+*  Gideon, O. O. (2024, March 26). MVVM(Model-View-Viewmodel) vs MVP(Model-View-Presenter). Medium. https://medium.com/@deonolarewaju/mvvm-model-view-viewmodel-vs-mvp-model-view-presenter-76011cdc5b7f
 ‌
 
 ‌
