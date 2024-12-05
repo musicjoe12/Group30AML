@@ -29,7 +29,7 @@ function BrowseMedia() {
 
   // Pagination
   const [currentPage, setCurrentPage] = useState(1);
-  const itemsPerPage = 4;
+  const itemsPerPage = 16;
 
   const indexOfLastItem = currentPage * itemsPerPage;
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
@@ -341,7 +341,7 @@ function BrowseMedia() {
       <Box sx={{ display: 'flex', justifyContent: 'center', mt: 4 }}>
       <Pagination
     defaultCurrent={6}
-    total={500}
+    count={Math.ceil(filteredBooks.length / itemsPerPage)}
     onChange={handlePageChange}
     color="primary"
     shape="rounded"
