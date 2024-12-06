@@ -3,6 +3,7 @@ import { Input, Tag, Space, DatePicker, Modal, Button, Typography, Divider } fro
 import '../CSS/searchFilter.css';
 import { useSearch } from '../Context/SearchContext';
 import Draggable from 'react-draggable';  // Import Draggable
+import '@testing-library/jest-dom'; // Extend Jest with custom matchers for DOM assertions
 
 const { Title, Text } = Typography;
 const { RangePicker } = DatePicker;
