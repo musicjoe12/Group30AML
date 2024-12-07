@@ -135,7 +135,7 @@ function Navbar() {
         <div className="navbar-top">
           {/* Left: Logo and Title */}
           <div className="navbar-left">
-            <a href="Homepage" className="navbar-home-link">
+            <a href="/" className="navbar-home-link">
               <img src={logo} alt="AML Logo" className="navbar-logo" />
               <span className="navbar-title">AML</span>
             </a>
