@@ -347,7 +347,7 @@ function ManageMedia() {
               ))
             ) : (
               <Typography variant='body1' sx={{ textAlign: 'center', color: '#333' }}>
-                Nothing Borrowed ATM
+                Please Login to Borrow Media
               </Typography>
             )}
           </Grid>
@@ -413,7 +413,7 @@ function ManageMedia() {
               ))
             ) : (
               <Typography variant='body1' sx={{ textAlign: 'center', color: '#333' }}>
-                Nothing Reserved
+                Please Login To Reserve Media
               </Typography>
             )}
           </Grid>
