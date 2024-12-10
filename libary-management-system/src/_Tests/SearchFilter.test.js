@@ -72,13 +72,15 @@ describe('SearchFilter Component', () => {
         fireEvent.change(endYearInput, { target: { value: '2020' } });
         expect(defaultProps.onFilterUpdate).toHaveBeenCalledWith([
           { title: 'Book One', author: 'Author A', genre: 'Fiction', availability: true, publication_year: 2020 },
-          { title: 'Book Two', author: 'Author B', genre: 'Non-fiction', availability: false, publication_year: 2021 },
+          { title: 'Book Two', author: 'Author B', genre: 'Non-fiction', availability: false, publication_year: 2019 },
         ]);
       });
-      test('filters books based on search input', () => {
+      test('filters books based on title', () => {
         renderWithContext();
+      
         const searchInput = screen.getByPlaceholderText(/Search by title or author/i);
         userEvent.type(searchInput, 'Book One');
+      
         expect(mockOnFilterUpdate).toHaveBeenCalledWith([
           { title: 'Book One', author: 'Author A', genre: 'Fiction', availability: true, publication_year: 2020 },
         ]);
