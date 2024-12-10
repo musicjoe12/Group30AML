@@ -9,12 +9,12 @@ const connectDB = async (branch) => {
     defaultBranch = branch || defaultBranch;
     if (mongoose.connection.readyState !== 0) {
       await mongoose.disconnect();
-      console.log(`MongoDB disconnected`);
+      //console.log(`MongoDB disconnected`);
     }
     await mongoose.connect(uri + defaultBranch);
-    console.log(`MongoDB connected to ${defaultBranch}`);
+    //console.log(`MongoDB connected to ${defaultBranch}`);
   } catch (err) {
-    console.error(err);
+    //console.error(err);
     process.exit(1); // Exit process with failure
   }
 };

@@ -22,7 +22,4 @@ app.use(cors());
 app.use(express.json());
 app.use('/api', books, branch, users); //localhost:8080/api/...
 
-app.listen(PORT, () => {
-    console.log(`Server is running on http://localhost:${PORT}`);
-});
-
+module.exports = app;
