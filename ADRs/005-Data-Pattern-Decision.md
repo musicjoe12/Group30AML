@@ -1,7 +1,7 @@
 ---
 status: Accepted
 date: 15/10/2024
-decision-makers: Joe
+decision-makers: All
 consulted: All
 informed: All
 ---
