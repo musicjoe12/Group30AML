@@ -341,7 +341,7 @@ function BrowseMedia() {
       <Box sx={{ display: 'flex', justifyContent: 'center', mt: 4 }}>
       <Pagination
     defaultCurrent={6}
-    total={500}
+    count={Math.ceil(filteredBooks.length / itemsPerPage)}
     onChange={handlePageChange}
     color="primary"
     shape="rounded"

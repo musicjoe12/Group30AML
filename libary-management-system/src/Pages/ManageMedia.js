@@ -1,7 +1,5 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { Box, Grid, Typography, Card, CardMedia, CardContent, Modal, Button } from '@mui/material';
-import { MAX_VERTICAL_CONTENT_RADIUS } from 'antd/es/style/placementArrow';
-import { json } from 'react-router-dom';
 import axios from 'axios';
 import { UserContext } from '../Context/UserContext';
 import { message } from 'antd';
@@ -272,11 +270,9 @@ function ManageMedia() {
         <Typography variant='h5' gutterBottom sx={{ fontWeight: 'bold', textAlign: 'left', flex: 1 }}>
           {activeTab === 'borrowed' ? 'Currently Borrowed' : 'Currently Reserved'} -
         </Typography>
-        <Dropdown overlay={menu(setActiveTab)} trigger={['click']}>
-          <Button>
-            Switch Tab
+          <Button variant="contained" onClick={() => setActiveTab((prevTab) => (prevTab === 'borrowed' ? 'reserved' : 'borrowed'))}>
+            {activeTab === 'borrowed' ? 'Switch to Reserved' : 'Switch to Borrowed'}
           </Button>
-        </Dropdown>
       </Box>
 
       {/* Currently Borrowed Section */}
