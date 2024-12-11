@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Input, Tag, Space, DatePicker, Modal, Button, Typography, Divider } from 'antd';
 import '../CSS/searchFilter.css';
 import { useSearch } from '../Context/SearchContext';
-import Draggable from 'react-draggable';
+import Draggable from 'react-draggable';  // Import Draggable
 
 const { Title, Text } = Typography;
 const { RangePicker } = DatePicker;
@@ -15,14 +15,14 @@ const SearchFilter = ({ books, onFilterUpdate, genres, isOpen, onClose }) => {
     publicationYear: { start: null, end: null },
   });
 
-  const { searchValue } = useSearch();
+  const { searchValue } = useSearch(); // Get searchValue and setSearchValue
 
   useEffect(() => {
     if (searchValue.trim() !== "") {
-      const filteredBooks = books.filter(book => {
-        return book.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-               book.author.toLowerCase().includes(searchQuery.toLowerCase());
-      });
+      const filteredBooks = books.filter((book) =>
+        book.title.toLowerCase().includes(searchValue.toLowerCase()) ||
+        book.author.toLowerCase().includes(searchValue.toLowerCase())
+      );
       onFilterUpdate(filteredBooks);
     } else {
       onFilterUpdate(books); // Reset to all books if search is cleared
@@ -54,12 +54,12 @@ const SearchFilter = ({ books, onFilterUpdate, genres, isOpen, onClose }) => {
   };
 
   const handleGenreClick = (genre) => {
-    const updatedGenre = filters.genre === genre ? null : genre; 
+    const updatedGenre = filters.genre === genre ? null : genre; // Toggle genre filter
     handleFilterChange('genre', updatedGenre);
   };
 
   const handleAvailabilityClick = (availability) => {
-    const updatedAvailability = filters.availability === availability ? null : availability;
+    const updatedAvailability = filters.availability === availability ? null : availability; // Toggle availability filter
     handleFilterChange('availability', updatedAvailability);
   };
 
@@ -68,6 +68,7 @@ const SearchFilter = ({ books, onFilterUpdate, genres, isOpen, onClose }) => {
 
     let filteredBooks = [...books];
 
+    // Filter by search
     if (search) {
       filteredBooks = filteredBooks.filter(
         (book) =>
@@ -76,14 +77,17 @@ const SearchFilter = ({ books, onFilterUpdate, genres, isOpen, onClose }) => {
       );
     }
 
+    // Filter by genre
     if (genre) {
       filteredBooks = filteredBooks.filter((book) => book.genre === genre);
     }
 
+    // Filter by availability
     if (availability !== null && availability !== undefined) {
       filteredBooks = filteredBooks.filter((book) => book.availability === availability);
     }
 
+    // Filter by publication year range
     if (publicationYear.start && publicationYear.end) {
       filteredBooks = filteredBooks.filter(
         (book) =>
@@ -124,10 +128,15 @@ const SearchFilter = ({ books, onFilterUpdate, genres, isOpen, onClose }) => {
       <div>
         <Modal
           title='Filters'
-          open={isOpen} 
+          visible={isOpen}
           onCancel={onClose}
           footer={null}
-          styles={{ body: { backgroundColor: '#D3D3D3', display: 'flex', flexDirection: 'column', pointerEvents: 'auto' } }} // Updated from 'bodyStyle' to 'styles.body'
+          bodyStyle={{
+            backgroundColor: '#D3D3D3',
+            display: 'flex',
+            flexDirection: 'column',
+            pointerEvents: 'auto', // Ensure clickable area is active
+          }}
         >
           <Title level={4} style={{ color: 'black' }}>
             Filter Books
@@ -137,18 +146,21 @@ const SearchFilter = ({ books, onFilterUpdate, genres, isOpen, onClose }) => {
           </Text>
           <Divider />
 
+          {/* Search Input */}
           <Input
             placeholder="Search by title or author"
             className="filter-input"
             onChange={(e) => handleSearch(e.target.value)}
           />
-          <Text className="filter-subtitle">Publication Year</Text>
+
+          {/* Filter by Publication Year */}
           <RangePicker
             picker="year"
             className="filter-range-picker"
             onChange={handleYearChange}
             allowClear
           />
+          {/* Genre Section */}
           <Text className="filter-subtitle">Genre</Text>
           <Space wrap>
             {genres.map((genre) => (
@@ -163,6 +175,7 @@ const SearchFilter = ({ books, onFilterUpdate, genres, isOpen, onClose }) => {
             ))}
           </Space>
 
+          {/* Filter by Availability */}
           <div className="filter-availability">
             <Text className="filter-subtitle">Availability</Text>
             <div className="filter-tags-container">
@@ -181,6 +194,7 @@ const SearchFilter = ({ books, onFilterUpdate, genres, isOpen, onClose }) => {
             </div>
           </div>
 
+          {/* Search Button */}
           <Button
             type="primary"
             className="search-button"
