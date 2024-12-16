@@ -172,6 +172,7 @@ function Navbar() {
             className="settings-icon"
             style={{ fontSize: '24px', color: '#white', marginLeft: '10px', cursor: 'pointer' }}
             onClick={showSettingsModal} // Open the settings modal
+            data-testid="settings-icon"
           />
           </>
             )}
