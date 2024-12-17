@@ -633,5 +633,34 @@ Updates the due date for a borrowed book in a user's record.
   "branch": "Main Library"
 }
 ```
+## Branch routes
+
+## **1. Change Branch**
+
+**Endpoint**:  
+`POST /change-branch`  
+
+**Description**:  
+Changes the user's branch in their record.
+
+**Headers**:  
+- `Content-Type`: application/json  
+
+**Request Body Example**:  
+
+```json
+{
+  "branch": "New Branch Name"
+}
+```
+**Response**:  
+- **Status**: 200 OK  
+- **Body**:  
+
+```json
+{
+  "message": "Branch successfully updated",
+}
+```
 
 
