@@ -16,7 +16,7 @@ import { message } from "antd";
 //    console.error(message);
 //});
 
-
+//mock js cookie to prevent actual cookie operation during tests
 jest.mock('js-cookie', () => ({
     get: jest.fn(),
     set: jest.fn(),
@@ -39,8 +39,9 @@ beforeAll(() => {
     });
 });
 
+//navbar test suite
 describe('Navbar Component', () => {
-    const renderNavbar = () => {
+    const renderNavbar = () => { //rendering navbar with relevant context needed for testing
         render(
             <BrowserRouter>
             <SearchProvider>
@@ -52,6 +53,7 @@ describe('Navbar Component', () => {
         );
     };
 
+    //reset mock implementations before each test
     beforeEach(() => {
         Cookies.get.mockReset();
         Cookies.set.mockReset();
@@ -61,84 +63,82 @@ describe('Navbar Component', () => {
     test('renders logo and title', () => {
         renderNavbar();
 
-        expect(screen.getByAltText('AML Logo')).toBeInTheDocument(); //check for logo
-        expect(screen.getByText('AML')).toBeInTheDocument();
-    }); //passes
+        expect(screen.getByAltText('AML Logo')).toBeInTheDocument(); 
+        expect(screen.getByText('AML')).toBeInTheDocument(); //check for logo rendered
+    });
 
     test('renders the search input and allows for user input', () => {
         renderNavbar();
 
-        const searchInput = screen.getByPlaceholderText('Search');
-        expect(searchInput).toBeInTheDocument();
+        const searchInput = screen.getByPlaceholderText('Search'); //palceholder text within search input field
+        expect(searchInput).toBeInTheDocument(); //check if search input has rendered
 
         act(() => {
-            fireEvent.change(searchInput, { target: { value: 'Test Search' } });
+            fireEvent.change(searchInput, { target: { value: 'Test Search' } }); //simulating user input
         })
 
-        expect(searchInput.value).toBe('Test Search');
-    }); //passes
+        expect(searchInput.value).toBe('Test Search'); //search field has been updated
+    });
 
     test('renders login button and handles login modal', () => {
         renderNavbar();
 
-        const loginButton = screen.getByText('Login');
-        expect(loginButton).toBeInTheDocument();
+        const loginButton = screen.getByText('Login'); //finding button by its text
+        expect(loginButton).toBeInTheDocument(); //check if rendered
 
         act(() => {
-            fireEvent.click(loginButton);
+            fireEvent.click(loginButton); //simulate clicking on button
         })
 
         expect(screen.getByText('Select User to Login')).toBeInTheDocument(); //modal title
-    }); //passes
+    });
 
     test('toggles Branch Manager Mode Switch', () => {
         renderNavbar();
 
-        const toggleSwitch = screen.getByRole('switch');
-        expect(toggleSwitch).toBeInTheDocument();
-        expect(toggleSwitch).toHaveAttribute('aria-checked', 'false');
+        const toggleSwitch = screen.getByRole('switch'); //find toggle slider by role
+        expect(toggleSwitch).toBeInTheDocument(); //check if rendered
+
+        expect(toggleSwitch).toHaveAttribute('aria-checked', 'false'); //initial state should be unchecked, BM mode off
 
         act(() => {
-            fireEvent.click(toggleSwitch);
+            fireEvent.click(toggleSwitch); //simulate user clicking
         });
 
-        expect(toggleSwitch).toHaveAttribute('aria-checked', 'true');
-
-     //   fireEvent.click(toggleSwitch);
-     //   expect(localStorage.setItem).toHaveBeenCalledWith('sliderState', 'true');
-    }); //passes
+        expect(toggleSwitch).toHaveAttribute('aria-checked', 'true'); //check if state is changed, BM mode on
+    });
 
     test('Search input triggers navigation on submit', () => {
         renderNavbar();
 
-        const searchInput = screen.getByPlaceholderText('Search');
-        const searchButton = screen.getByRole('button', { name: /search/i });
+        const searchInput = screen.getByPlaceholderText('Search'); //find search by placeholder text
+        const searchButton = screen.getByRole('button', { name: /search/i }); //finding search button by role
 
         act(() => {
-            fireEvent.change(searchInput, { target: { value: 'Test Search' } });
-            fireEvent.click(searchButton);
+            fireEvent.change(searchInput, { target: { value: 'Test Search' } }); //simulate user typing
+            fireEvent.click(searchButton); // user clicking on the search button
         });
 
-        expect(window.location.pathname).toBe('/browse-media');
-    }); //passes
+        expect(window.location.pathname).toBe('/browse-media'); //check if user has been redirected to browse media page
+    });
 
     test('renders settings icon and handles logout', () => {
         renderNavbar();
 
-        const settingsIcon = screen.getByTestId('settings-icon');
-        expect(settingsIcon).toBeInTheDocument();
+        const settingsIcon = screen.getByTestId('settings-icon'); //find settings icon by testid attributed in <SettingsOutlined> in Navbar.js
+        expect(settingsIcon).toBeInTheDocument(); //check if rendered
 
         act(() => {
-            fireEvent.click(settingsIcon);
+            fireEvent.click(settingsIcon); //simulate user clicking on settings icon
         });
 
-        expect(screen.getByText('Logout')).toBeInTheDocument();
+        expect(screen.getByText('Logout')).toBeInTheDocument(); //checking if logout button renders
 
         act(() => {
-            fireEvent.click(screen.getByText('Logout'));
+            fireEvent.click(screen.getByText('Logout')); //user clicking on logout button
         });
 
-        expect(Cookies.remove).toHaveBeenCalledWith('userId');
-        expect(Cookies.remove).toHaveBeenCalledWith('userName');
+        expect(Cookies.remove).toHaveBeenCalledWith('userId'); //remove userId cookie
+        expect(Cookies.remove).toHaveBeenCalledWith('userName'); //remove userName cookie
     }); //passes
 });
