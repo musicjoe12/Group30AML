@@ -9,4 +9,11 @@ describe('POST /api/change-branch', () => {
         expect(response.body.status).toBe('Success');
         expect(response.body.message).toBe('Connected to BranchManchester branch');
     });
+
+    test('It should return an error message if the branch is not found', async () => {
+        const response = await request(app).post('/api/change-branch').send({ branch: 'BranchNotReal' });
+        expect(response.status).toBe(404);
+        expect(response.body.status).toBe('Error');
+        expect(response.body.message).toBe('Branch not found');
+    });
 });
