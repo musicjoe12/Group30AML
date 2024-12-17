@@ -25,10 +25,9 @@ describe("ManageMedia Component", () => {
     // Mock API responses for borrowed books and return actions
     axios.get.mockImplementation((url) => {
       if (url.includes("/user-books-borrowed")) {
-        return Promise.resolve({
-          data: [{ book_id: "book1", title: "Borrowed Book", due_date: "2024-12-20", image: "test-image.jpg", author: "Test Author", genre: "Test Genre", description: "Test Description" }],
-        });
+        return Promise.reject(new Error("API failure for borrowed books")); //simulate API failure
       }
+        
       if (url.includes("/books/multiple")) {
         return Promise.resolve({
           data: [
@@ -87,19 +86,5 @@ describe("ManageMedia Component", () => {
         "http://localhost:8080/api/user-books-borrowed/test-user-id/book1"
       );
     });
-
-  //  console.log(screen.debug());
-
-
-    // Verify success message is displayed
-  //  expect(require("antd").message.success).toHaveBeenCalledWith(
-  //      "Media returned successfully"
-  //  );
-      
-
-    // Verify the borrowed book is removed from the list
-   // await waitFor(() => {
-    //  expect(screen.queryByText("Borrowed Book")).not.toBeInTheDocument();
-   // });
   });
 });
