@@ -6,6 +6,10 @@ Prerequisites
 
 Steps to Run the Server
 
+- Create a .env File in the server folder copy this into it: 
+MONGODB_URI="mongodb+srv://samuel:lqBvVKDKsE6MbvOZ@backend.psehq.mongodb.net/"
+PORT=8080
+DEFAULT_BRANCH = "BranchSheffield"
 - cd server
 - npm i 
 - npm run dev
